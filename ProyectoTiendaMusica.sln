@@ -2,8 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tienda", "Tienda\Tienda.csproj", "{2F0A9C73-F81D-F13A-1C44-BDE6AC22D419}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Servicios", "2. Servicios", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib_servicios_TiendaMusica", "lib_servicios_TiendaMusica\lib_servicios_TiendaMusica.csproj", "{2FBB93FD-BE42-4CD0-9D42-99C53E115E86}"
@@ -20,10 +18,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2F0A9C73-F81D-F13A-1C44-BDE6AC22D419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F0A9C73-F81D-F13A-1C44-BDE6AC22D419}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F0A9C73-F81D-F13A-1C44-BDE6AC22D419}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F0A9C73-F81D-F13A-1C44-BDE6AC22D419}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2FBB93FD-BE42-4CD0-9D42-99C53E115E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2FBB93FD-BE42-4CD0-9D42-99C53E115E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FBB93FD-BE42-4CD0-9D42-99C53E115E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
