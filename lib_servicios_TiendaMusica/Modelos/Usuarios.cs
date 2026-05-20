@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace lib_servicios_TiendaMusica.Modelos
         public DateTime FechaCreacion { get; set; }
 
         public int? EmpleadoId { get; set; }
+        [ForeignKey("EmpleadoId")]
         public Empleados? _Empleado { get; set; }
 
         public List<UsuarioRoles>? UsuarioRoles { get; set; }

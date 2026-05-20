@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace lib_servicios_TiendaMusica.Modelos
 {
     public class Inventarios
@@ -9,6 +11,7 @@ namespace lib_servicios_TiendaMusica.Modelos
         public DateTime FechaActualizacion { get; set; }
         public string? UbicacionBodega { get; set; }
         public int ProductoId { get; set; }
+        [ForeignKey("ProductoId")]
         public Productos? _Producto { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace lib_servicios_TiendaMusica.Modelos
 {
     public class Facturas
@@ -10,11 +12,15 @@ namespace lib_servicios_TiendaMusica.Modelos
         public decimal Total { get; set; }
 
 
+
         public int ClienteId { get; set; }
+        [ForeignKey("ClienteId")]
         public Clientes? _Cliente { get; set; }
 
 
+
         public int EmpleadoId { get; set; }
+        [ForeignKey("EmpleadoId")]
         public Empleados? _Empleado { get; set; }
 
 

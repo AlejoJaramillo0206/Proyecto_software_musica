@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace lib_servicios_TiendaMusica.Modelos
 {
     public abstract class Productos
@@ -9,7 +11,7 @@ namespace lib_servicios_TiendaMusica.Modelos
         public string? Nombre { get; set; }
         public decimal Precio { get; set; }
         public int ProveedorId { get; set; }
-
+        [ForeignKey("ProveedorId")]
         public Proveedores? _Proveedor { get; set; }
 
 
