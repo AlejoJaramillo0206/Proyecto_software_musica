@@ -17,7 +17,6 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion = conexion;
         }
 
-        // Solo lectura: devuelve todos los productos base
         public List<Productos> Obtener() =>
             _conexion.Productos!.ToList();
 

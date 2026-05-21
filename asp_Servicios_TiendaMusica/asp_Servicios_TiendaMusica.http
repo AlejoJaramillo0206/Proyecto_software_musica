@@ -1,0 +1,6 @@
+@asp_Servicios_TiendaMusica_HostAddress = http://localhost:5112
+
+GET {{asp_Servicios_TiendaMusica_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
