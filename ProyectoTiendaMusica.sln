@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pruebas_Unitarias_TiendaMus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asp_Servicios_TiendaMusica", "asp_Servicios_TiendaMusica\asp_Servicios_TiendaMusica.csproj", "{0CD6BADF-B6E6-4342-91C5-8EAC72053603}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib_Presentacion_TiendaMusica", "lib_Presentacion_TiendaMusica\lib_Presentacion_TiendaMusica.csproj", "{29AF74CA-E505-4AA0-A1AA-9C59F1C9A991}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{0CD6BADF-B6E6-4342-91C5-8EAC72053603}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD6BADF-B6E6-4342-91C5-8EAC72053603}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CD6BADF-B6E6-4342-91C5-8EAC72053603}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29AF74CA-E505-4AA0-A1AA-9C59F1C9A991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29AF74CA-E505-4AA0-A1AA-9C59F1C9A991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29AF74CA-E505-4AA0-A1AA-9C59F1C9A991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29AF74CA-E505-4AA0-A1AA-9C59F1C9A991}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,6 +46,7 @@ Global
 		{2FBB93FD-BE42-4CD0-9D42-99C53E115E86} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{09FF9221-0D26-43CC-B069-AB7E3749AF7A} = {A41EB4E1-5C18-4A57-901C-13AD4FD3C78D}
 		{0CD6BADF-B6E6-4342-91C5-8EAC72053603} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{29AF74CA-E505-4AA0-A1AA-9C59F1C9A991} = {A504ABCA-5F54-4704-9907-1A3045B3A500}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5DBEF4B5-F49C-4EB2-BB17-F2E399E00C5D}
