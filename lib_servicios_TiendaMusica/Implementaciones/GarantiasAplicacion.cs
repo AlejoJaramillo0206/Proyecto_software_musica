@@ -29,10 +29,11 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public Garantias Obtener(int id) =>
             _conexion.Garantias!.First(g => g.Id == id);
 
-        public void Guardar(Garantias garantia)
+        public Garantias Guardar(Garantias garantia)
         {
             _conexion.Garantias!.Add(garantia);
             _conexion.SaveChanges();
+            return garantia;
         }
     }
 }

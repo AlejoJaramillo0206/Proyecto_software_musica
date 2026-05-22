@@ -19,23 +19,26 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public MetodosPago Obtener(int id) =>
             _conexion.MetodosPago!.First(m => m.Id == id);
 
-        public void Guardar(MetodosPago metodoPago)
+        public MetodosPago Guardar(MetodosPago metodoPago)
         {
             _conexion.MetodosPago!.Add(metodoPago);
             _conexion.SaveChanges();
+            return metodoPago;
         }
 
-        public void Editar(MetodosPago metodoPago)
+        public MetodosPago Editar(MetodosPago metodoPago)
         {
             _conexion.MetodosPago!.Update(metodoPago);
             _conexion.SaveChanges();
+            return metodoPago;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var metodoPago = Obtener(id);
             _conexion.MetodosPago!.Remove(metodoPago);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

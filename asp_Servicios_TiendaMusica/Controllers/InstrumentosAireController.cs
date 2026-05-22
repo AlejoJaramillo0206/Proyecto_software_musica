@@ -37,27 +37,27 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(InstrumentosAire instrumento)
+        public InstrumentosAire Guardar(InstrumentosAire instrumento)
         {
             if (this.iInstrumentosAireAplicacion == null)
                 throw new Exception("No implementado");
-            this.iInstrumentosAireAplicacion!.Guardar(instrumento);
+            return this.iInstrumentosAireAplicacion!.Guardar(instrumento);
         }
 
         [HttpPut]
-        public void Editar(InstrumentosAire instrumento)
+        public InstrumentosAire Editar(InstrumentosAire instrumento)
         {
             if (this.iInstrumentosAireAplicacion == null)
                 throw new Exception("No implementado");
-            this.iInstrumentosAireAplicacion!.Editar(instrumento);
+            return this.iInstrumentosAireAplicacion!.Editar(instrumento);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iInstrumentosAireAplicacion == null)
                 throw new Exception("No implementado");
-            this.iInstrumentosAireAplicacion!.Eliminar(id);
+            return this.iInstrumentosAireAplicacion!.Eliminar(id);
         }
     }
 }

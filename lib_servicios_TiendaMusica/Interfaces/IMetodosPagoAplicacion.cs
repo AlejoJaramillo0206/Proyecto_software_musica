@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<MetodosPago> Obtener();
         MetodosPago Obtener(int id);
-        void Guardar(MetodosPago metodoPago);
-        void Editar(MetodosPago metodoPago);
-        void Eliminar(int id);
+        MetodosPago Guardar(MetodosPago metodoPago);
+        MetodosPago Editar(MetodosPago metodoPago);
+        bool Eliminar(int id);
     }
 }

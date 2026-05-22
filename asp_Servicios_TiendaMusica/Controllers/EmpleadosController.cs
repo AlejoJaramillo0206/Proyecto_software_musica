@@ -36,27 +36,27 @@ namespace asp_Servicios_TiendaMusica.Controllers
         }
 
         [HttpPost]
-        public void Guardar(Empleados empleado)
+        public Empleados Guardar(Empleados empleado)
         {
             if (this.iEmpleadosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iEmpleadosAplicacion!.Guardar(empleado);
+            return this.iEmpleadosAplicacion!.Guardar(empleado);
         }
 
         [HttpPut]
-        public void Editar(Empleados empleado)
+        public Empleados Editar(Empleados empleado)
         {
             if (this.iEmpleadosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iEmpleadosAplicacion!.Editar(empleado);
+            return this.iEmpleadosAplicacion!.Editar(empleado);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iEmpleadosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iEmpleadosAplicacion!.Eliminar(id);
+            return this.iEmpleadosAplicacion!.Eliminar(id);
         }
     }
 }

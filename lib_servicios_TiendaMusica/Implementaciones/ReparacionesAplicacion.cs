@@ -29,12 +29,13 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public Reparaciones Obtener(int id) =>
             _conexion.Reparaciones!.First(r => r.Id == id);
 
-        public void Guardar(Reparaciones reparacion)
+        public Reparaciones Guardar(Reparaciones reparacion)
         {
             // La fecha de ingreso se asigna automaticamente
             reparacion.FechaIngreso = DateTime.Now;
             _conexion.Reparaciones!.Add(reparacion);
             _conexion.SaveChanges();
+            return reparacion;
         }
     }
 }

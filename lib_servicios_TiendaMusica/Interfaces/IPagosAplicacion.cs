@@ -11,6 +11,6 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<Pagos> Obtener();
         List<Pagos> ObtenerPorFactura(int facturaId);
-        void Guardar(Pagos pago);
+        Pagos Guardar(Pagos pago);
     }
 }

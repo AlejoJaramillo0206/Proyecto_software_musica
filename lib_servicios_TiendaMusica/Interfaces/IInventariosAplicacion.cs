@@ -12,8 +12,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
         List<Inventarios> Obtener();
         Inventarios Obtener(int id);
         Inventarios ObtenerPorProducto(int productoId);
-        void Guardar(Inventarios inventario);
-        void Editar(Inventarios inventario);
-        void Eliminar(int id);
+        Inventarios Guardar(Inventarios inventario);
+        Inventarios Editar(Inventarios inventario);
+        bool Eliminar(int id);
     }
 }

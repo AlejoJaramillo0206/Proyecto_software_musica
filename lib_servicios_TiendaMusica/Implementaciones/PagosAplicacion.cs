@@ -27,11 +27,12 @@ namespace lib_servicios_TiendaMusica.Implementaciones
                 .ToList();
 
         // Al guardar registra la fecha del pago automaticamente
-        public void Guardar(Pagos pago)
+        public Pagos Guardar(Pagos pago)
         {
             pago.FechaPago = DateTime.Now;
             _conexion.Pagos!.Add(pago);
             _conexion.SaveChanges();
+            return pago;
         }
     }
 }

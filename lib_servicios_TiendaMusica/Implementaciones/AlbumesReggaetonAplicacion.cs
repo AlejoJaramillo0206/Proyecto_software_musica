@@ -23,24 +23,27 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             public AlbumesReggaeton Obtener(int id) =>
                 _conexion.AlbumesReggaeton!.First(a => a.Id == id);
 
-            public void Guardar(AlbumesReggaeton album)
+            public AlbumesReggaeton Guardar(AlbumesReggaeton album)
             {
                 _conexion.AlbumesReggaeton!.Add(album);
-                _conexion.SaveChanges();
-            }
+            _conexion.SaveChanges();
+            return album;
+        }
 
-            public void Editar(AlbumesReggaeton album)
+        public AlbumesReggaeton Editar(AlbumesReggaeton album)
             {
                 _conexion.AlbumesReggaeton!.Update(album);
-                _conexion.SaveChanges();
-            }
+            _conexion.SaveChanges();
+            return album;
+        }
 
-            public void Eliminar(int id)
+        public bool Eliminar(int id)
             {
                 var album = Obtener(id);
                 _conexion.AlbumesReggaeton!.Remove(album);
-                _conexion.SaveChanges();
-            }
+            _conexion.SaveChanges();
+            return true;
         }
+    }
 }
 

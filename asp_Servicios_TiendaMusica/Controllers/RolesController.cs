@@ -40,27 +40,27 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(Roles rol)
+        public Roles Guardar(Roles rol)
         {
             if (this.iRolesAplicacion == null)
                 throw new Exception("No implementado");
-            this.iRolesAplicacion!.Guardar(rol);
+            return this.iRolesAplicacion!.Guardar(rol);
         }
 
         [HttpPut]
-        public void Editar(Roles rol)
+        public Roles Editar(Roles rol)
         {
             if (this.iRolesAplicacion == null)
                 throw new Exception("No implementado");
-            this.iRolesAplicacion!.Editar(rol);
+            return this.iRolesAplicacion!.Editar(rol);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iRolesAplicacion == null)
                 throw new Exception("No implementado");
-            this.iRolesAplicacion!.Eliminar(id);
+            return this.iRolesAplicacion!.Eliminar(id);
         }
     }
 }

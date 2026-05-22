@@ -23,23 +23,26 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public Accesorios Obtener(int id) =>
             _conexion.Accesorios!.First(a => a.Id == id);
 
-        public void Guardar(Accesorios accesorio)
+        public Accesorios Guardar(Accesorios accesorio)
         {
             _conexion.Accesorios!.Add(accesorio);
             _conexion.SaveChanges();
+            return accesorio;
         }
 
-        public void Editar(Accesorios accesorio)
+        public Accesorios Editar(Accesorios accesorio)
         {
             _conexion.Accesorios!.Update(accesorio);
             _conexion.SaveChanges();
+            return accesorio;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var accesorio = Obtener(id);
             _conexion.Accesorios!.Remove(accesorio);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

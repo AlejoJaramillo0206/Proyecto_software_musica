@@ -31,7 +31,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
                 .Where(a => a.UsuarioId == usuarioId)
                 .ToList();
 
-        public void Registrar(string entidad, string accion, string descripcion, int? usuarioId)
+        public Auditorias Registrar(string entidad, string accion, string descripcion, int? usuarioId)
         {
             var auditoria = new Auditorias
             {
@@ -43,6 +43,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             };
             _conexion.Auditorias!.Add(auditoria);
             _conexion.SaveChanges();
+            return auditoria;
         }
     }
 }

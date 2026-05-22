@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<Clientes> Obtener();
         Clientes Obtener(int id);
-        void Guardar(Clientes cliente);
-        void Editar(Clientes cliente);
-        void Eliminar(int id);
+        Clientes Guardar(Clientes cliente);
+        Clientes Editar(Clientes cliente);
+        bool Eliminar(int id);
     }
 }

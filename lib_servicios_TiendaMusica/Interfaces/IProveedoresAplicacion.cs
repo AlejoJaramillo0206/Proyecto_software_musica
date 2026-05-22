@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<Proveedores> Obtener();
         Proveedores Obtener(int id);
-        void Guardar(Proveedores proveedor);
-        void Editar(Proveedores proveedor);
-        void Eliminar(int id);
+        Proveedores Guardar(Proveedores proveedor);
+        Proveedores Editar(Proveedores proveedor);
+        bool Eliminar(int id);
     }
 }

@@ -42,11 +42,11 @@ namespace lib_servicios_TiendaMusica.Modelos
             }
 
             [HttpPost]
-            public void Guardar(DetalleFacturas detalle)
+            public DetalleFacturas Guardar(DetalleFacturas detalle)
             {
                 if (this.iDetalleFacturasAplicacion == null)
                     throw new Exception("No implementado");
-                this.iDetalleFacturasAplicacion!.Guardar(detalle);
+                return this.iDetalleFacturasAplicacion!.Guardar(detalle);
             }
         }
     }

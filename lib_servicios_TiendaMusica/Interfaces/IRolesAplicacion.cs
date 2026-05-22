@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<Roles> Obtener();
         Roles Obtener(int id);
-        void Guardar(Roles rol);
-        void Editar(Roles rol);
-        void Eliminar(int id);
+        Roles Guardar(Roles rol);
+        Roles Editar(Roles rol);
+        bool Eliminar(int id);
     }
 }

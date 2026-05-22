@@ -38,11 +38,11 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(Pagos pago)
+        public Pagos Guardar(Pagos pago)
         {
             if (this.iPagosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iPagosAplicacion!.Guardar(pago);
+            return this.iPagosAplicacion!.Guardar(pago);
         }
     }
 }

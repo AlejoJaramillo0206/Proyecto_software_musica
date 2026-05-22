@@ -29,12 +29,13 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public Reseñas Obtener(int id) =>
             _conexion.Reseñas!.First(r => r.Id == id);
 
-        public void Guardar(Reseñas reseña)
+        public Reseñas Guardar(Reseñas reseña)
         {
             // La fecha se asigna automaticamente al momento de crear la reseña
             reseña.FechaReseña = DateTime.Now;
             _conexion.Reseñas!.Add(reseña);
             _conexion.SaveChanges();
+            return reseña;
         }
     }
 }

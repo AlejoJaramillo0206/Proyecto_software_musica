@@ -23,19 +23,22 @@ namespace lib_servicios_TiendaMusica.Implementaciones
                 .Where(ur => ur.UsuarioId == usuarioId)
                 .ToList();
 
-        public void Guardar(UsuarioRoles usuarioRol)
+        public UsuarioRoles Guardar(UsuarioRoles usuarioRol)
         {
             _conexion.UsuarioRoles!.Add(usuarioRol);
             _conexion.SaveChanges();
+            return usuarioRol;
+
         }
 
-      
-        public void Eliminar(int usuarioId, int rolId)
+
+        public bool Eliminar(int usuarioId, int rolId)
         {
             var usuarioRol = _conexion.UsuarioRoles!
                 .First(ur => ur.UsuarioId == usuarioId && ur.RolId == rolId);
             _conexion.UsuarioRoles!.Remove(usuarioRol);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

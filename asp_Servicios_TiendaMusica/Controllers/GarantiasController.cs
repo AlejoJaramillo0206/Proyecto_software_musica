@@ -46,11 +46,11 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(Garantias garantia)
+        public Garantias Guardar(Garantias garantia)
         {
             if (this.iGarantiasAplicacion == null)
                 throw new Exception("No implementado");
-            this.iGarantiasAplicacion!.Guardar(garantia);
+            return this.iGarantiasAplicacion!.Guardar(garantia);
         }
     }
 }

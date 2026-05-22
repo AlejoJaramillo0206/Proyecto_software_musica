@@ -10,7 +10,7 @@ namespace lib_servicios_TiendaMusica.Interfaces
     public interface IUsuarioRolesAplicacion
     {
         List<UsuarioRoles> ObtenerPorUsuario(int usuarioId);
-        void Guardar(UsuarioRoles usuarioRol);
-        void Eliminar(int usuarioId, int rolId);
+        UsuarioRoles Guardar(UsuarioRoles usuarioRol);
+        bool Eliminar(int usuarioId, int rolId);
     }
 }

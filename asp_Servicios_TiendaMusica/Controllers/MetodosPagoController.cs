@@ -37,27 +37,27 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(MetodosPago metodoPago)
+        public MetodosPago Guardar(MetodosPago metodoPago)
         {
             if (this.iMetodosPagoAplicacion == null)
                 throw new Exception("No implementado");
-            this.iMetodosPagoAplicacion!.Guardar(metodoPago);
+            return this.iMetodosPagoAplicacion!.Guardar(metodoPago);
         }
 
         [HttpPut]
-        public void Editar(MetodosPago metodoPago)
+        public MetodosPago Editar(MetodosPago metodoPago)
         {
             if (this.iMetodosPagoAplicacion == null)
                 throw new Exception("No implementado");
-            this.iMetodosPagoAplicacion!.Editar(metodoPago);
+            return this.iMetodosPagoAplicacion!.Editar(metodoPago);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iMetodosPagoAplicacion == null)
                 throw new Exception("No implementado");
-            this.iMetodosPagoAplicacion!.Eliminar(id);
+            return this.iMetodosPagoAplicacion!.Eliminar(id);
         }
     }
 }

@@ -12,6 +12,6 @@ namespace lib_servicios_TiendaMusica.Interfaces
         List<Reparaciones> Obtener();
         List<Reparaciones> ObtenerPorCliente(int clienteId);
         Reparaciones Obtener(int id);
-        void Guardar(Reparaciones reparacion);
+        Reparaciones Guardar(Reparaciones reparacion);
     }
 }

@@ -12,6 +12,6 @@ namespace lib_servicios_TiendaMusica.Interfaces
         List<Reseñas> Obtener();
         List<Reseñas> ObtenerPorProducto(int productoId);
         Reseñas Obtener(int id);
-        void Guardar(Reseñas reseña);
+        Reseñas Guardar(Reseñas reseña);
     }
 }

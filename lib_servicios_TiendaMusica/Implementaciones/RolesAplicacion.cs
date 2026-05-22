@@ -23,23 +23,26 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public Roles Obtener(int id) =>
             _conexion.Roles!.First(r => r.Id == id);
 
-        public void Guardar(Roles rol)
+        public Roles Guardar(Roles rol)
         {
             _conexion.Roles!.Add(rol);
             _conexion.SaveChanges();
+            return rol;
         }
 
-        public void Editar(Roles rol)
+        public Roles Editar(Roles rol)
         {
             _conexion.Roles!.Update(rol);
             _conexion.SaveChanges();
+            return rol;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var rol = Obtener(id);
             _conexion.Roles!.Remove(rol);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

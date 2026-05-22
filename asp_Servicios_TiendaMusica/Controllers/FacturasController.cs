@@ -41,11 +41,11 @@ namespace lib_servicios_TiendaMusica.Modelos
             }
 
             [HttpPost]
-            public void Guardar(Facturas factura)
+            public Facturas Guardar(Facturas factura)
             {
                 if (this.iFacturasAplicacion == null)
                     throw new Exception("No implementado");
-                this.iFacturasAplicacion!.Guardar(factura);
+                return this.iFacturasAplicacion!.Guardar(factura);
             }
         }
     }

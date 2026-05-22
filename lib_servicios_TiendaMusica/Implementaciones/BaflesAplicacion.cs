@@ -23,23 +23,26 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public Bafles Obtener(int id) =>
             _conexion.Bafles!.First(b => b.Id == id);
 
-        public void Guardar(Bafles bafl)
+        public Bafles Guardar(Bafles bafl)
         {
             _conexion.Bafles!.Add(bafl);
             _conexion.SaveChanges();
+            return bafl;
         }
 
-        public void Editar(Bafles bafl)
+        public Bafles Editar(Bafles bafl)
         {
             _conexion.Bafles!.Update(bafl);
             _conexion.SaveChanges();
+            return bafl;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var bafl = Obtener(id);
             _conexion.Bafles!.Remove(bafl);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

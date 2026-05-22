@@ -49,11 +49,11 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(Reseñas reseña)
+        public Reseñas Guardar(Reseñas reseña)
         {
             if (this.iReseñasAplicacion == null)
                 throw new Exception("No implementado");
-            this.iReseñasAplicacion!.Guardar(reseña);
+            return this.iReseñasAplicacion!.Guardar(reseña);
         }
     }
 }

@@ -37,27 +37,27 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(Proveedores proveedor)
+        public Proveedores Guardar(Proveedores proveedor)
         {
             if (this.iProveedoresAplicacion == null)
                 throw new Exception("No implementado");
-            this.iProveedoresAplicacion!.Guardar(proveedor);
+            return this.iProveedoresAplicacion!.Guardar(proveedor);
         }
 
         [HttpPut]
-        public void Editar(Proveedores proveedor)
+        public Proveedores Editar(Proveedores proveedor)
         {
             if (this.iProveedoresAplicacion == null)
                 throw new Exception("No implementado");
-            this.iProveedoresAplicacion!.Editar(proveedor);
+            return this.iProveedoresAplicacion!.Editar(proveedor);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iProveedoresAplicacion == null)
                 throw new Exception("No implementado");
-            this.iProveedoresAplicacion!.Eliminar(id);
+            return this.iProveedoresAplicacion!.Eliminar(id);
         }
     }
 }

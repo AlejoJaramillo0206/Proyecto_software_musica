@@ -23,23 +23,26 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public InstrumentosPercusion Obtener(int id) =>
             _conexion.InstrumentosPercusion!.First(i => i.Id == id);
 
-        public void Guardar(InstrumentosPercusion instrumento)
+        public InstrumentosPercusion Guardar(InstrumentosPercusion instrumento)
         {
             _conexion.InstrumentosPercusion!.Add(instrumento);
             _conexion.SaveChanges();
+            return instrumento;
         }
 
-        public void Editar(InstrumentosPercusion instrumento)
+        public InstrumentosPercusion Editar(InstrumentosPercusion instrumento)
         {
             _conexion.InstrumentosPercusion!.Update(instrumento);
             _conexion.SaveChanges();
+            return instrumento;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var instrumento = Obtener(id);
             _conexion.InstrumentosPercusion!.Remove(instrumento);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

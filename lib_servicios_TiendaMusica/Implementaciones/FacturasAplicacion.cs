@@ -24,11 +24,12 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Facturas!.First(f => f.Id == id);
 
         // Al guardar una factura se registra la fecha automaticamente
-        public void Guardar(Facturas factura)
+        public Facturas Guardar(Facturas factura)
         {
             factura.Fecha = DateTime.Now;
             _conexion.Facturas!.Add(factura);
             _conexion.SaveChanges();
+            return factura;
         }
     }
 }

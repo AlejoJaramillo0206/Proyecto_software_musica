@@ -24,24 +24,27 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             public Proveedores Obtener(int id) =>
                 _conexion.Proveedores!.First(p => p.Id == id);
 
-            public void Guardar(Proveedores proveedor)
+            public Proveedores Guardar(Proveedores proveedor)
             {
                 _conexion.Proveedores!.Add(proveedor);
-                _conexion.SaveChanges();
-            }
+            _conexion.SaveChanges();
+            return proveedor;
+        }
 
-            public void Editar(Proveedores proveedor)
+        public Proveedores Editar(Proveedores proveedor)
             {
                 _conexion.Proveedores!.Update(proveedor);
-                _conexion.SaveChanges();
-            }
+            _conexion.SaveChanges();
+            return proveedor;
+        }
 
-            public void Eliminar(int id)
+        public bool Eliminar(int id)
             {
                 var proveedor = Obtener(id);
                 _conexion.Proveedores!.Remove(proveedor);
-                _conexion.SaveChanges();
-            }
+            _conexion.SaveChanges();
+            return true;
         }
+    }
 }
 

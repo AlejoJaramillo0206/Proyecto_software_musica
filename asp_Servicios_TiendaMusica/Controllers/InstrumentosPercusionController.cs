@@ -37,27 +37,27 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(InstrumentosPercusion instrumento)
+        public InstrumentosPercusion Guardar(InstrumentosPercusion instrumento)
         {
             if (this.iInstrumentosPercusionAplicacion == null)
                 throw new Exception("No implementado");
-            this.iInstrumentosPercusionAplicacion!.Guardar(instrumento);
+            return this.iInstrumentosPercusionAplicacion!.Guardar(instrumento);
         }
 
         [HttpPut]
-        public void Editar(InstrumentosPercusion instrumento)
+        public InstrumentosPercusion Editar(InstrumentosPercusion instrumento)
         {
             if (this.iInstrumentosPercusionAplicacion == null)
                 throw new Exception("No implementado");
-            this.iInstrumentosPercusionAplicacion!.Editar(instrumento);
+            return this.iInstrumentosPercusionAplicacion!.Editar(instrumento);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iInstrumentosPercusionAplicacion == null)
                 throw new Exception("No implementado");
-            this.iInstrumentosPercusionAplicacion!.Eliminar(id);
+            return this.iInstrumentosPercusionAplicacion!.Eliminar(id);
         }
     }
 }

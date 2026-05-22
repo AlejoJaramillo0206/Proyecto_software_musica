@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<AlbumesReggaeton> Obtener();
         AlbumesReggaeton Obtener(int id);
-        void Guardar(AlbumesReggaeton album);
-        void Editar(AlbumesReggaeton album);
-        void Eliminar(int id);
+        AlbumesReggaeton Guardar(AlbumesReggaeton album);
+        AlbumesReggaeton Editar(AlbumesReggaeton album);
+        bool Eliminar(int id);
     }
 }

@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\lib_servicios_TiendaMusica\lib_servicios_TiendaMusica.csproj" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+	
+	
 </Project>

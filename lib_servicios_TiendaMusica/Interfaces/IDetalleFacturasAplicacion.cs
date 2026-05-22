@@ -11,6 +11,6 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<DetalleFacturas> Obtener();
         List<DetalleFacturas> ObtenerPorFactura(int facturaId);
-        void Guardar(DetalleFacturas detalle);
+        DetalleFacturas Guardar(DetalleFacturas detalle);
     }
 }

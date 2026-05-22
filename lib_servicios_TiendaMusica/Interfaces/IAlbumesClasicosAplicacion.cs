@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<AlbumesClasicos> Obtener();
         AlbumesClasicos Obtener(int id);
-        void Guardar(AlbumesClasicos album);
-        void Editar(AlbumesClasicos album);
-        void Eliminar(int id);
+        AlbumesClasicos Guardar(AlbumesClasicos album);
+        AlbumesClasicos Editar(AlbumesClasicos album);
+        bool Eliminar(int id);
     }
 }

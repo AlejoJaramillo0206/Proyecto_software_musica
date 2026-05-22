@@ -12,8 +12,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
         List<Usuarios> Obtener();
         Usuarios Obtener(int id);
         Usuarios ObtenerPorUsername(string username);
-        void Guardar(Usuarios usuario);
-        void Editar(Usuarios usuario);
-        void Eliminar(int id);
+        Usuarios Guardar(Usuarios usuario);
+        Usuarios Editar(Usuarios usuario);
+        bool Eliminar(int id);
     }
 }

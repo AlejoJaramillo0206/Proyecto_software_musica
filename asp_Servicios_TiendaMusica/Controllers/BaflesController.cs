@@ -36,27 +36,27 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(Bafles bafl)
+        public Bafles Guardar(Bafles bafl)
         {
             if (this.iBaflesAplicacion == null)
                 throw new Exception("No implementado");
-            this.iBaflesAplicacion!.Guardar(bafl);
+            return this.iBaflesAplicacion!.Guardar(bafl);
         }
 
         [HttpPut]
-        public void Editar(Bafles bafl)
+        public Bafles Editar(Bafles bafl)
         {
             if (this.iBaflesAplicacion == null)
                 throw new Exception("No implementado");
-            this.iBaflesAplicacion!.Editar(bafl);
+            return this.iBaflesAplicacion!.Editar(bafl);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iBaflesAplicacion == null)
                 throw new Exception("No implementado");
-            this.iBaflesAplicacion!.Eliminar(id);
+            return this.iBaflesAplicacion!.Eliminar(id);
         }
     }
 }

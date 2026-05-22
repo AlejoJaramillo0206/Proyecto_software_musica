@@ -27,11 +27,12 @@ namespace lib_servicios_TiendaMusica.Implementaciones
                 .ToList();
 
        
-        public void Guardar(DetalleFacturas detalle)
+        public DetalleFacturas Guardar(DetalleFacturas detalle)
         {
             detalle.Subtotal = detalle.Cantidad * detalle.PrecioUnitario;
             _conexion.DetalleFacturas!.Add(detalle);
             _conexion.SaveChanges();
+            return detalle;
         }
     }
 }

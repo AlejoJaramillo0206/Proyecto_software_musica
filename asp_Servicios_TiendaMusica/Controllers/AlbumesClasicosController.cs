@@ -37,27 +37,27 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(AlbumesClasicos album)
+        public AlbumesClasicos Guardar(AlbumesClasicos album)
         {
             if (this.iAlbumesClasicosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iAlbumesClasicosAplicacion!.Guardar(album);
+           return this.iAlbumesClasicosAplicacion!.Guardar(album);
         }
 
         [HttpPut]
-        public void Editar(AlbumesClasicos album)
+        public AlbumesClasicos Editar(AlbumesClasicos album)
         {
             if (this.iAlbumesClasicosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iAlbumesClasicosAplicacion!.Editar(album);
+            return this.iAlbumesClasicosAplicacion!.Editar(album);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iAlbumesClasicosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iAlbumesClasicosAplicacion!.Eliminar(id);
+            return this.iAlbumesClasicosAplicacion!.Eliminar(id);
         }
     }
 

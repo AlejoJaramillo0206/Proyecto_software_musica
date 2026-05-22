@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<Empleados> Obtener();
         Empleados Obtener(int id);
-        void Guardar(Empleados empleado);
-        void Editar(Empleados empleado);
-        void Eliminar(int id);
+        Empleados Guardar(Empleados empleado);
+        Empleados Editar(Empleados empleado);
+        bool Eliminar(int id);
     }
 }

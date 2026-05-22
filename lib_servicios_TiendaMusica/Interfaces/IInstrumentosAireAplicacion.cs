@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<InstrumentosAire> Obtener();
         InstrumentosAire Obtener(int id);
-        void Guardar(InstrumentosAire instrumento);
-        void Editar(InstrumentosAire instrumento);
-        void Eliminar(int id);
+        InstrumentosAire Guardar(InstrumentosAire instrumento);
+        InstrumentosAire Editar(InstrumentosAire instrumento);
+        bool Eliminar(int id);
     }
 }

@@ -23,23 +23,25 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public AlbumesPop Obtener(int id) =>
             _conexion.AlbumesPop!.First(a => a.Id == id);
 
-        public void Guardar(AlbumesPop album)
+        public AlbumesPop Guardar(AlbumesPop album)
         {
             _conexion.AlbumesPop!.Add(album);
             _conexion.SaveChanges();
+            return album;
         }
 
-        public void Editar(AlbumesPop album)
+        public AlbumesPop Editar(AlbumesPop album)
         {
             _conexion.AlbumesPop!.Update(album);
             _conexion.SaveChanges();
+            return album;
         }
-
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var album = Obtener(id);
             _conexion.AlbumesPop!.Remove(album);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

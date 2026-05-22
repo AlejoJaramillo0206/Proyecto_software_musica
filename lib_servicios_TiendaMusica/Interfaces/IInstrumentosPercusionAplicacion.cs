@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<InstrumentosPercusion> Obtener();
         InstrumentosPercusion Obtener(int id);
-        void Guardar(InstrumentosPercusion instrumento);
-        void Editar(InstrumentosPercusion instrumento);
-        void Eliminar(int id);
+        InstrumentosPercusion Guardar(InstrumentosPercusion instrumento);
+        InstrumentosPercusion Editar(InstrumentosPercusion instrumento);
+        bool Eliminar(int id);
     }
 }

@@ -25,24 +25,27 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Clientes!.First(c => c.Id == id);
 
         
-        public void Guardar(Clientes cliente)
+        public Clientes Guardar(Clientes cliente)
         {
             _conexion.Clientes!.Add(cliente);
             _conexion.SaveChanges();
+            return cliente;
         }
 
-       
-        public void Editar(Clientes cliente)
+
+        public Clientes Editar(Clientes cliente)
         {
             _conexion.Clientes!.Update(cliente);
             _conexion.SaveChanges();
+            return cliente;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var cliente = Obtener(id);
             _conexion.Clientes!.Remove(cliente);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

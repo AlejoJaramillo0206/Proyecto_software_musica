@@ -50,11 +50,11 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(Reparaciones reparacion)
+        public Reparaciones Guardar(Reparaciones reparacion)
         {
             if (this.iReparacionesAplicacion == null)
                 throw new Exception("No implementado");
-            this.iReparacionesAplicacion!.Guardar(reparacion);
+            return this.iReparacionesAplicacion!.Guardar(reparacion);
         }
     }
 }

@@ -32,19 +32,19 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(UsuarioRoles usuarioRol)
+        public UsuarioRoles Guardar(UsuarioRoles usuarioRol)
         {
             if (this.iUsuarioRolesAplicacion == null)
                 throw new Exception("No implementado");
-            this.iUsuarioRolesAplicacion!.Guardar(usuarioRol);
+            return this.iUsuarioRolesAplicacion!.Guardar(usuarioRol);
         }
 
         [HttpDelete]
-        public void Eliminar(int usuarioId, int rolId)
+        public bool Eliminar(int usuarioId, int rolId)
         {
             if (this.iUsuarioRolesAplicacion == null)
                 throw new Exception("No implementado");
-            this.iUsuarioRolesAplicacion!.Eliminar(usuarioId, rolId);
+            return this.iUsuarioRolesAplicacion!.Eliminar(usuarioId, rolId);
         }
     }
 }

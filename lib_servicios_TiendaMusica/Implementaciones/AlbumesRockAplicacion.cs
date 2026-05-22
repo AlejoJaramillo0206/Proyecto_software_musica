@@ -23,23 +23,26 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public AlbumesRock Obtener(int id) =>
             _conexion.AlbumesRock!.First(a => a.Id == id);
 
-        public void Guardar(AlbumesRock album)
+        public AlbumesRock Guardar(AlbumesRock album)
         {
             _conexion.AlbumesRock!.Add(album);
             _conexion.SaveChanges();
+            return album;
         }
 
-        public void Editar(AlbumesRock album)
+        public AlbumesRock Editar(AlbumesRock album)
         {
             _conexion.AlbumesRock!.Update(album);
             _conexion.SaveChanges();
+            return album;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var album = Obtener(id);
             _conexion.AlbumesRock!.Remove(album);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

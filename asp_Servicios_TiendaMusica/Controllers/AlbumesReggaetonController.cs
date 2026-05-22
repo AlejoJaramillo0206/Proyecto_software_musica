@@ -37,27 +37,27 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(AlbumesReggaeton album)
+        public AlbumesReggaeton Guardar(AlbumesReggaeton album)
         {
             if (this.iAlbumesReggaetonAplicacion == null)
                 throw new Exception("No implementado");
-            this.iAlbumesReggaetonAplicacion!.Guardar(album);
+            return this.iAlbumesReggaetonAplicacion!.Guardar(album);
         }
 
         [HttpPut]
-        public void Editar(AlbumesReggaeton album)
+        public AlbumesReggaeton Editar(AlbumesReggaeton album)
         {
             if (this.iAlbumesReggaetonAplicacion == null)
                 throw new Exception("No implementado");
-            this.iAlbumesReggaetonAplicacion!.Editar(album);
+            return this.iAlbumesReggaetonAplicacion!.Editar(album);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iAlbumesReggaetonAplicacion == null)
                 throw new Exception("No implementado");
-            this.iAlbumesReggaetonAplicacion!.Eliminar(id);
+            return this.iAlbumesReggaetonAplicacion!.Eliminar(id);
         }
     }
 }

@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<Accesorios> Obtener();
         Accesorios Obtener(int id);
-        void Guardar(Accesorios accesorio);
-        void Editar(Accesorios accesorio);
-        void Eliminar(int id);
+        Accesorios Guardar(Accesorios accesorio);
+        Accesorios Editar(Accesorios accesorio);
+        bool Eliminar(int id);
     }
 }

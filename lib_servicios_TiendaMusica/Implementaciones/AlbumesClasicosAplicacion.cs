@@ -23,23 +23,26 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public AlbumesClasicos Obtener(int id) =>
             _conexion.AlbumesClasicos!.First(a => a.Id == id);
 
-        public void Guardar(AlbumesClasicos album)
+        public AlbumesClasicos Guardar(AlbumesClasicos album)
         {
             _conexion.AlbumesClasicos!.Add(album);
             _conexion.SaveChanges();
+            return album;
         }
 
-        public void Editar(AlbumesClasicos album)
+        public AlbumesClasicos Editar(AlbumesClasicos album)
         {
             _conexion.AlbumesClasicos!.Update(album);
             _conexion.SaveChanges();
+            return album;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var album = Obtener(id);
             _conexion.AlbumesClasicos!.Remove(album);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

@@ -27,27 +27,30 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public Inventarios ObtenerPorProducto(int productoId) =>
             _conexion.Inventarios!.First(i => i.ProductoId == productoId);
 
-        public void Guardar(Inventarios inventario)
+        public Inventarios Guardar(Inventarios inventario)
         {
        
             inventario.FechaActualizacion = DateTime.Now;
             _conexion.Inventarios!.Add(inventario);
             _conexion.SaveChanges();
+            return inventario;
         }
 
-        public void Editar(Inventarios inventario)
+        public Inventarios Editar(Inventarios inventario)
         {
     
             inventario.FechaActualizacion = DateTime.Now;
             _conexion.Inventarios!.Update(inventario);
             _conexion.SaveChanges();
+            return inventario;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var inventario = Obtener(id);
             _conexion.Inventarios!.Remove(inventario);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

@@ -27,25 +27,28 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public Usuarios ObtenerPorUsername(string username) =>
             _conexion.Usuarios!.First(u => u.Username == username);
 
-        public void Guardar(Usuarios usuario)
+        public Usuarios Guardar(Usuarios usuario)
         {
           
             usuario.FechaCreacion = DateTime.Now;
             _conexion.Usuarios!.Add(usuario);
             _conexion.SaveChanges();
+            return usuario;
         }
 
-        public void Editar(Usuarios usuario)
+        public Usuarios Editar(Usuarios usuario)
         {
             _conexion.Usuarios!.Update(usuario);
             _conexion.SaveChanges();
+            return usuario;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var usuario = Obtener(id);
             _conexion.Usuarios!.Remove(usuario);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

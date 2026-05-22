@@ -12,6 +12,6 @@ namespace lib_servicios_TiendaMusica.Interfaces
         List<Garantias> Obtener();
         List<Garantias> ObtenerPorCliente(int clienteId);
         Garantias Obtener(int id);
-        void Guardar(Garantias garantia);
+        Garantias Guardar(Garantias garantia);
     }
 }

@@ -37,27 +37,27 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public void Guardar(Accesorios accesorio)
+        public Accesorios Guardar(Accesorios accesorio)
         {
             if (this.iAccesoriosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iAccesoriosAplicacion!.Guardar(accesorio);
+            return this.iAccesoriosAplicacion!.Guardar(accesorio);
         }
 
         [HttpPut]
-        public void Editar(Accesorios accesorio)
+        public Accesorios Editar(Accesorios accesorio)
         {
             if (this.iAccesoriosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iAccesoriosAplicacion!.Editar(accesorio);
+            return this.iAccesoriosAplicacion!.Editar(accesorio);
         }
 
         [HttpDelete]
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             if (this.iAccesoriosAplicacion == null)
                 throw new Exception("No implementado");
-            this.iAccesoriosAplicacion!.Eliminar(id);
+            return this.iAccesoriosAplicacion!.Eliminar(id);
         }
     }
 }

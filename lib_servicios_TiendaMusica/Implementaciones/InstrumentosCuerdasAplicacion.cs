@@ -23,23 +23,26 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public InstrumentosCuerdas Obtener(int id) =>
             _conexion.InstrumentosCuerdas!.First(i => i.Id == id);
 
-        public void Guardar(InstrumentosCuerdas instrumento)
+        public InstrumentosCuerdas Guardar(InstrumentosCuerdas instrumento)
         {
             _conexion.InstrumentosCuerdas!.Add(instrumento);
             _conexion.SaveChanges();
+            return instrumento;
         }
 
-        public void Editar(InstrumentosCuerdas instrumento)
+        public InstrumentosCuerdas Editar(InstrumentosCuerdas instrumento)
         {
             _conexion.InstrumentosCuerdas!.Update(instrumento);
             _conexion.SaveChanges();
+            return instrumento;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var instrumento = Obtener(id);
             _conexion.InstrumentosCuerdas!.Remove(instrumento);
             _conexion.SaveChanges();
+            return true;
         }
     }
 }

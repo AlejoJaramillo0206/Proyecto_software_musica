@@ -23,24 +23,29 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public Empleados Obtener(int id) =>
             _conexion.Empleados!.First(e => e.Id == id);
 
-        public void Guardar(Empleados empleado)
+        public Empleados Guardar(Empleados empleado)
         {
             _conexion.Empleados!.Add(empleado);
             _conexion.SaveChanges();
+            return empleado;
         }
 
-        public void Editar(Empleados empleado)
+        public Empleados Editar(Empleados empleado)
         {
             _conexion.Empleados!.Update(empleado);
             _conexion.SaveChanges();
+            return empleado;
         }
 
-        public void Eliminar(int id)
+        public bool Eliminar(int id)
         {
             var empleado = Obtener(id);
             _conexion.Empleados!.Remove(empleado);
             _conexion.SaveChanges();
-        }
-    }
+            return true;
 
+
+        }
+
+    }
 }
