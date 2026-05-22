@@ -1,63 +1,36 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using JsonException = Newtonsoft.Json.JsonException;
 
-namespace lib_Presentacion_TiendaMusica
+namespace lib_presentacion_TiendaMusica
 {
     public class Comunicaciones
     {
+        private readonly string _urlBase;
 
-        public async Task<T> Ejecutar<T>(Dictionary<string, object> datos)
+        public Comunicaciones(string urlBase)
         {
-            var url = datos["Url"].ToString();
-            datos.Remove("Url");
+            _urlBase = urlBase;
+        }
 
-            var stringData = datos.ContainsKey("Entidad") ?
-                JsonConvert.SerializeObject(datos["Entidad"]) : "{}";
-            var body = new StringContent(stringData, Encoding.UTF8, "application/json");
+        public async Task<T?> Get<T>(string endpoint)
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync($"{_urlBase}/{endpoint}");
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
 
-            var httpClient = new HttpClient();
-            httpClient.Timeout = new TimeSpan(0, 4, 0);
-
-            HttpResponseMessage message;
-
-            if (datos.ContainsKey("Entidad") && datos.ContainsKey("EsEditar"))
-                message = await httpClient.PutAsync(url, body);
-            else if (datos.ContainsKey("Entidad"))
-                message = await httpClient.PostAsync(url, body);
-            else if (datos.ContainsKey("EsEliminar"))
-                message = await httpClient.DeleteAsync(url);
-            else
-                message = await httpClient.GetAsync(url);
-
-            if (!message.IsSuccessStatusCode)
-            {
-                var errorBody = await message.Content.ReadAsStringAsync();
-                try
-                {
-                    var errorObj = JsonConvert.DeserializeObject<dynamic>(errorBody);
-                    string mensajeError = errorObj?.detail ?? errorObj?.message ?? errorObj?.title ?? errorBody;
-                    throw new Exception(mensajeError);
-                }
-                catch (JsonException)
-                {
-                    throw new Exception(errorBody);
-                }
-            }
-
-            var resp = await message.Content.ReadAsStringAsync();
-            httpClient.Dispose();
-
-            if (string.IsNullOrEmpty(resp))
-                return default!;
-
-            return JsonConvert.DeserializeObject<T>(resp)!;
+        public async Task<T?> Post<T>(string endpoint, object body)
+        {
+            using var client = new HttpClient();
+            var content = new StringContent(
+                JsonSerializer.Serialize(body),
+                Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"{_urlBase}/{endpoint}", content);
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }
 }
-
