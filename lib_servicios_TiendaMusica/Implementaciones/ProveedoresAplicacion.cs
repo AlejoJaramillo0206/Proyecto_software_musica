@@ -22,7 +22,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
                 _conexion.Proveedores!.ToList();
 
             public Proveedores Obtener(int id) =>
-                _conexion.Proveedores!.First(p => p.Id == id);
+                _conexion.Proveedores!.FirstOrDefault(c => c.Id == id)!;
 
             public Proveedores Guardar(Proveedores proveedor)
             {

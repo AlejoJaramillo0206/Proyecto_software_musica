@@ -27,7 +27,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
                 .ToList();
 
         public Garantias Obtener(int id) =>
-            _conexion.Garantias!.First(g => g.Id == id);
+            _conexion.Garantias!.FirstOrDefault(c => c.Id == id)!;
 
         public Garantias Guardar(Garantias garantia)
         {

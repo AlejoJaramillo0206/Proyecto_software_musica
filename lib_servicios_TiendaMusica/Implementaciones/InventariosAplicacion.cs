@@ -21,9 +21,9 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Inventarios!.ToList();
 
         public Inventarios Obtener(int id) =>
-            _conexion.Inventarios!.First(i => i.Id == id);
+           _conexion.Inventarios!.FirstOrDefault(c => c.Id == id)!;
 
-     
+
         public Inventarios ObtenerPorProducto(int productoId) =>
             _conexion.Inventarios!.First(i => i.ProductoId == productoId);
 

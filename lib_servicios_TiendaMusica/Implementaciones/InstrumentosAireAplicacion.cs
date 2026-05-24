@@ -21,7 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.InstrumentosAire!.ToList();
 
         public InstrumentosAire Obtener(int id) =>
-            _conexion.InstrumentosAire!.First(i => i.Id == id);
+            _conexion.InstrumentosAire!.FirstOrDefault(c => c.Id == id)!;
 
         public InstrumentosAire instrumento(InstrumentosAire instrumento)
         {

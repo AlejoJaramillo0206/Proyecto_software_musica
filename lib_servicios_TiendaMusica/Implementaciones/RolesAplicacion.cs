@@ -21,7 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Roles!.ToList();
 
         public Roles Obtener(int id) =>
-            _conexion.Roles!.First(r => r.Id == id);
+            _conexion.Roles!.FirstOrDefault(c => c.Id == id)!;
 
         public Roles Guardar(Roles rol)
         {

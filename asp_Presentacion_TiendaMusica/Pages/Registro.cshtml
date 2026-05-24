@@ -1,5 +1,5 @@
 ﻿@page
-@model asp_Presentacion_TiendaMusica.Pages.LoginModel
+@model asp_Presentacion_TiendaMusica.Pages.RegistroModel
 @{
     Layout = null;
 }
@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aurum Sound — Login</title>
+    <title>Aurum Sound — Registro</title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@@tabler/icons-webfont@latest/tabler-icons.min.css" />
     <style>
@@ -103,7 +103,17 @@
             font-weight: 500;
             width: 100%;
             cursor: pointer;
-            margin-top: 6px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .tagline {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: #C8960C;
+            margin-bottom: 6px;
         }
 
         .error-msg {
@@ -118,13 +128,6 @@
             align-items: center;
             gap: 6px;
         }
-
-        .tagline {
-            font-size: 11px;
-            letter-spacing: 0.12em;
-            color: #C8960C;
-            margin-bottom: 6px;
-        }
     </style>
 </head>
 <body>
@@ -138,12 +141,12 @@
             <div class="logo-circle">
                 <i class="ti ti-music" style="font-size:26px; color:#1a1208;"></i>
             </div>
-            <p class="tagline">BIENVENIDO A</p>
+            <p class="tagline">ÚNETE A</p>
             <p style="font-size:26px; font-weight:500; color:#F0C040; letter-spacing:0.04em;">
                 Aurum Sound
             </p>
             <p style="font-size:12px; color:#9a8060; margin-top:6px;">
-                Tu tienda de música premium
+                Crea tu cuenta para comenzar
             </p>
         </div>
         <div class="login-body">
@@ -155,40 +158,47 @@
                     @Model.ErrorMensaje
                 </div>
             }
-            @if (Model.exito == "true")
-            {
-                <div style="background:rgba(100,180,60,0.12); border:0.5px solid rgba(100,180,60,0.25);
-                    color:#7ec850; font-size:13px; padding:9px 12px; border-radius:8px;
-                    margin-bottom:14px; display:flex; align-items:center; gap:6px;">
-                    <i class="ti ti-circle-check" style="font-size:16px;"></i>
-                    Cuenta creada exitosamente. Ya puedes iniciar sesión.
-                </div>
-            }
-            <form method="post">
-                <label class="form-label">
-                    <i class="ti ti-user" style="font-size:14px; margin-right:4px;"></i>
-                    Usuario
-                </label>
-                <input class="form-input" type="text"
-                       asp-for="Username" placeholder="Ej: carlos.vendedor" />
 
-                <label class="form-label">
-                    <i class="ti ti-lock" style="font-size:14px; margin-right:4px;"></i>
-                    Contraseña
-                </label>
-                <input class="form-input" type="password"
-                       asp-for="Password" placeholder="••••••••" />
+            <form method="post">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="ti ti-user" style="font-size:14px; margin-right:4px;"></i>
+                        Nombre de usuario
+                    </label>
+                    <input class="form-input" type="text"
+                           asp-for="Username" placeholder="Ej: carlos.vendedor" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="ti ti-lock" style="font-size:14px; margin-right:4px;"></i>
+                        Contraseña
+                    </label>
+                    <input class="form-input" type="password"
+                           asp-for="Password" placeholder="Mínimo 6 caracteres" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="ti ti-lock-check" style="font-size:14px; margin-right:4px;"></i>
+                        Confirmar contraseña
+                    </label>
+                    <input class="form-input" type="password"
+                           asp-for="ConfirmarPassword" placeholder="Repite tu contraseña" />
+                </div>
 
                 <button type="submit" class="btn-gold">
-                    <i class="ti ti-login" style="font-size:15px; margin-right:6px;
+                    <i class="ti ti-user-plus" style="font-size:15px; margin-right:6px;
                        vertical-align:-2px;"></i>
-                    Ingresar
+                    Crear cuenta
                 </button>
             </form>
 
             <p style="font-size:12px; color:#5a4a30; text-align:center; margin-top:14px;">
-                ¿No tienes cuenta?
-                <a href="/Registro" style="color:#F0C040; text-decoration:none;">Regístrate aquí</a>
+                ¿Ya tienes cuenta?
+                <a href="/Login" style="color:#F0C040; text-decoration:none;">
+                    Inicia sesión
+                </a>
             </p>
         </div>
     </div>

@@ -1,0 +1,277 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.Admin.AuditoriasModel
+@{
+    ViewData["Title"] = "Auditorías";
+}
+
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #f5c542;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 20px 24px;
+        transition: 0.3s ease;
+    }
+
+    .stat-card:hover { border-color: #f5c542; }
+
+    .stat-label {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+        font-weight: 800;
+        color: #f5c542;
+    }
+
+    .filter-bar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .filter-select {
+        padding: 9px 14px;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        font-size: 13px;
+        background: #111111;
+        color: #d0c0a0;
+        cursor: pointer;
+    }
+
+    .btn-filter {
+        background: #f5c542;
+        color: #1a1208;
+        border: none;
+        border-radius: 12px;
+        padding: 9px 18px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+    }
+
+    .btn-clear {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 9px 18px;
+        font-size: 13px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .table-wrapper {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead tr {
+        background: rgba(245,197,66,0.1);
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    thead th {
+        padding: 14px 18px;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 600;
+        color: #f5c542;
+        letter-spacing: 0.05em;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #1e1e1e;
+        transition: 0.2s ease;
+    }
+
+    tbody tr:hover { background: rgba(245,197,66,0.04); }
+
+    tbody td {
+        padding: 14px 18px;
+        font-size: 13px;
+        color: #d0c0a0;
+    }
+
+    .badge {
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .badge-crear    { background: rgba(100,180,60,0.15);  color: #7ec850; }
+    .badge-editar   { background: rgba(245,197,66,0.15);  color: #f5c542; }
+    .badge-eliminar { background: rgba(220,60,60,0.15);   color: #e07070; }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #9ca3af;
+    }
+
+    .empty-state i {
+        font-size: 48px;
+        color: #2a2a2a;
+        margin-bottom: 1rem;
+        display: block;
+    }
+</style>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<div class="page-header">
+    <h1 class="page-title">
+        <i class="fa-solid fa-clipboard-list"></i>
+        Auditorías
+    </h1>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+    <div class="stat-card">
+        <p class="stat-label">
+            <i class="fa-solid fa-list"></i> Total registros
+        </p>
+        <p class="stat-value">@(Model.Lista?.Count ?? 0)</p>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label">
+            <i class="fa-solid fa-plus-circle"></i> Creaciones
+        </p>
+        <p class="stat-value">
+            @(Model.Lista?.Count(a => a.Accion == "Crear") ?? 0)
+        </p>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label">
+            <i class="fa-solid fa-trash"></i> Eliminaciones
+        </p>
+        <p class="stat-value">
+            @(Model.Lista?.Count(a => a.Accion == "Eliminar") ?? 0)
+        </p>
+    </div>
+</div>
+
+<!-- Filtros -->
+<form method="get" class="filter-bar">
+    <select name="entidad" class="filter-select">
+        <option value="">Todas las entidades</option>
+        <option value="Productos"   selected="@(Model.FiltroEntidad == "Productos")">Productos</option>
+        <option value="Clientes"    selected="@(Model.FiltroEntidad == "Clientes")">Clientes</option>
+        <option value="Facturas"    selected="@(Model.FiltroEntidad == "Facturas")">Facturas</option>
+        <option value="Empleados"   selected="@(Model.FiltroEntidad == "Empleados")">Empleados</option>
+        <option value="Inventarios" selected="@(Model.FiltroEntidad == "Inventarios")">Inventarios</option>
+        <option value="Usuarios"    selected="@(Model.FiltroEntidad == "Usuarios")">Usuarios</option>
+    </select>
+
+    <select name="accion" class="filter-select">
+        <option value="">Todas las acciones</option>
+        <option value="Crear"    selected="@(Model.FiltroAccion == "Crear")">Crear</option>
+        <option value="Editar"   selected="@(Model.FiltroAccion == "Editar")">Editar</option>
+        <option value="Eliminar" selected="@(Model.FiltroAccion == "Eliminar")">Eliminar</option>
+    </select>
+
+    <button type="submit" class="btn-filter">
+        <i class="fa-solid fa-filter"></i> Filtrar
+    </button>
+
+    <a href="/Admin/Auditorias" class="btn-clear">
+        <i class="fa-solid fa-xmark"></i> Limpiar
+    </a>
+</form>
+
+<!-- Tabla -->
+<div class="table-wrapper">
+    @if (Model.Lista == null || !Model.Lista.Any())
+    {
+        <div class="empty-state">
+            <i class="fa-solid fa-clipboard"></i>
+            <p>No hay registros de auditoría todavía.</p>
+        </div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Entidad</th>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var auditoria in Model.Lista)
+                {
+                    <tr>
+                        <td style="color:#6a5a3a;">#@auditoria.Id</td>
+                        <td>@auditoria.Entidad</td>
+                        <td style="color:#9ca3af;">@auditoria.Descripcion</td>
+                        <td style="color:#9ca3af;">
+                            @auditoria.Fecha.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                        <td>
+                            @{
+                                var badgeClass = auditoria.Accion switch
+                                {
+                                    "Crear"    => "badge-crear",
+                                    "Editar"   => "badge-editar",
+                                    "Eliminar" => "badge-eliminar",
+                                    _          => "badge-editar"
+                                };
+                            }
+                            <span class="badge @badgeClass">@auditoria.Accion</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

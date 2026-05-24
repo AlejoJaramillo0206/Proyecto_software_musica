@@ -21,7 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.AlbumesClasicos!.ToList();
 
         public AlbumesClasicos Obtener(int id) =>
-            _conexion.AlbumesClasicos!.First(a => a.Id == id);
+            _conexion.AlbumesClasicos!.FirstOrDefault(c => c.Id == id)!;
 
         public AlbumesClasicos Guardar(AlbumesClasicos album)
         {

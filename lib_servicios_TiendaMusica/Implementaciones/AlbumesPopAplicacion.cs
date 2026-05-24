@@ -21,7 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.AlbumesPop!.ToList();
 
         public AlbumesPop Obtener(int id) =>
-            _conexion.AlbumesPop!.First(a => a.Id == id);
+            _conexion.AlbumesPop!.FirstOrDefault(c => c.Id == id)!;
 
         public AlbumesPop Guardar(AlbumesPop album)
         {

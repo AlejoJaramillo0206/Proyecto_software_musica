@@ -17,9 +17,13 @@ namespace asp_Presentacion_TiendaMusica.Pages
         public string? ErrorMensaje { get; set; }
 
         public void OnGet() { }
+        [BindProperty(SupportsGet = true)]
+        public string? exito { get; set; }
+
 
         public async Task<IActionResult> OnPostAsync()
         {
+
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 ErrorMensaje = "Debes ingresar usuario y contraseña.";
@@ -51,6 +55,7 @@ namespace asp_Presentacion_TiendaMusica.Pages
                 ErrorMensaje = "Tu usuario está inactivo. Contacta al administrador.";
                 return Page();
             }
+           
 
             // Obtener los roles del usuario
             var roles = await com.Get<List<UsuarioRoles>>(
@@ -61,12 +66,17 @@ namespace asp_Presentacion_TiendaMusica.Pages
                 ? (await com.Get<Roles>($"Roles/ConsultarPorId?id={rol.RolId}"))?.Nombre
                 : "Vendedor";
 
+
             // Guardar en sesión
             HttpContext.Session.SetString("UsuarioId", usuario.Id.ToString());
             HttpContext.Session.SetString("Username", usuario.Username!);
             HttpContext.Session.SetString("Rol", nombreRol ?? "Vendedor");
 
-            return RedirectToPage("/Index");
+            if (nombreRol == "Administrador")
+                return RedirectToPage("/Admin/Dashboard");
+            else
+                return RedirectToPage("/Index");
+
         }
     }
 }

@@ -20,18 +20,18 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public List<Reparaciones> Obtener() =>
             _conexion.Reparaciones!.ToList();
 
-        // Util para ver el historial de reparaciones de un cliente
+        
         public List<Reparaciones> ObtenerPorCliente(int clienteId) =>
             _conexion.Reparaciones!
                 .Where(r => r.ClienteId == clienteId)
                 .ToList();
 
         public Reparaciones Obtener(int id) =>
-            _conexion.Reparaciones!.First(r => r.Id == id);
+            _conexion.Reparaciones!.FirstOrDefault(c => c.Id == id)!;
 
         public Reparaciones Guardar(Reparaciones reparacion)
         {
-            // La fecha de ingreso se asigna automaticamente
+      
             reparacion.FechaIngreso = DateTime.Now;
             _conexion.Reparaciones!.Add(reparacion);
             _conexion.SaveChanges();

@@ -20,13 +20,13 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public List<Pagos> Obtener() =>
             _conexion.Pagos!.ToList();
 
-        // Util para ver todos los pagos de una factura especifica
+       
         public List<Pagos> ObtenerPorFactura(int facturaId) =>
             _conexion.Pagos!
                 .Where(p => p.FacturaId == facturaId)
                 .ToList();
 
-        // Al guardar registra la fecha del pago automaticamente
+       
         public Pagos Guardar(Pagos pago)
         {
             pago.FechaPago = DateTime.Now;

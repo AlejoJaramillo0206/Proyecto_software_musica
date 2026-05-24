@@ -21,7 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Facturas!.ToList();
 
         public Facturas Obtener(int id) =>
-            _conexion.Facturas!.First(f => f.Id == id);
+            _conexion.Facturas!.FirstOrDefault(c => c.Id == id)!;
 
         // Al guardar una factura se registra la fecha automaticamente
         public Facturas Guardar(Facturas factura)

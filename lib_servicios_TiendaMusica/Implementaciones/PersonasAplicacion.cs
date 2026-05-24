@@ -8,19 +8,21 @@ using System.Threading.Tasks;
 
 namespace lib_servicios_TiendaMusica.Implementaciones
 {
-    public class ProductosAplicacion : IProductosAplicacion
+    public class PersonasAplicacion : IPersonasAplicacion
     {
+
         private readonly IConexion _conexion;
 
-        public ProductosAplicacion(IConexion conexion)
+        public PersonasAplicacion(IConexion conexion)
         {
             _conexion = conexion;
         }
+        public Personas Guardar(Personas persona)
+        {
+            _conexion.Personas!.Add(persona);
+            _conexion.SaveChanges();
+            return persona;
 
-        public List<Productos> Obtener() =>
-            _conexion.Productos!.ToList();
-
-        public Productos Obtener(int id) =>
-            _conexion.Productos!.FirstOrDefault(c => c.Id == id)!;
+        }
     }
 }

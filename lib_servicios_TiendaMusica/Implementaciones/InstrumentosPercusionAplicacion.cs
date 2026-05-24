@@ -21,8 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.InstrumentosPercusion!.ToList();
 
         public InstrumentosPercusion Obtener(int id) =>
-            _conexion.InstrumentosPercusion!.First(i => i.Id == id);
-
+           _conexion.InstrumentosPercusion!.FirstOrDefault(c => c.Id == id)!;
         public InstrumentosPercusion Guardar(InstrumentosPercusion instrumento)
         {
             _conexion.InstrumentosPercusion!.Add(instrumento);

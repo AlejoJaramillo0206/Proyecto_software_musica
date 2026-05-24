@@ -8,7 +8,7 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         string? string_conexion { get; set; }
 
-       
+        Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; }
         DbSet<Personas>? Personas { get; set; }
         DbSet<Empleados>? Empleados { get; set; }
         DbSet<Clientes>? Clientes { get; set; }

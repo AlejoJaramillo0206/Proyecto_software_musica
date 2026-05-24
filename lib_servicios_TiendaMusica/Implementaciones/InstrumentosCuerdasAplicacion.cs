@@ -21,7 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.InstrumentosCuerdas!.ToList();
 
         public InstrumentosCuerdas Obtener(int id) =>
-            _conexion.InstrumentosCuerdas!.First(i => i.Id == id);
+            _conexion.InstrumentosCuerdas!.FirstOrDefault(c => c.Id == id)!;
 
         public InstrumentosCuerdas Guardar(InstrumentosCuerdas instrumento)
         {

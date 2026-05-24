@@ -21,7 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Bafles!.ToList();
 
         public Bafles Obtener(int id) =>
-            _conexion.Bafles!.First(b => b.Id == id);
+            _conexion.Bafles!.FirstOrDefault(c => c.Id == id)!;
 
         public Bafles Guardar(Bafles bafl)
         {

@@ -20,18 +20,18 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public List<Reseñas> Obtener() =>
             _conexion.Reseñas!.ToList();
 
-        // Util para mostrar las reseñas de un producto especifico
+      
         public List<Reseñas> ObtenerPorProducto(int productoId) =>
             _conexion.Reseñas!
                 .Where(r => r.ProductoId == productoId)
                 .ToList();
 
         public Reseñas Obtener(int id) =>
-            _conexion.Reseñas!.First(r => r.Id == id);
+           _conexion.Reseñas!.FirstOrDefault(c => c.Id == id)!;
 
         public Reseñas Guardar(Reseñas reseña)
         {
-            // La fecha se asigna automaticamente al momento de crear la reseña
+            
             reseña.FechaReseña = DateTime.Now;
             _conexion.Reseñas!.Add(reseña);
             _conexion.SaveChanges();

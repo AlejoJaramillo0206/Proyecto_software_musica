@@ -21,7 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Empleados!.ToList();
 
         public Empleados Obtener(int id) =>
-            _conexion.Empleados!.First(e => e.Id == id);
+            _conexion.Empleados!.FirstOrDefault(c => c.Id == id)!;
 
         public Empleados Guardar(Empleados empleado)
         {

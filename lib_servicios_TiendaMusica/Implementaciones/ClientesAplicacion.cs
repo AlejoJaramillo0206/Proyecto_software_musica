@@ -1,5 +1,6 @@
 ﻿using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,13 +23,25 @@ namespace lib_servicios_TiendaMusica.Implementaciones
 
        
         public Clientes Obtener(int id) =>
-            _conexion.Clientes!.First(c => c.Id == id);
+           _conexion.Clientes!.FirstOrDefault(c => c.Id == id)!;
 
-        
+
         public Clientes Guardar(Clientes cliente)
         {
-            _conexion.Clientes!.Add(cliente);
-            _conexion.SaveChanges();
+            _conexion.Database.ExecuteSqlRaw(
+               "INSERT INTO Clientes (Id, Correo, Fecha_Nacimiento, Profesion, EsMusico, MarcaFav) " +
+               "VALUES ({0}, {1}, {2}, {3}, {4}, {5})",
+               cliente.Id,
+               cliente.Correo ?? "Sin definir",
+               cliente.Fecha_Nacimiento,
+               cliente.Profesion ?? "Sin definir",
+               cliente.EsMusico,
+               cliente.MarcaFav ?? "Sin definir"
+           );
+            var auditoria = new AuditoriasAplicacion(_conexion);
+            auditoria.Registrar("Clientes", "Crear",
+                $"Se creó el cliente {cliente.Nombre} con Id {cliente.Id}",
+                null);
             return cliente;
         }
 
@@ -37,6 +50,11 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         {
             _conexion.Clientes!.Update(cliente);
             _conexion.SaveChanges();
+
+            var auditoria = new AuditoriasAplicacion(_conexion);
+            auditoria.Registrar("Clientes", "Editar",
+                $"Se editó el cliente {cliente.Nombre} con Id {cliente.Id}",
+                null);
             return cliente;
         }
 
@@ -45,6 +63,11 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             var cliente = Obtener(id);
             _conexion.Clientes!.Remove(cliente);
             _conexion.SaveChanges();
+
+            var auditoria = new AuditoriasAplicacion(_conexion);
+            auditoria.Registrar("Clientes", "Eliminar",
+                $"Se eliminó el cliente con Id {id}",
+                null);
             return true;
         }
     }

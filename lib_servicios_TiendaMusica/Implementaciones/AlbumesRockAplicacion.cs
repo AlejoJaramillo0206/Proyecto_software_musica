@@ -21,7 +21,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.AlbumesRock!.ToList();
 
         public AlbumesRock Obtener(int id) =>
-            _conexion.AlbumesRock!.First(a => a.Id == id);
+            _conexion.AlbumesRock!.FirstOrDefault(c => c.Id == id)!;
 
         public AlbumesRock Guardar(AlbumesRock album)
         {

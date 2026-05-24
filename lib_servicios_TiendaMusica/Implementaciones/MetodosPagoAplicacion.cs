@@ -17,7 +17,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.MetodosPago!.ToList();
 
         public MetodosPago Obtener(int id) =>
-            _conexion.MetodosPago!.First(m => m.Id == id);
+           _conexion.MetodosPago!.FirstOrDefault(c => c.Id == id)!;
 
         public MetodosPago Guardar(MetodosPago metodoPago)
         {

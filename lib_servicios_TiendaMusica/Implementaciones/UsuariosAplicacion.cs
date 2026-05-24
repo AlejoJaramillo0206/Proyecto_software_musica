@@ -21,11 +21,11 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Usuarios!.ToList();
 
         public Usuarios Obtener(int id) =>
-            _conexion.Usuarios!.First(u => u.Id == id);
+          _conexion.Usuarios!.FirstOrDefault(c => c.Id == id)!;
 
-     
+
         public Usuarios ObtenerPorUsername(string username) =>
-            _conexion.Usuarios!.First(u => u.Username == username);
+            _conexion.Usuarios!.FirstOrDefault(u => u.Username == username)!;
 
         public Usuarios Guardar(Usuarios usuario)
         {

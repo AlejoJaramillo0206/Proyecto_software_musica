@@ -21,9 +21,9 @@ namespace lib_servicios_TiendaMusica.Implementaciones
                 _conexion.AlbumesReggaeton!.ToList();
 
             public AlbumesReggaeton Obtener(int id) =>
-                _conexion.AlbumesReggaeton!.First(a => a.Id == id);
+               _conexion.AlbumesReggaeton!.FirstOrDefault(c => c.Id == id)!;
 
-            public AlbumesReggaeton Guardar(AlbumesReggaeton album)
+        public AlbumesReggaeton Guardar(AlbumesReggaeton album)
             {
                 _conexion.AlbumesReggaeton!.Add(album);
             _conexion.SaveChanges();
