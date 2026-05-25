@@ -1,10 +1,5 @@
 ﻿using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace lib_servicios_TiendaMusica.Implementaciones
 {
@@ -21,11 +16,16 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.InstrumentosPercusion!.ToList();
 
         public InstrumentosPercusion Obtener(int id) =>
-           _conexion.InstrumentosPercusion!.FirstOrDefault(c => c.Id == id)!;
+            _conexion.InstrumentosPercusion!.FirstOrDefault(i => i.Id == id)!;
+
         public InstrumentosPercusion Guardar(InstrumentosPercusion instrumento)
         {
             _conexion.InstrumentosPercusion!.Add(instrumento);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("InstrumentosPercusion", "Crear",
+                $"Se creó el instrumento {instrumento.Nombre} con Id {instrumento.Id}", null);
+
             return instrumento;
         }
 
@@ -33,14 +33,43 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         {
             _conexion.InstrumentosPercusion!.Update(instrumento);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("InstrumentosPercusion", "Editar",
+                $"Se editó el instrumento {instrumento.Nombre} con Id {instrumento.Id}", null);
+
             return instrumento;
         }
 
         public bool Eliminar(int id)
         {
-            var instrumento = Obtener(id);
-            _conexion.InstrumentosPercusion!.Remove(instrumento);
+            // 1. Eliminar inventario vinculado
+            var inventario = _conexion.Inventarios!
+                .FirstOrDefault(i => i.ProductoId == id);
+
+            if (inventario != null)
+            {
+                _conexion.Inventarios!.Remove(inventario);
+                _conexion.SaveChanges();
+            }
+
+            // 2. Eliminar el subtipo
+            var instrumentosPercusion = Obtener(id);
+            _conexion.InstrumentosPercusion!.Remove(instrumentosPercusion);
             _conexion.SaveChanges();
+
+            // 3. Eliminar el producto base
+            var producto = _conexion.Productos!
+                .FirstOrDefault(p => p.Id == id);
+
+            if (producto != null)
+            {
+                _conexion.Productos!.Remove(producto);
+                _conexion.SaveChanges();
+            }
+
+            new AuditoriasAplicacion(_conexion).Registrar("InstrumentosPercusion", "Eliminar",
+                $"Se eliminó el Instrumento Percusion con Id {id}", null);
+
             return true;
         }
     }

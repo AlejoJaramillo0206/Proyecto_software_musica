@@ -1,0 +1,596 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.Admin.Productos.AgregarProductoModel
+
+@{
+    ViewData["Title"] = "Agregar Producto";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    .page-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 2rem;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .btn-back:hover {
+            color: #f5c542;
+            border-color: #f5c542;
+        }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #f5c542;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .form-wrapper {
+        max-width: 800px;
+    }
+
+    .form-section {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 28px;
+        margin-bottom: 20px;
+    }
+
+    .form-section-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #f5c542;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+    .form-label {
+        font-size: 13px;
+        color: #9ca3af;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .form-input, .form-select {
+        padding: 10px 14px;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        font-size: 14px;
+        background: #0d0d0d;
+        color: #f0e8d0;
+        transition: 0.2s ease;
+    }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #f5c542;
+        }
+
+        .form-input::placeholder {
+            color: #3a3a3a;
+        }
+
+    .campos-especificos {
+        display: none;
+    }
+
+        .campos-especificos.visible {
+            display: block;
+        }
+
+    .btn-submit {
+        background: #f5c542;
+        color: #1a1208;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 28px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        justify-content: center;
+    }
+
+        .btn-submit:hover {
+            background: #e0b030;
+        }
+
+    .error-msg {
+        background: rgba(220,60,60,0.12);
+        border: 1px solid rgba(220,60,60,0.25);
+        color: #e07070;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .toggle-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        background: #0d0d0d;
+    }
+
+    .toggle-label {
+        font-size: 14px;
+        color: #d0c0a0;
+    }
+</style>
+
+<div class="page-header">
+    <a href="/Admin/Productos" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Volver
+    </a>
+    <h1 class="page-title">
+        <i class="fa-solid fa-plus"></i>
+        Agregar Producto
+    </h1>
+</div>
+
+<div class="form-wrapper">
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMensaje))
+    {
+        <div class="error-msg">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            @Model.ErrorMensaje
+        </div>
+    }
+
+    <form method="post">
+
+        <!-- Datos comunes -->
+        <div class="form-section">
+            <p class="form-section-title">
+                <i class="fa-solid fa-box"></i>
+                Datos del producto
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-barcode"></i> Código
+                    </label>
+                    <input class="form-input" type="text"
+                           asp-for="Codigo" placeholder="Ej: ALB-CL-004" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-tag"></i> Nombre
+                    </label>
+                    <input class="form-input" type="text"
+                           asp-for="Nombre" placeholder="Ej: La Quinta Sinfonía" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-dollar-sign"></i> Precio
+                    </label>
+                    <input class="form-input" type="number" step="0.01"
+                           asp-for="Precio" placeholder="Ej: 85000" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-truck"></i> Proveedor
+                    </label>
+                    <select class="form-select" asp-for="ProveedorId">
+                        <option value="">Seleccionar proveedor...</option>
+                        @if (Model.Proveedores != null)
+                        {
+                            @foreach (var p in Model.Proveedores)
+                            {
+                                <option value="@p.Id">@p.Nombre_Empresa</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">
+                        <i class="fa-solid fa-list"></i> Tipo de producto
+                    </label>
+                    <select class="form-select" asp-for="TipoProducto"
+                            id="selectTipo" onchange="mostrarCampos()">
+                        <option value="">Seleccionar tipo...</option>
+                        <option value="AlbumesClasicos">Álbum Clásico</option>
+                        <option value="AlbumesPop">Álbum Pop</option>
+                        <option value="AlbumesReggaeton">Álbum Reggaetón</option>
+                        <option value="AlbumesRock">Álbum Rock</option>
+                        <option value="InstrumentosCuerdas">Instrumento Cuerdas</option>
+                        <option value="InstrumentosAire">Instrumento Aire</option>
+                        <option value="InstrumentosPercusion">Instrumento Percusión</option>
+                        <option value="Bafles">Bafle</option>
+                        <option value="Accesorios">Accesorio</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- AlbumesClasicos -->
+        <div class="form-section campos-especificos" id="campos-AlbumesClasicos">
+            <p class="form-section-title">
+                <i class="fa-solid fa-music"></i>
+                Álbum Clásico
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Compositor</label>
+                    <input class="form-input" type="text" asp-for="Compositor"
+                           placeholder="Ej: Beethoven" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Intérprete</label>
+                    <input class="form-input" type="text" asp-for="Interprete"
+                           placeholder="Ej: Herbert von Karajan" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Orquesta</label>
+                    <input class="form-input" type="text" asp-for="Orquesta"
+                           placeholder="Ej: Filarmónica de Berlín" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Época musical</label>
+                    <input class="form-input" type="text" asp-for="EpocaMusical"
+                           placeholder="Ej: Romanticismo" />
+                </div>
+                <div class="form-group full">
+                    <div class="toggle-group">
+                        <input type="checkbox" asp-for="GrabacionesEnVivo" />
+                        <label class="toggle-label">¿Incluye grabaciones en vivo?</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AlbumesPop -->
+        <div class="form-section campos-especificos" id="campos-AlbumesPop">
+            <p class="form-section-title">
+                <i class="fa-solid fa-music"></i>
+                Álbum Pop
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Cantidad canciones</label>
+                    <input class="form-input" type="number" asp-for="CantidadCanciones" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Featuring</label>
+                    <input class="form-input" type="text" asp-for="Featuring"
+                           placeholder="Ej: Lana Del Rey" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nominaciones</label>
+                    <input class="form-input" type="number" asp-for="Nominaciones" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sello discográfico</label>
+                    <input class="form-input" type="text" asp-for="SelloDiscografico"
+                           placeholder="Ej: Republic Records" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Duración (minutos)</label>
+                    <input class="form-input" type="number" asp-for="DuracionMinutos" />
+                </div>
+            </div>
+        </div>
+
+        <!-- AlbumesReggaeton -->
+        <div class="form-section campos-especificos" id="campos-AlbumesReggaeton">
+            <p class="form-section-title">
+                <i class="fa-solid fa-music"></i>
+                Álbum Reggaetón
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Idioma</label>
+                    <input class="form-input" type="text" asp-for="Idioma"
+                           placeholder="Ej: Español" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Productor</label>
+                    <input class="form-input" type="text" asp-for="Productor"
+                           placeholder="Ej: MAG" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Colaboraciones destacadas</label>
+                    <input class="form-input" type="text" asp-for="ColabDestacadas"
+                           placeholder="Ej: Drake, Ed Sheeran" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estilo reggaetón</label>
+                    <input class="form-input" type="text" asp-for="EstiloReggaeton"
+                           placeholder="Ej: Trap Latino" />
+                </div>
+                <div class="form-group full">
+                    <div class="toggle-group">
+                        <input type="checkbox" asp-for="Explicito" />
+                        <label class="toggle-label">¿Contenido explícito?</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AlbumesRock -->
+        <div class="form-section campos-especificos" id="campos-AlbumesRock">
+            <p class="form-section-title">
+                <i class="fa-solid fa-music"></i>
+                Álbum Rock
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Autor</label>
+                    <input class="form-input" type="text" asp-for="Autor"
+                           placeholder="Ej: AC/DC" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Año lanzamiento</label>
+                    <input class="form-input" type="number" asp-for="AñoLanzamiento"
+                           placeholder="Ej: 1980" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sello discográfico</label>
+                    <input class="form-input" type="text" asp-for="SelloDiscograficoRock"
+                           placeholder="Ej: Atlantic Records" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subgénero Rock</label>
+                    <input class="form-input" type="text" asp-for="SubgeneroRock"
+                           placeholder="Ej: Hard Rock" />
+                </div>
+                <div class="form-group full">
+                    <div class="toggle-group">
+                        <input type="checkbox" asp-for="EdicionRemaster" />
+                        <label class="toggle-label">¿Edición remasterizada?</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- InstrumentosCuerdas -->
+        <div class="form-section campos-especificos" id="campos-InstrumentosCuerdas">
+            <p class="form-section-title">
+                <i class="fa-solid fa-guitar"></i>
+                Instrumento de Cuerdas
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Marca</label>
+                    <input class="form-input" type="text" asp-for="Marca"
+                           placeholder="Ej: Fender" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Color</label>
+                    <input class="form-input" type="text" asp-for="Color"
+                           placeholder="Ej: Sunburst" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Material</label>
+                    <input class="form-input" type="text" asp-for="Material"
+                           placeholder="Ej: Aliso" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Cantidad de cuerdas</label>
+                    <input class="form-input" type="number" asp-for="CantidadCuerdas" />
+                </div>
+                <div class="form-group full">
+                    <div class="toggle-group">
+                        <input type="checkbox" asp-for="IncluyeEstuche" />
+                        <label class="toggle-label">¿Incluye estuche?</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- InstrumentosAire -->
+        <div class="form-section campos-especificos" id="campos-InstrumentosAire">
+            <p class="form-section-title">
+                <i class="fa-solid fa-wind"></i>
+                Instrumento de Aire
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Tipo</label>
+                    <input class="form-input" type="text" asp-for="TipoAire"
+                           placeholder="Ej: Saxofón" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Año fabricación</label>
+                    <input class="form-input" type="number" asp-for="AñoFabricacion"
+                           placeholder="Ej: 2022" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Peso (kg)</label>
+                    <input class="form-input" type="number" step="0.01"
+                           asp-for="Peso" placeholder="Ej: 1.20" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Afinación</label>
+                    <input class="form-input" type="text" asp-for="Afinacion"
+                           placeholder="Ej: Mi Bemol" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Material boquilla</label>
+                    <input class="form-input" type="text" asp-for="MaterialBoquilla"
+                           placeholder="Ej: Metal dorado" />
+                </div>
+            </div>
+        </div>
+
+        <!-- InstrumentosPercusion -->
+        <div class="form-section campos-especificos" id="campos-InstrumentosPercusion">
+            <p class="form-section-title">
+                <i class="fa-solid fa-drum"></i>
+                Instrumento de Percusión
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Tipo</label>
+                    <input class="form-input" type="text" asp-for="TipoPercusion"
+                           placeholder="Ej: Batería" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tamaño</label>
+                    <input class="form-input" type="text" asp-for="Tamaño"
+                           placeholder="Ej: Completa" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Peso (kg)</label>
+                    <input class="form-input" type="number" step="0.01"
+                           asp-for="PesoPercusion" placeholder="Ej: 35.00" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Material parche</label>
+                    <input class="form-input" type="text" asp-for="MaterialParche"
+                           placeholder="Ej: Remo Ambassador" />
+                </div>
+                <div class="form-group full">
+                    <div class="toggle-group">
+                        <input type="checkbox" asp-for="IncluyeBaquetas" />
+                        <label class="toggle-label">¿Incluye baquetas?</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bafles -->
+        <div class="form-section campos-especificos" id="campos-Bafles">
+            <p class="form-section-title">
+                <i class="fa-solid fa-volume-high"></i>
+                Bafle
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Tamaño</label>
+                    <input class="form-input" type="text" asp-for="TamañoBafle"
+                           placeholder="Ej: 15 pulgadas" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Decibeles</label>
+                    <input class="form-input" type="number" asp-for="Decibeles" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Marca</label>
+                    <input class="form-input" type="text" asp-for="MarcaBafle"
+                           placeholder="Ej: JBL" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Potencia (watts)</label>
+                    <input class="form-input" type="number" asp-for="PotenciaWatts" />
+                </div>
+                <div class="form-group full">
+                    <div class="toggle-group">
+                        <input type="checkbox" asp-for="Bluetooth" />
+                        <label class="toggle-label">¿Tiene Bluetooth?</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accesorios -->
+        <div class="form-section campos-especificos" id="campos-Accesorios">
+            <p class="form-section-title">
+                <i class="fa-solid fa-toolbox"></i>
+                Accesorio
+            </p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Tipo</label>
+                    <input class="form-input" type="text" asp-for="TipoAccesorio"
+                           placeholder="Ej: Correa" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Color</label>
+                    <input class="form-input" type="text" asp-for="ColorAccesorio"
+                           placeholder="Ej: Negro" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tamaño</label>
+                    <input class="form-input" type="text" asp-for="TamañoAccesorio"
+                           placeholder="Ej: Universal" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Compatibilidad</label>
+                    <input class="form-input" type="text" asp-for="Compatibilidad"
+                           placeholder="Ej: Guitarra, Bajo" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Hecho en</label>
+                    <input class="form-input" type="text" asp-for="HechoEn"
+                           placeholder="Ej: Japón" />
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit" style="display:none;">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Guardar producto
+        </button>
+
+    </form>
+</div>
+
+<script>
+    function mostrarCampos() {
+        // Ocultar todos
+        document.querySelectorAll('.campos-especificos')
+            .forEach(el => el.classList.remove('visible'));
+
+        var tipo = document.getElementById('selectTipo').value;
+
+        if (tipo) {
+            var seccion = document.getElementById('campos-' + tipo);
+            if (seccion) seccion.classList.add('visible');
+            document.getElementById('btnSubmit').style.display = 'flex';
+        } else {
+            document.getElementById('btnSubmit').style.display = 'none';
+        }
+    }
+</script>

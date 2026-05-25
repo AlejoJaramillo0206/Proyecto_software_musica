@@ -1,0 +1,365 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.Admin.ClientesModel
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #f5c542;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .btn-back:hover {
+            color: #f5c542;
+            border-color: #f5c542;
+        }
+
+    .alert-success {
+        background: rgba(100,180,60,0.12);
+        border: 1px solid rgba(100,180,60,0.25);
+        color: #7ec850;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .table-wrapper {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead tr {
+        background: rgba(245,197,66,0.1);
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    thead th {
+        padding: 14px 18px;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 600;
+        color: #f5c542;
+        letter-spacing: 0.05em;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #1e1e1e;
+        transition: 0.2s ease;
+    }
+
+        tbody tr:hover {
+            background: rgba(245,197,66,0.04);
+        }
+
+    tbody td {
+        padding: 14px 18px;
+        font-size: 13px;
+        color: #d0c0a0;
+    }
+
+    .badge-si {
+        background: rgba(100,180,60,0.15);
+        color: #7ec850;
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .badge-no {
+        background: rgba(220,60,60,0.15);
+        color: #e07070;
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .btn-edit {
+        background: rgba(245,197,66,0.12);
+        color: #f5c542;
+        border: 1px solid rgba(245,197,66,0.2);
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: 0.2s ease;
+    }
+
+        .btn-edit:hover {
+            background: rgba(245,197,66,0.25);
+            border-color: #f5c542;
+        }
+
+    .btn-delete {
+        background: rgba(220,60,60,0.12);
+        color: #e07070;
+        border: 1px solid rgba(220,60,60,0.2);
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: 0.2s ease;
+    }
+
+        .btn-delete:hover {
+            background: rgba(220,60,60,0.25);
+            border-color: #e07070;
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #9ca3af;
+    }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #2a2a2a;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+    .modal {
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 32px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+    }
+
+        .modal i {
+            font-size: 48px;
+            color: #e07070;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .modal h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .modal p {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+    .modal-buttons {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .btn-cancel {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .btn-confirm-delete {
+        background: #e07070;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+</style>
+
+<!-- Modal confirmacion -->
+<div class="modal-overlay" id="modalEliminar">
+    <div class="modal">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h3>¿Eliminar cliente?</h3>
+        <p>Esta acción no se puede deshacer.</p>
+        <div class="modal-buttons">
+            <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+            <form method="post" id="formEliminar">
+                <input type="hidden" name="id" id="inputIdEliminar" />
+                <button type="submit" asp-page-handler="Eliminar"
+                        class="btn-confirm-delete">
+                    Sí, eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="page-header">
+    <div style="display:flex; align-items:center; gap:16px;">
+        <a href="/Admin/Dashboard" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Dashboard
+        </a>
+        <h1 class="page-title">
+            <i class="fa-solid fa-users"></i>
+            Clientes
+        </h1>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.MensajeExito))
+{
+    <div class="alert-success">
+        <i class="fa-solid fa-circle-check"></i>
+        @Model.MensajeExito
+    </div>
+}
+
+<div class="table-wrapper">
+    @if (Model.Lista == null || !Model.Lista.Any())
+    {
+        <div class="empty-state">
+            <i class="fa-solid fa-users"></i>
+            <p>No hay clientes registrados todavía.</p>
+        </div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Cédula</th>
+                    <th>Correo</th>
+                    <th>Profesión</th>
+                    <th>Es Músico</th>
+                    <th>Marca Fav</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cliente in Model.Lista)
+                {
+                    <tr>
+                        <td style="color:#6a5a3a;">#@cliente.Id</td>
+                        <td>@cliente.Nombre</td>
+                        <td style="color:#9ca3af;">@cliente.Cedula</td>
+                        <td style="color:#9ca3af;">@cliente.Correo</td>
+                        <td>@cliente.Profesion</td>
+                        <td>
+                            @if (cliente.EsMusico)
+                            {
+                                <span class="badge-si">Sí</span>
+                            }
+                            else
+                            {
+                                <span class="badge-no">No</span>
+                            }
+                        </td>
+                        <td>@cliente.MarcaFav</td>
+                        <td>
+                            <div class="actions">
+                                <a href="/Admin/EditarCliente?id=@cliente.Id"
+                                   class="btn-edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                    Editar
+                                </a>
+                                <button class="btn-delete"
+                                        onclick="abrirModal(@cliente.Id)">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<script>
+    function abrirModal(id) {
+        document.getElementById('inputIdEliminar').value = id;
+        document.getElementById('modalEliminar').classList.add('active');
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalEliminar').classList.remove('active');
+    }
+
+    document.getElementById('modalEliminar').addEventListener('click', function(e) {
+        if (e.target === this) cerrarModal();
+    });
+</script>

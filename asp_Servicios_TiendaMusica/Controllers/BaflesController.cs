@@ -36,19 +36,19 @@ namespace lib_servicios_TiendaMusica.Modelos
         }
 
         [HttpPost]
-        public Bafles Guardar(Bafles bafl)
+        public Bafles Guardar(Bafles bafle)
         {
             if (this.iBaflesAplicacion == null)
                 throw new Exception("No implementado");
-            return this.iBaflesAplicacion!.Guardar(bafl);
+            return this.iBaflesAplicacion!.Guardar(bafle);
         }
 
         [HttpPut]
-        public Bafles Editar(Bafles bafl)
+        public Bafles Editar(Bafles bafle)
         {
             if (this.iBaflesAplicacion == null)
                 throw new Exception("No implementado");
-            return this.iBaflesAplicacion!.Editar(bafl);
+            return this.iBaflesAplicacion!.Editar(bafle);
         }
 
         [HttpDelete]

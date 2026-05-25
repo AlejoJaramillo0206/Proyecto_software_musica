@@ -1,10 +1,5 @@
 ﻿using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace lib_servicios_TiendaMusica.Implementaciones
 {
@@ -21,12 +16,16 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.InstrumentosAire!.ToList();
 
         public InstrumentosAire Obtener(int id) =>
-            _conexion.InstrumentosAire!.FirstOrDefault(c => c.Id == id)!;
+            _conexion.InstrumentosAire!.FirstOrDefault(i => i.Id == id)!;
 
-        public InstrumentosAire instrumento(InstrumentosAire instrumento)
+        public InstrumentosAire Guardar(InstrumentosAire instrumento)
         {
             _conexion.InstrumentosAire!.Add(instrumento);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("InstrumentosAire", "Crear",
+                $"Se creó el instrumento {instrumento.Nombre} con Id {instrumento.Id}", null);
+
             return instrumento;
         }
 
@@ -34,22 +33,44 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         {
             _conexion.InstrumentosAire!.Update(instrumento);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("InstrumentosAire", "Editar",
+                $"Se editó el instrumento {instrumento.Nombre} con Id {instrumento.Id}", null);
+
             return instrumento;
         }
 
         public bool Eliminar(int id)
         {
-            var instrumento = Obtener(id);
-            _conexion.InstrumentosAire!.Remove(instrumento);
-            _conexion.SaveChanges();
-            return true;
-        }
+            // 1. Eliminar inventario vinculado
+            var inventario = _conexion.Inventarios!
+                .FirstOrDefault(i => i.ProductoId == id);
 
-        public InstrumentosAire Guardar(InstrumentosAire instrumento)
-        {
-            _conexion.InstrumentosAire!.Update(instrumento);
+            if (inventario != null)
+            {
+                _conexion.Inventarios!.Remove(inventario);
+                _conexion.SaveChanges();
+            }
+
+            // 2. Eliminar el subtipo
+            var instrumentosAire = Obtener(id);
+            _conexion.InstrumentosAire!.Remove(instrumentosAire);
             _conexion.SaveChanges();
-            return instrumento;
+
+            // 3. Eliminar el producto base
+            var producto = _conexion.Productos!
+                .FirstOrDefault(p => p.Id == id);
+
+            if (producto != null)
+            {
+                _conexion.Productos!.Remove(producto);
+                _conexion.SaveChanges();
+            }
+
+            new AuditoriasAplicacion(_conexion).Registrar("InstrumentosAire", "Eliminar",
+                $"Se eliminó el Instrumento Aire con Id {id}", null);
+
+            return true;
         }
     }
 }

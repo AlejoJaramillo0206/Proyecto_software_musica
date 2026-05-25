@@ -1,10 +1,5 @@
 ﻿using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace lib_servicios_TiendaMusica.Implementaciones
 {
@@ -21,12 +16,16 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.AlbumesRock!.ToList();
 
         public AlbumesRock Obtener(int id) =>
-            _conexion.AlbumesRock!.FirstOrDefault(c => c.Id == id)!;
+            _conexion.AlbumesRock!.FirstOrDefault(a => a.Id == id)!;
 
         public AlbumesRock Guardar(AlbumesRock album)
         {
             _conexion.AlbumesRock!.Add(album);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("AlbumesRock", "Crear",
+                $"Se creó el álbum rock {album.Nombre} con Id {album.Id}", null);
+
             return album;
         }
 
@@ -34,14 +33,43 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         {
             _conexion.AlbumesRock!.Update(album);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("AlbumesRock", "Editar",
+                $"Se editó el álbum rock {album.Nombre} con Id {album.Id}", null);
+
             return album;
         }
 
         public bool Eliminar(int id)
         {
-            var album = Obtener(id);
-            _conexion.AlbumesRock!.Remove(album);
+            // 1. Eliminar inventario vinculado
+            var inventario = _conexion.Inventarios!
+                .FirstOrDefault(i => i.ProductoId == id);
+
+            if (inventario != null)
+            {
+                _conexion.Inventarios!.Remove(inventario);
+                _conexion.SaveChanges();
+            }
+
+            // 2. Eliminar el subtipo
+            var albumesRock = Obtener(id);
+            _conexion.AlbumesRock!.Remove(albumesRock);
             _conexion.SaveChanges();
+
+            // 3. Eliminar el producto base
+            var producto = _conexion.Productos!
+                .FirstOrDefault(p => p.Id == id);
+
+            if (producto != null)
+            {
+                _conexion.Productos!.Remove(producto);
+                _conexion.SaveChanges();
+            }
+
+            new AuditoriasAplicacion(_conexion).Registrar("AlbumesRock", "Eliminar",
+                $"Se eliminó el álbum rock con Id {id}", null);
+
             return true;
         }
     }

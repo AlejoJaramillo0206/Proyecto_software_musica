@@ -11,8 +11,8 @@ namespace lib_servicios_TiendaMusica.Interfaces
     {
         List<Bafles> Obtener();
         Bafles Obtener(int id);
-        Bafles Guardar(Bafles bafl);
-        Bafles Editar(Bafles bafl);
+        Bafles Guardar(Bafles bafle);
+        Bafles Editar(Bafles bafle);
         bool Eliminar(int id);
     }
 }

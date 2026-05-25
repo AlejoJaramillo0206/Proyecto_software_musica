@@ -1,0 +1,432 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.Admin.ProductosModel
+
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #f5c542;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: 0.2s ease;
+    }
+
+        .btn-back:hover {
+            color: #f5c542;
+            border-color: #f5c542;
+        }
+
+    .alert-success {
+        background: rgba(100,180,60,0.12);
+        border: 1px solid rgba(100,180,60,0.25);
+        color: #7ec850;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+
+    .filter-bar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+    }
+
+    .filter-btn {
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        border: 1px solid #2a2a2a;
+        color: #9ca3af;
+        background: #111111;
+        transition: 0.2s ease;
+        cursor: pointer;
+    }
+
+        .filter-btn:hover {
+            color: #f5c542;
+            border-color: #f5c542;
+        }
+
+        .filter-btn.active {
+            background: rgba(245,197,66,0.12);
+            color: #f5c542;
+            border-color: #f5c542;
+        }
+
+    .table-wrapper {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead tr {
+        background: rgba(245,197,66,0.1);
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    thead th {
+        padding: 14px 18px;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 600;
+        color: #f5c542;
+        letter-spacing: 0.05em;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #1e1e1e;
+        transition: 0.2s ease;
+    }
+
+        tbody tr:hover {
+            background: rgba(245,197,66,0.04);
+        }
+
+    tbody td {
+        padding: 14px 18px;
+        font-size: 13px;
+        color: #d0c0a0;
+    }
+
+    .badge-tipo {
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+        background: rgba(245,197,66,0.12);
+        color: #f5c542;
+        white-space: nowrap;
+    }
+
+    .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .btn-edit {
+        background: rgba(245,197,66,0.12);
+        color: #f5c542;
+        border: 1px solid rgba(245,197,66,0.2);
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: 0.2s ease;
+    }
+
+        .btn-edit:hover {
+            background: rgba(245,197,66,0.25);
+            border-color: #f5c542;
+        }
+
+    .btn-delete {
+        background: rgba(220,60,60,0.12);
+        color: #e07070;
+        border: 1px solid rgba(220,60,60,0.2);
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: 0.2s ease;
+    }
+
+        .btn-delete:hover {
+            background: rgba(220,60,60,0.25);
+            border-color: #e07070;
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #9ca3af;
+    }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #2a2a2a;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+  
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+    .modal {
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 32px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+    }
+
+        .modal i {
+            font-size: 48px;
+            color: #e07070;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .modal h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .modal p {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+    .modal-buttons {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .btn-cancel {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .btn-confirm-delete {
+        background: #e07070;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+</style>
+
+<div class="modal-overlay" id="modalEliminar">
+    <div class="modal">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h3>¿Eliminar producto?</h3>
+        <p>Esta acción no se puede deshacer.</p>
+        <div class="modal-buttons">
+            <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+            <form method="post" id="formEliminar">
+                <input type="hidden" name="id" id="inputId" />
+                <input type="hidden" name="tipo" id="inputTipo" />
+                <button type="submit" asp-page-handler="Eliminar"
+                        class="btn-confirm-delete">
+                    Sí, eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="page-header">
+    <div style="display:flex; align-items:center; gap:16px;">
+        <a href="/Admin/Dashboard" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Dashboard
+        </a>
+        <h1 class="page-title">
+            <i class="fa-solid fa-box"></i>
+            Productos
+        </h1>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.MensajeExito))
+{
+    <div class="alert-success">
+        <i class="fa-solid fa-circle-check"></i>
+        @Model.MensajeExito
+    </div>
+}
+
+<div class="filter-bar">
+    <a href="/Admin/Productos"
+       class="filter-btn @(Model.FiltroTipo == null ? "active" : "")">
+        Todos
+    </a>
+    <a href="/Admin/Productos?tipo=AlbumesClasicos"
+       class="filter-btn @(Model.FiltroTipo == "AlbumesClasicos" ? "active" : "")">
+        Álbum Clásico
+    </a>
+    <a href="/Admin/Productos?tipo=AlbumesPop"
+       class="filter-btn @(Model.FiltroTipo == "AlbumesPop" ? "active" : "")">
+        Álbum Pop
+    </a>
+    <a href="/Admin/Productos?tipo=AlbumesReggaeton"
+       class="filter-btn @(Model.FiltroTipo == "AlbumesReggaeton" ? "active" : "")">
+        Álbum Reggaetón
+    </a>
+    <a href="/Admin/Productos?tipo=AlbumesRock"
+       class="filter-btn @(Model.FiltroTipo == "AlbumesRock" ? "active" : "")">
+        Álbum Rock
+    </a>
+    <a href="/Admin/Productos?tipo=InstrumentosCuerdas"
+       class="filter-btn @(Model.FiltroTipo == "InstrumentosCuerdas" ? "active" : "")">
+        Instrumento Cuerdas
+    </a>
+    <a href="/Admin/Productos?tipo=InstrumentosAire"
+       class="filter-btn @(Model.FiltroTipo == "InstrumentosAire" ? "active" : "")">
+        Instrumento Aire
+    </a>
+    <a href="/Admin/Productos?tipo=InstrumentosPercusion"
+       class="filter-btn @(Model.FiltroTipo == "InstrumentosPercusion" ? "active" : "")">
+        Instrumento Percusión
+    </a>
+    <a href="/Admin/Productos?tipo=Bafles"
+       class="filter-btn @(Model.FiltroTipo == "Bafles" ? "active" : "")">
+        Bafles
+    </a>
+    <a href="/Admin/Productos?tipo=Accesorios"
+       class="filter-btn @(Model.FiltroTipo == "Accesorios" ? "active" : "")">
+        Accesorios
+    </a>
+</div>
+
+
+<div class="table-wrapper">
+    @if (Model.Lista == null || !Model.Lista.Any())
+    {
+        <div class="empty-state">
+            <i class="fa-solid fa-box-open"></i>
+            <p>No hay productos en esta categoría.</p>
+        </div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Código</th>
+                    <th>Precio</th>
+                    <th>Proveedor</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var producto in Model.Lista)
+                {
+                    var tipo = Model.ObtenerTipo(producto);
+                    var tipoKey = producto.GetType().Name;
+                    <tr>
+                        <td style="color:#6a5a3a;">#@producto.Id</td>
+                        <td>@producto.Nombre</td>
+                        <td style="color:#9ca3af;">@producto.Codigo</td>
+                        <td style="color:#f5c542;">
+                            $@producto.Precio.ToString("N0")
+                        </td>
+                        <td style="color:#9ca3af;">
+                            @Model.ObtenerNombreProveedor(producto.ProveedorId)
+                        </td>
+                        <td>
+                            <span class="badge-tipo">@tipo</span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <a href="/Admin/EditarProducto/@producto.Id" class="btn-edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                    Editar
+                                </a>
+                                <button class="btn-delete"
+                                        onclick="abrirModal(@producto.Id, '@tipoKey')">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<script>
+    function abrirModal(id, tipo) {
+        document.getElementById('inputId').value   = id;
+        document.getElementById('inputTipo').value = tipo;
+        document.getElementById('modalEliminar').classList.add('active');
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalEliminar').classList.remove('active');
+    }
+
+    document.getElementById('modalEliminar').addEventListener('click', function(e) {
+        if (e.target === this) cerrarModal();
+    });
+</script>

@@ -1,10 +1,5 @@
 ﻿using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace lib_servicios_TiendaMusica.Implementaciones
 {
@@ -20,21 +15,21 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public List<Reparaciones> Obtener() =>
             _conexion.Reparaciones!.ToList();
 
-        
         public List<Reparaciones> ObtenerPorCliente(int clienteId) =>
-            _conexion.Reparaciones!
-                .Where(r => r.ClienteId == clienteId)
-                .ToList();
+            _conexion.Reparaciones!.Where(r => r.ClienteId == clienteId).ToList();
 
         public Reparaciones Obtener(int id) =>
-            _conexion.Reparaciones!.FirstOrDefault(c => c.Id == id)!;
+            _conexion.Reparaciones!.FirstOrDefault(r => r.Id == id)!;
 
         public Reparaciones Guardar(Reparaciones reparacion)
         {
-      
             reparacion.FechaIngreso = DateTime.Now;
             _conexion.Reparaciones!.Add(reparacion);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("Reparaciones", "Crear",
+                $"Se creó reparación para cliente Id {reparacion.ClienteId}", null);
+
             return reparacion;
         }
     }

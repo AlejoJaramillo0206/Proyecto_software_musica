@@ -58,17 +58,32 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             return cliente;
         }
 
-        public bool Eliminar(int id)
-        {
-            var cliente = Obtener(id);
-            _conexion.Clientes!.Remove(cliente);
-            _conexion.SaveChanges();
+   
+            public bool Eliminar(int id)
+            {
+                var usuario = _conexion.Usuarios!
+                    .FirstOrDefault(u => u.EmpleadoId == null &&
+                        _conexion.Clientes!.Any(c => c.Id == id));
 
-            var auditoria = new AuditoriasAplicacion(_conexion);
-            auditoria.Registrar("Clientes", "Eliminar",
-                $"Se eliminó el cliente con Id {id}",
-                null);
-            return true;
-        }
+                var cliente = Obtener(id);
+                _conexion.Clientes!.Remove(cliente);
+                _conexion.SaveChanges();
+
+          
+                var persona = _conexion.Personas!
+                    .FirstOrDefault(p => p.Id == id);
+
+                if (persona != null)
+                {
+                    _conexion.Personas!.Remove(persona);
+                    _conexion.SaveChanges();
+                }
+
+                new AuditoriasAplicacion(_conexion).Registrar("Clientes", "Eliminar",
+                    $"Se eliminó el cliente con Id {id}", null);
+
+                return true;
+        
+            }
     }
 }

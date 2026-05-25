@@ -32,7 +32,7 @@ namespace lib_presentacion_TiendaMusica
                 return default;
             }
         }
-        
+
 
         public async Task<T?> Post<T>(string endpoint, object body)
         {
@@ -43,6 +43,44 @@ namespace lib_presentacion_TiendaMusica
                     JsonSerializer.Serialize(body),
                     Encoding.UTF8, "application/json");
                 var response = await client.PostAsync($"{_urlBase}/{endpoint}", content);
+                var json = await response.Content.ReadAsStringAsync();
+
+                if (string.IsNullOrWhiteSpace(json) || json == "null")
+                    return default;
+
+                return JsonSerializer.Deserialize<T>(json,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch
+            {
+                return default;
+            }
+
+
+        }
+        public async Task<bool> Delete(string endpoint)
+        {
+            try
+            {
+                using var client = new HttpClient();
+                var response = await client.DeleteAsync($"{_urlBase}/{endpoint}");
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<T?> Put<T>(string endpoint, object body)
+        {
+            try
+            {
+                using var client = new HttpClient();
+                var content = new StringContent(
+                    JsonSerializer.Serialize(body),
+                    Encoding.UTF8, "application/json");
+                var response = await client.PutAsync($"{_urlBase}/{endpoint}", content);
                 var json = await response.Content.ReadAsStringAsync();
 
                 if (string.IsNullOrWhiteSpace(json) || json == "null")

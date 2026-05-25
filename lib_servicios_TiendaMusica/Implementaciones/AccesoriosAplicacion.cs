@@ -1,10 +1,5 @@
 ﻿using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace lib_servicios_TiendaMusica.Implementaciones
 {
@@ -21,16 +16,16 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Accesorios!.ToList();
 
         public Accesorios Obtener(int id) =>
-            _conexion.Accesorios!.FirstOrDefault(c => c.Id == id)!;
+            _conexion.Accesorios!.FirstOrDefault(a => a.Id == id)!;
 
         public Accesorios Guardar(Accesorios accesorio)
         {
             _conexion.Accesorios!.Add(accesorio);
             _conexion.SaveChanges();
-            var auditoria = new AuditoriasAplicacion(_conexion);
-            auditoria.Registrar("Accesorios", "Crear",
-                $"Se creó accesorio {Accesorios.Tipo} con Id {Accesorios.Id}",
-                null);
+
+            new AuditoriasAplicacion(_conexion).Registrar("Accesorios", "Crear",
+                $"Se creó el accesorio {accesorio.Nombre} con Id {accesorio.Id}", null);
+
             return accesorio;
         }
 
@@ -38,22 +33,43 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         {
             _conexion.Accesorios!.Update(accesorio);
             _conexion.SaveChanges();
-            var auditoria = new AuditoriasAplicacion(_conexion);
-            auditoria.Registrar("Clientes", "Editar",
-                $"Se editó el cliente {cliente.Nombre} con Id {cliente.Id}",
-                null);
+
+            new AuditoriasAplicacion(_conexion).Registrar("Accesorios", "Editar",
+                $"Se editó el accesorio {accesorio.Nombre} con Id {accesorio.Id}", null);
+
             return accesorio;
         }
 
         public bool Eliminar(int id)
         {
+            // 1. Eliminar inventario vinculado
+            var inventario = _conexion.Inventarios!
+                .FirstOrDefault(i => i.ProductoId == id);
+
+            if (inventario != null)
+            {
+                _conexion.Inventarios!.Remove(inventario);
+                _conexion.SaveChanges();
+            }
+
+            // 2. Eliminar el subtipo
             var accesorio = Obtener(id);
             _conexion.Accesorios!.Remove(accesorio);
             _conexion.SaveChanges();
-            var auditoria = new AuditoriasAplicacion(_conexion);
-            auditoria.Registrar("Clientes", "Eliminar",
-                $"Se eliminó el cliente con Id {id}",
-                null);
+
+            // 3. Eliminar el producto base
+            var producto = _conexion.Productos!
+                .FirstOrDefault(p => p.Id == id);
+
+            if (producto != null)
+            {
+                _conexion.Productos!.Remove(producto);
+                _conexion.SaveChanges();
+            }
+
+            new AuditoriasAplicacion(_conexion).Registrar("Accesorio", "Eliminar",
+                $"Se eliminó el accesorio con Id {id}", null);
+
             return true;
         }
     }

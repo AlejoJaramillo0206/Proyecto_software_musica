@@ -1,10 +1,5 @@
 ﻿using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace lib_servicios_TiendaMusica.Implementaciones
 {
@@ -21,12 +16,16 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             _conexion.Roles!.ToList();
 
         public Roles Obtener(int id) =>
-            _conexion.Roles!.FirstOrDefault(c => c.Id == id)!;
+            _conexion.Roles!.FirstOrDefault(r => r.Id == id)!;
 
         public Roles Guardar(Roles rol)
         {
             _conexion.Roles!.Add(rol);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("Roles", "Crear",
+                $"Se creó el rol {rol.Nombre} con Id {rol.Id}", null);
+
             return rol;
         }
 
@@ -34,6 +33,10 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         {
             _conexion.Roles!.Update(rol);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("Roles", "Editar",
+                $"Se editó el rol {rol.Nombre} con Id {rol.Id}", null);
+
             return rol;
         }
 
@@ -42,6 +45,10 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             var rol = Obtener(id);
             _conexion.Roles!.Remove(rol);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("Roles", "Eliminar",
+                $"Se eliminó el rol con Id {id}", null);
+
             return true;
         }
     }

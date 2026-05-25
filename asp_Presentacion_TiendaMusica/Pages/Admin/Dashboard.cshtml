@@ -6,32 +6,24 @@
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-<div>
 
-</div>
 <div class="dashboard-container">
 
     <!-- HEADER -->
     <div class="dashboard-header">
-
         <div>
             <h1>Dashboard</h1>
             <p>Panel administrativo principal</p>
         </div>
-
         <div class="admin-profile">
-
             <div class="admin-avatar">
                 <i class="fa-solid fa-user-shield"></i>
             </div>
-
             <div>
-                <h4>Administrador</h4>
+                <h4>@Model.NombreAdmin</h4>
                 <span>Sistema Aurum Sound</span>
             </div>
-
         </div>
-
     </div>
 
     <!-- CARDS -->
@@ -58,7 +50,6 @@
                 </div>
             </div>
         </div>
-
         <div class="dashboard-card">
             <div class="card-content">
                 <div class="card-icon">
@@ -70,7 +61,6 @@
                 </div>
             </div>
         </div>
-
         <div class="dashboard-card">
             <div class="card-content">
                 <div class="card-icon">
@@ -82,94 +72,52 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- CONTENIDO -->
-    <div class="dashboard-grid">
-
-        <!-- ACCESOS -->
-        <div class="dashboard-panel">
-
-            <div class="panel-title">
-                <h3>Accesos rápidos</h3>
-            </div>
-
-            <div class="quick-grid">
-
-                <a href="#" class="quick-card">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>Agregar Producto</span>
-                </a>
-
-                <a href="/Admin/Auditorias" class="quick-card">
-                    <i class="fa-solid fa-warehouse"></i>
-                    <span>Auditorias</span>
-                    
-                </a>
-
-                <a href="#" class="quick-card">
-                    <i class="fa-solid fa-users"></i>
-                    <span>Clientes</span>
-                </a>
-
-                <a href="#" class="quick-card">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span>Ventas</span>
-                </a>
-
-            </div>
-
+    <!-- ACCESOS RAPIDOS -->
+    <div class="dashboard-panel">
+        <div class="panel-title">
+            <h3>Accesos rápidos</h3>
         </div>
-
-        <!-- PANEL DERECHO -->
-        <div class="dashboard-panel">
-
-            <div class="panel-title">
-                <h3>Actividad del sistema</h3>
-            </div>
-
-            <div class="activity-card">
-
-                <div class="activity-left">
-                    <h4>Productos agotados</h4>
-                    <p>12 productos necesitan reposición</p>
-                </div>
-
-                <i class="fa-solid fa-box-open"></i>
-
-            </div>
-
-            <div class="activity-card">
-
-                <div class="activity-left">
-                    <h4>Nuevos clientes</h4>
-                    <p>23 nuevos registros esta semana</p>
-                </div>
-
-                <i class="fa-solid fa-user-plus"></i>
-
-            </div>
-
-            <div class="activity-card">
-
-                <div class="activity-left">
-                    <h4>Pedidos pendientes</h4>
-                    <p>9 pedidos sin despachar</p>
-                </div>
-
-                <i class="fa-solid fa-truck-fast"></i>
-
-            </div>
-
+        <div class="quick-grid">
+            <a href="/Admin/Productos" class="quick-card">
+                <i class="fa-solid fa-box"></i>
+                <span>Productos</span>
+            </a>
+            <a href="/Admin/Clientes" class="quick-card">
+                <i class="fa-solid fa-users"></i>
+                <span>Clientes</span>
+            </a>
+            <a href="/Admin/Empleados" class="quick-card">
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Empleados</span>
+            </a>
+            <a href="/Admin/Facturas" class="quick-card">
+                <i class="fa-solid fa-file-invoice"></i>
+                <span>Facturas</span>
+            </a>
+            <a href="/Admin/Inventarios" class="quick-card">
+                <i class="fa-solid fa-warehouse"></i>
+                <span>Inventarios</span>
+            </a>
+            <a href="/Admin/Proveedores" class="quick-card">
+                <i class="fa-solid fa-truck"></i>
+                <span>Proveedores</span>
+            </a>
+            <a href="/Admin/Auditorias" class="quick-card">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Auditorías</span>
+            </a>
+            <a href="/Admin/Usuarios" class="quick-card">
+                <i class="fa-solid fa-user-cog"></i>
+                <span>Usuarios</span>
+            </a>
         </div>
-
     </div>
 
 </div>
 
 <style>
-
     body {
         background: #050505;
     }
@@ -180,8 +128,6 @@
         background: radial-gradient(circle at top left, rgba(255,183,0,0.10), transparent 25%), radial-gradient(circle at bottom right, rgba(255,183,0,0.08), transparent 25%), #050505;
         color: white;
     }
-
-    /* HEADER */
 
     .dashboard-header {
         display: flex;
@@ -219,22 +165,21 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(135deg,#f5c542,#b8860b);
+        background: linear-gradient(135deg, #f5c542, #b8860b);
         color: black;
         font-size: 22px;
     }
 
     /* CARDS */
-
     .cards-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px,1fr));
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
         gap: 22px;
         margin-bottom: 35px;
     }
 
     .dashboard-card {
-        background: linear-gradient(145deg,#111111,#1a1a1a);
+        background: linear-gradient(145deg, #111111, #1a1a1a);
         border: 1px solid #2a2a2a;
         border-radius: 24px;
         padding: 28px;
@@ -276,16 +221,9 @@
         font-size: 15px;
     }
 
-    /* GRID */
-
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 25px;
-    }
-
+    /* PANEL ACCESOS */
     .dashboard-panel {
-        background: linear-gradient(145deg,#111111,#171717);
+        background: linear-gradient(145deg, #111111, #171717);
         border: 1px solid #2a2a2a;
         border-radius: 24px;
         padding: 28px;
@@ -301,11 +239,10 @@
             font-weight: 700;
         }
 
-    /* QUICK */
-
+    /* QUICK GRID */
     .quick-grid {
         display: grid;
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 18px;
     }
 
@@ -338,50 +275,13 @@
             font-weight: 600;
         }
 
-    /* ACTIVIDAD */
-
-    .activity-card {
-        background: #1a1a1a;
-        border: 1px solid #2a2a2a;
-        border-radius: 20px;
-        padding: 20px;
-        margin-bottom: 18px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: 0.3s ease;
-    }
-
-        .activity-card:hover {
-            border-color: #f5c542;
-        }
-
-        .activity-card i {
-            font-size: 24px;
-            color: #f5c542;
-        }
-
-    .activity-left h4 {
-        margin-bottom: 6px;
-        font-size: 16px;
-    }
-
-    .activity-left p {
-        color: #9ca3af;
-        font-size: 14px;
-    }
-
-    /* RESPONSIVE */
-
     @@media(max-width: 1100px) {
-
-        .dashboard-grid {
-            grid-template-columns: 1fr;
+        .quick-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
     @@media(max-width: 768px) {
-
         .dashboard-container {
             padding: 20px;
         }
@@ -400,5 +300,4 @@
             grid-template-columns: 1fr;
         }
     }
-
 </style>

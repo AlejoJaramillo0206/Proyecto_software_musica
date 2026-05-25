@@ -7,15 +7,17 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 {
     public class DashboardModel : PageModel
     {
-        // Propiedades para las cards
+
         public int TotalProductos { get; set; }
         public int TotalClientes { get; set; }
         public int TotalFacturas { get; set; }
         public int TotalEmpleados { get; set; }
 
-        // Nombre del admin en sesion
+   
         public string? NombreAdmin { get; set; }
 
+
+        [ResponseCache(NoStore = true, Duration = 0)]
         public async Task<IActionResult> OnGetAsync()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))

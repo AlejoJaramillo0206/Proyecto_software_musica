@@ -1,10 +1,5 @@
 ﻿using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace lib_servicios_TiendaMusica.Implementaciones
 {
@@ -20,21 +15,21 @@ namespace lib_servicios_TiendaMusica.Implementaciones
         public List<Reseñas> Obtener() =>
             _conexion.Reseñas!.ToList();
 
-      
         public List<Reseñas> ObtenerPorProducto(int productoId) =>
-            _conexion.Reseñas!
-                .Where(r => r.ProductoId == productoId)
-                .ToList();
+            _conexion.Reseñas!.Where(r => r.ProductoId == productoId).ToList();
 
         public Reseñas Obtener(int id) =>
-           _conexion.Reseñas!.FirstOrDefault(c => c.Id == id)!;
+            _conexion.Reseñas!.FirstOrDefault(r => r.Id == id)!;
 
         public Reseñas Guardar(Reseñas reseña)
         {
-            
             reseña.FechaReseña = DateTime.Now;
             _conexion.Reseñas!.Add(reseña);
             _conexion.SaveChanges();
+
+            new AuditoriasAplicacion(_conexion).Registrar("Reseñas", "Crear",
+                $"Se creó reseña para producto Id {reseña.ProductoId}, cliente Id {reseña.ClienteId}", null);
+
             return reseña;
         }
     }
