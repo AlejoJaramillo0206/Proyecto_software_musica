@@ -1,0 +1,239 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.Admin.FacturasModel
+
+@{
+    ViewData["Title"] = "Facturas";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #f5c542;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-back:hover { color: #f5c542; border-color: #f5c542; }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: #111111;
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 20px 24px;
+        transition: 0.3s ease;
+    }
+
+    .stat-card:hover { border-color: #f5c542; }
+
+    .stat-label {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .stat-value {
+        font-size: 26px;
+        font-weight: 800;
+        color: #f5c542;
+    }
+
+    .table-wrapper {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead tr {
+        background: rgba(245,197,66,0.1);
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    thead th {
+        padding: 14px 18px;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 600;
+        color: #f5c542;
+        letter-spacing: 0.05em;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #1e1e1e;
+        transition: 0.2s ease;
+    }
+
+    tbody tr:hover { background: rgba(245,197,66,0.04); }
+
+    tbody td {
+        padding: 14px 18px;
+        font-size: 13px;
+        color: #d0c0a0;
+    }
+
+    .btn-detalle {
+        background: rgba(245,197,66,0.12);
+        color: #f5c542;
+        border: 1px solid rgba(245,197,66,0.2);
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: 0.2s ease;
+    }
+
+    .btn-detalle:hover {
+        background: rgba(245,197,66,0.25);
+        border-color: #f5c542;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #9ca3af;
+    }
+
+    .empty-state i {
+        font-size: 48px;
+        color: #2a2a2a;
+        margin-bottom: 1rem;
+        display: block;
+    }
+</style>
+
+<div class="page-header">
+    <div style="display:flex; align-items:center; gap:16px;">
+        <a href="/Admin/Dashboard" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Dashboard
+        </a>
+        <h1 class="page-title">
+            <i class="fa-solid fa-file-invoice"></i>
+            Facturas
+        </h1>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+    <div class="stat-card">
+        <p class="stat-label">
+            <i class="fa-solid fa-receipt"></i>
+            Total facturas
+        </p>
+        <p class="stat-value">@(Model.Lista?.Count ?? 0)</p>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label">
+            <i class="fa-solid fa-dollar-sign"></i>
+            Total ingresos
+        </p>
+        <p class="stat-value">
+            $@(Model.Lista?.Sum(f => f.Total).ToString("N0") ?? "0")
+        </p>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label">
+            <i class="fa-solid fa-calendar"></i>
+            Facturas hoy
+        </p>
+        <p class="stat-value">
+            @(Model.Lista?.Count(f =>
+                        f.Fecha.Date == DateTime.Today) ?? 0)
+        </p>
+    </div>
+</div>
+
+<!-- Tabla -->
+<div class="table-wrapper">
+    @if (Model.Lista == null || !Model.Lista.Any())
+    {
+        <div class="empty-state">
+            <i class="fa-solid fa-file-invoice"></i>
+            <p>No hay facturas registradas todavía.</p>
+        </div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Código</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Empleado</th>
+                    <th>Total</th>
+                    <th>Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in Model.Lista
+                            .OrderByDescending(f => f.Fecha))
+                {
+                    <tr>
+                        <td style="color:#6a5a3a;">#@factura.Id</td>
+                        <td style="color:#9ca3af;">@factura.Codigo</td>
+                        <td style="color:#9ca3af;">
+                            @factura.Fecha.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                        <td>@Model.ObtenerNombreCliente(factura.ClienteId)</td>
+                        <td style="color:#9ca3af;">
+                            @Model.ObtenerNombreEmpleado(factura.EmpleadoId)
+                        </td>
+                        <td style="color:#f5c542; font-weight:600;">
+                            $@factura.Total.ToString("N0")
+                        </td>
+                        <td>
+                            <a href="/Admin/DetalleFactura?id=@factura.Id"
+                               class="btn-detalle">
+                                <i class="fa-solid fa-eye"></i>
+                                Ver detalle
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

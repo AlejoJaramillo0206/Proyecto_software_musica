@@ -1,0 +1,284 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.Admin.DetalleFacturaModel
+
+@{
+    ViewData["Title"] = "Detalle Factura";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    .page-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 2rem;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .btn-back:hover {
+            color: #f5c542;
+            border-color: #f5c542;
+        }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #f5c542;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 2rem;
+    }
+
+    .info-card {
+        background: #111111;
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 20px 24px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        letter-spacing: 0.05em;
+    }
+
+    .info-value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #f0e8d0;
+    }
+
+        .info-value.gold {
+            color: #f5c542;
+            font-size: 22px;
+        }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #f5c542;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .table-wrapper {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead tr {
+        background: rgba(245,197,66,0.1);
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    thead th {
+        padding: 14px 18px;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 600;
+        color: #f5c542;
+        letter-spacing: 0.05em;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #1e1e1e;
+    }
+
+        tbody tr:hover {
+            background: rgba(245,197,66,0.04);
+        }
+
+    tbody td {
+        padding: 14px 18px;
+        font-size: 13px;
+        color: #d0c0a0;
+    }
+
+    .badge-pago {
+        background: rgba(100,180,60,0.15);
+        color: #7ec850;
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: #9ca3af;
+        font-size: 13px;
+    }
+</style>
+
+<div class="page-header">
+    <a href="/Admin/Facturas" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Volver
+    </a>
+    <h1 class="page-title">
+        <i class="fa-solid fa-file-invoice"></i>
+        Factura #@Model.Factura?.Id — @Model.Factura?.Codigo
+    </h1>
+</div>
+
+<!-- Info general -->
+<div class="info-grid">
+    <div class="info-card">
+        <p class="info-label">
+            <i class="fa-solid fa-user"></i> Cliente
+        </p>
+        <p class="info-value">@(Model.Cliente?.Nombre ?? "—")</p>
+    </div>
+    <div class="info-card">
+        <p class="info-label">
+            <i class="fa-solid fa-briefcase"></i> Empleado
+        </p>
+        <p class="info-value">@(Model.Empleado?.Nombre ?? "—")</p>
+    </div>
+    <div class="info-card">
+        <p class="info-label">
+            <i class="fa-solid fa-calendar"></i> Fecha
+        </p>
+        <p class="info-value">
+            @Model.Factura?.Fecha.ToString("dd/MM/yyyy HH:mm")
+        </p>
+    </div>
+    <div class="info-card">
+        <p class="info-label">
+            <i class="fa-solid fa-box"></i> Productos
+        </p>
+        <p class="info-value">@(Model.Detalles?.Count ?? 0) ítems</p>
+    </div>
+    <div class="info-card">
+        <p class="info-label">
+            <i class="fa-solid fa-credit-card"></i> Pagos
+        </p>
+        <p class="info-value">@(Model.Pagos?.Count ?? 0) registros</p>
+    </div>
+    <div class="info-card">
+        <p class="info-label">
+            <i class="fa-solid fa-dollar-sign"></i> Total
+        </p>
+        <p class="info-value gold">
+            $@Model.Factura?.Total.ToString("N0")
+        </p>
+    </div>
+</div>
+
+<!-- Detalle de productos -->
+<p class="section-title">
+    <i class="fa-solid fa-box"></i>
+    Productos comprados
+</p>
+
+<div class="table-wrapper">
+    @if (Model.Detalles == null || !Model.Detalles.Any())
+    {
+        <div class="empty-state">Sin productos en esta factura.</div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detalle in Model.Detalles)
+                {
+                    <tr>
+                        <td>@Model.ObtenerNombreProducto(detalle.ProductoId)</td>
+                        <td style="color:#9ca3af;">@detalle.Cantidad</td>
+                        <td style="color:#9ca3af;">
+                            $@detalle.PrecioUnitario.ToString("N0")
+                        </td>
+                        <td style="color:#f5c542; font-weight:600;">
+                            $@detalle.Subtotal.ToString("N0")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- Pagos -->
+<p class="section-title">
+    <i class="fa-solid fa-credit-card"></i>
+    Pagos registrados
+</p>
+
+<div class="table-wrapper">
+    @if (Model.Pagos == null || !Model.Pagos.Any())
+    {
+        <div class="empty-state">Sin pagos registrados.</div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha pago</th>
+                    <th>Estado</th>
+                    <th>Método ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pago in Model.Pagos)
+                {
+                    <tr>
+                        <td style="color:#6a5a3a;">#@pago.Id</td>
+                        <td style="color:#9ca3af;">
+                            @pago.FechaPago.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                        <td>
+                            <span class="badge-pago">@pago.Estado</span>
+                        </td>
+                        <td style="color:#9ca3af;">#@pago.MetodoPagoId</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -10,7 +10,10 @@ namespace lib_servicios_TiendaMusica.Modelos
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public string? Estado { get; set; }
+
+        [Column("DescripcionDano")]
         public string? DescripcionDaño { get; set; }
+
         public int FacturaId { get; set; }
         [ForeignKey("FacturaId")]
         public Facturas? _Factura { get; set; }

@@ -18,27 +18,26 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
         public async Task<IActionResult> OnGetAsync(string? tipo, string? exito)
         {
-            // Validar sesión
+          
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
                 return RedirectToPage("/Login");
 
-            // Validar rol
+       
             if (HttpContext.Session.GetString("Rol") != "Administrador")
                 return RedirectToPage("/Index");
 
-            // Mensaje de éxito
             if (exito == "true")
-                MensajeExito = "Producto eliminado correctamente.";
+                MensajeExito = "Producto agregado correctamente.";
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
-            // Traer proveedores
+      
             Proveedores = await com.Get<List<Proveedores>>("Proveedores/Consultar");
 
-            // Guardar filtro actual
+     
             FiltroTipo = tipo;
 
-            // SI NO HAY FILTRO -> TRAER TODOS
+    
             if (string.IsNullOrEmpty(tipo))
             {
                 Lista = new List<lib_servicios_TiendaMusica.Modelos.Productos>();
@@ -90,7 +89,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
             }
             else
             {
-                // FILTRAR POR TIPO
+              
                 Lista = tipo switch
                 {
                     "AlbumesClasicos" =>
@@ -147,13 +146,13 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
         public async Task<IActionResult> OnPostEliminarAsync(int id, string tipo)
         {
-            // Validar sesión
+           
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
                 return RedirectToPage("/Login");
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
-            // Endpoint según tipo
+        
             var endpoint = tipo switch
             {
                 "AlbumesClasicos" => $"AlbumesClasicos/Eliminar?id={id}",
@@ -177,7 +176,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
             });
         }
 
-        // Obtener nombre proveedor
+
         public string ObtenerNombreProveedor(int proveedorId)
         {
             return Proveedores?
@@ -186,7 +185,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
                 ?? "Sin proveedor";
         }
 
-        // Obtener tipo legible
+
         public string ObtenerTipo(lib_servicios_TiendaMusica.Modelos.Productos producto)
             => producto switch
             {

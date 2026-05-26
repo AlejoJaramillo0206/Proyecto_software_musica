@@ -269,6 +269,26 @@
         font-weight: 700;
         cursor: pointer;
     }
+
+    .btn-add {
+        background: #f5c542;
+        color: #1a1208;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.2s ease;
+    }
+
+        .btn-add:hover {
+            background: #e0b030;
+        }
 </style>
 
 <div class="modal-overlay" id="modalEliminar">
@@ -300,6 +320,11 @@
             <i class="fa-solid fa-box"></i>
             Productos
         </h1>
+        <a href="/Admin/AgregarProducto" class="btn-add">
+            
+            <i class="fa-solid fa-user-plus"></i>
+            Agregar Producto
+        </a>
     </div>
 </div>
 

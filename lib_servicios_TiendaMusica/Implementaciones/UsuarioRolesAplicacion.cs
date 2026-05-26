@@ -30,14 +30,21 @@ namespace lib_servicios_TiendaMusica.Implementaciones
             return usuarioRol;
 
         }
+        public List<UsuarioRoles> Obtener() =>
+            _conexion.UsuarioRoles!.ToList();
 
 
         public bool Eliminar(int usuarioId, int rolId)
         {
             var usuarioRol = _conexion.UsuarioRoles!
-                .First(ur => ur.UsuarioId == usuarioId && ur.RolId == rolId);
+           .FirstOrDefault(ur => ur.UsuarioId == usuarioId && ur.RolId == rolId);
+
+           
+            if (usuarioRol == null) return false;
+
             _conexion.UsuarioRoles!.Remove(usuarioRol);
             _conexion.SaveChanges();
+
             return true;
         }
     }

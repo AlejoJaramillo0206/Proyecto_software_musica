@@ -1,0 +1,315 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.Admin.ReparacionesGarantiasModel
+
+@{
+    ViewData["Title"] = "Reparaciones y Garantías";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    .page-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 2rem;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .btn-back:hover {
+            color: #f5c542;
+            border-color: #f5c542;
+        }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #f5c542;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* TABS */
+    .tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #2a2a2a;
+        padding-bottom: 0;
+    }
+
+    .tab-btn {
+        text-decoration: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #9ca3af;
+        border-radius: 12px 12px 0 0;
+        border: 1px solid transparent;
+        border-bottom: none;
+        transition: 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .tab-btn:hover {
+            color: #f5c542;
+        }
+
+        .tab-btn.active {
+            color: #f5c542;
+            background: #111111;
+            border-color: #2a2a2a;
+            border-bottom: 1px solid #111111;
+            margin-bottom: -1px;
+        }
+
+    /* TABLA */
+    .table-wrapper {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead tr {
+        background: rgba(245,197,66,0.1);
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    thead th {
+        padding: 14px 18px;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 600;
+        color: #f5c542;
+        letter-spacing: 0.05em;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #1e1e1e;
+        transition: 0.2s ease;
+    }
+
+        tbody tr:hover {
+            background: rgba(245,197,66,0.04);
+        }
+
+    tbody td {
+        padding: 14px 18px;
+        font-size: 13px;
+        color: #d0c0a0;
+    }
+
+    .badge {
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .badge-pendiente {
+        background: rgba(245,197,66,0.15);
+        color: #f5c542;
+    }
+
+    .badge-proceso {
+        background: rgba(100,149,237,0.15);
+        color: #6495ED;
+    }
+
+    .badge-entregado {
+        background: rgba(100,180,60,0.15);
+        color: #7ec850;
+    }
+
+    .badge-vigente {
+        background: rgba(100,180,60,0.15);
+        color: #7ec850;
+    }
+
+    .badge-vencida {
+        background: rgba(220,60,60,0.15);
+        color: #e07070;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #9ca3af;
+    }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #2a2a2a;
+            margin-bottom: 1rem;
+            display: block;
+        }
+</style>
+
+<div class="page-header">
+    <a href="/Admin/Dashboard" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        Dashboard
+    </a>
+    <h1 class="page-title">
+        <i class="fa-solid fa-wrench"></i>
+        Reparaciones y Garantías
+    </h1>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+    <a href="/Admin/ReparacionesGarantias?tab=reparaciones"
+       class="tab-btn @(Model.TabActivo == "reparaciones" ? "active" : "")">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        Reparaciones
+        <span style="background:rgba(245,197,66,0.15); color:#f5c542;
+                     font-size:11px; padding:2px 8px; border-radius:6px;">
+            @(Model.ListaReparaciones?.Count ?? 0)
+        </span>
+    </a>
+    <a href="/Admin/ReparacionesGarantias?tab=garantias"
+       class="tab-btn @(Model.TabActivo == "garantias" ? "active" : "")">
+        <i class="fa-solid fa-shield-halved"></i>
+        Garantías
+        <span style="background:rgba(245,197,66,0.15); color:#f5c542;
+                     font-size:11px; padding:2px 8px; border-radius:6px;">
+            @(Model.ListaGarantias?.Count ?? 0)
+        </span>
+    </a>
+</div>
+
+<!-- Tabla Reparaciones -->
+@if (Model.TabActivo == "reparaciones")
+{
+    <div class="table-wrapper">
+        @if (Model.ListaReparaciones == null || !Model.ListaReparaciones.Any())
+        {
+            <div class="empty-state">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <p>No hay reparaciones registradas todavía.</p>
+            </div>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Fecha Ingreso</th>
+                        <th>Fecha Entrega</th>
+                        <th>Costo</th>
+                        <th>Estado</th>
+                        <th>Cliente ID</th>
+                        <th>Empleado ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rep in Model.ListaReparaciones)
+                    {
+                        var badgeClass = rep.Estado switch
+                        {
+                            "En proceso" => "badge-proceso",
+                            "Entregado" => "badge-entregado",
+                            _ => "badge-pendiente"
+                        };
+                        <tr>
+                            <td style="color:#6a5a3a;">#@rep.Id</td>
+                            <td>@rep.Descripcion</td>
+                            <td style="color:#9ca3af;">
+                                @rep.FechaIngreso.ToString("dd/MM/yyyy")
+                            </td>
+                            <td style="color:#9ca3af;">
+                                @rep.FechaEntrega.ToString("dd/MM/yyyy")
+                            </td>
+                            <td style="color:#f5c542;">
+                                $@rep.Costo.ToString("N0")
+                            </td>
+                            <td>
+                                <span class="badge @badgeClass">@rep.Estado</span>
+                            </td>
+                            <td style="color:#9ca3af;">#@rep.ClienteId</td>
+                            <td style="color:#9ca3af;">#@rep.EmpleadoId</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+}
+
+<!-- Tabla Garantias -->
+@if (Model.TabActivo == "garantias")
+{
+    <div class="table-wrapper">
+        @if (Model.ListaGarantias == null || !Model.ListaGarantias.Any())
+        {
+            <div class="empty-state">
+                <i class="fa-solid fa-shield-halved"></i>
+                <p>No hay garantías registradas todavía.</p>
+            </div>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Estado</th>
+                        <th>Descripción Daño</th>
+                        <th>Cliente ID</th>
+                        <th>Producto ID</th>
+                        <th>Factura ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var gar in Model.ListaGarantias)
+                    {
+                        var badgeClass = gar.Estado == "Vigente"
+                        ? "badge-vigente" : "badge-vencida";
+                        <tr>
+                            <td style="color:#6a5a3a;">#@gar.Id</td>
+                            <td style="color:#9ca3af;">
+                                @gar.FechaInicio.ToString("dd/MM/yyyy")
+                            </td>
+                            <td style="color:#9ca3af;">
+                                @gar.FechaFin.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                <span class="badge @badgeClass">@gar.Estado</span>
+                            </td>
+                            <td>@gar.DescripcionDaño</td>
+                            <td style="color:#9ca3af;">#@gar.ClienteId</td>
+                            <td style="color:#9ca3af;">#@gar.ProductoId</td>
+                            <td style="color:#9ca3af;">#@gar.FacturaId</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+}

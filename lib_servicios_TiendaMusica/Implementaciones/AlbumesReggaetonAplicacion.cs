@@ -42,7 +42,6 @@ namespace lib_servicios_TiendaMusica.Implementaciones
 
         public bool Eliminar(int id)
         {
-            // 1. Eliminar inventario vinculado
             var inventario = _conexion.Inventarios!
                 .FirstOrDefault(i => i.ProductoId == id);
 
@@ -52,12 +51,12 @@ namespace lib_servicios_TiendaMusica.Implementaciones
                 _conexion.SaveChanges();
             }
 
-            // 2. Eliminar el subtipo
+          
             var albumesReggaeton = Obtener(id);
             _conexion.AlbumesReggaeton!.Remove(albumesReggaeton);
             _conexion.SaveChanges();
 
-            // 3. Eliminar el producto base
+           
             var producto = _conexion.Productos!
                 .FirstOrDefault(p => p.Id == id);
 

@@ -1,8 +1,8 @@
 ﻿@page
-@model asp_Presentacion_TiendaMusica.Pages.Admin.EmpleadosModel
+@model asp_Presentacion_TiendaMusica.Pages.Admin.ProveedoresModel
 
 @{
-    ViewData["Title"] = "Empleados";
+    ViewData["Title"] = "Proveedores";
 }
 
 <link rel="stylesheet"
@@ -25,6 +25,24 @@
         gap: 12px;
     }
 
+    .btn-back {
+        background: transparent;
+        color: #9ca3af;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .btn-back:hover {
+            color: #f5c542;
+            border-color: #f5c542;
+        }
+
     .btn-add {
         background: #f5c542;
         color: #1a1208;
@@ -33,12 +51,10 @@
         padding: 10px 20px;
         font-size: 14px;
         font-weight: 700;
-        cursor: pointer;
         text-decoration: none;
         display: flex;
         align-items: center;
         gap: 8px;
-        transition: 0.2s ease;
     }
 
         .btn-add:hover {
@@ -99,24 +115,6 @@
         color: #d0c0a0;
     }
 
-    .badge-activo {
-        background: rgba(100,180,60,0.15);
-        color: #7ec850;
-        font-size: 11px;
-        padding: 4px 10px;
-        border-radius: 8px;
-        font-weight: 600;
-    }
-
-    .badge-inactivo {
-        background: rgba(220,60,60,0.15);
-        color: #e07070;
-        font-size: 11px;
-        padding: 4px 10px;
-        border-radius: 8px;
-        font-weight: 600;
-    }
-
     .actions {
         display: flex;
         gap: 8px;
@@ -130,7 +128,6 @@
         border-radius: 8px;
         padding: 6px 12px;
         font-size: 12px;
-        cursor: pointer;
         text-decoration: none;
         display: flex;
         align-items: center;
@@ -245,34 +242,13 @@
         font-weight: 700;
         cursor: pointer;
     }
-
-    .btn-back {
-        background: transparent;
-        color: #9ca3af;
-        border: 1px solid #2a2a2a;
-        border-radius: 12px;
-        padding: 8px 14px;
-        font-size: 13px;
-        cursor: pointer;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: 0.2s ease;
-    }
-
-        .btn-back:hover {
-            color: #f5c542;
-            border-color: #f5c542;
-        }
 </style>
-
 
 <div class="modal-overlay" id="modalEliminar">
     <div class="modal">
         <i class="fa-solid fa-triangle-exclamation"></i>
-        <h3>¿Eliminar empleado?</h3>
-        <p>Esta acción no se puede deshacer. El empleado y su usuario serán eliminados del sistema.</p>
+        <h3>¿Eliminar proveedor?</h3>
+        <p>Esta acción no se puede deshacer.</p>
         <div class="modal-buttons">
             <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
             <form method="post" id="formEliminar">
@@ -287,19 +263,19 @@
 </div>
 
 <div class="page-header">
-    <a href="/Admin/Dashboard" class="btn-back">
-        <i class="fa-solid fa-arrow-left"></i>
-        Dashboard
-    </a>
-
-    <h1 class="page-title">
-        <i class="fa-solid fa-briefcase"></i>
-        Empleados
-    </h1>
-       
-    <a href="/Admin/AgregarEmpleado" class="btn-add">
-        <i class="fa-solid fa-user-plus"></i>
-        Agregar empleado
+    <div style="display:flex; align-items:center; gap:16px;">
+        <a href="/Admin/Dashboard" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Dashboard
+        </a>
+        <h1 class="page-title">
+            <i class="fa-solid fa-truck"></i>
+            Proveedores
+        </h1>
+    </div>
+    <a href="/Admin/AgregarProveedor" class="btn-add">
+        <i class="fa-solid fa-plus"></i>
+        Agregar proveedor
     </a>
 </div>
 
@@ -315,8 +291,8 @@
     @if (Model.Lista == null || !Model.Lista.Any())
     {
         <div class="empty-state">
-            <i class="fa-solid fa-briefcase"></i>
-            <p>No hay empleados registrados todavía.</p>
+            <i class="fa-solid fa-truck"></i>
+            <p>No hay proveedores registrados todavía.</p>
         </div>
     }
     else
@@ -325,44 +301,31 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Cédula</th>
-                    <th>Cargo</th>
-                    <th>Fecha Ingreso</th>
-                    <th>Estado</th>
+                    <th>Código</th>
+                    <th>Empresa</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var empleado in Model.Lista)
+                @foreach (var proveedor in Model.Lista)
                 {
                     <tr>
-                        <td style="color:#6a5a3a;">#@empleado.Id</td>
-                        <td>@empleado.Nombre</td>
-                        <td style="color:#9ca3af;">@empleado.Cedula</td>
-                        <td>@empleado.Cargo</td>
-                        <td style="color:#9ca3af;">
-                            @empleado.FechaIngreso.ToString("dd/MM/yyyy")
-                        </td>
-                        <td>
-                            @if (empleado.Activo)
-                            {
-                                <span class="badge-activo">Activo</span>
-                            }
-                            else
-                            {
-                                <span class="badge-inactivo">Inactivo</span>
-                            }
-                        </td>
+                        <td style="color:#6a5a3a;">#@proveedor.Id</td>
+                        <td style="color:#9ca3af;">@proveedor.Codigo</td>
+                        <td>@proveedor.Nombre_Empresa</td>
+                        <td style="color:#9ca3af;">@proveedor.Telefono</td>
+                        <td style="color:#9ca3af;">@proveedor.Correo</td>
                         <td>
                             <div class="actions">
-                                <a href="/Admin/EditarEmpleado?id=@empleado.Id"
+                                <a href="/Admin/EditarProveedor?id=@proveedor.Id"
                                    class="btn-edit">
                                     <i class="fa-solid fa-pen"></i>
                                     Editar
                                 </a>
                                 <button class="btn-delete"
-                                        onclick="abrirModal(@empleado.Id)">
+                                        onclick="abrirModal(@proveedor.Id)">
                                     <i class="fa-solid fa-trash"></i>
                                     Eliminar
                                 </button>

@@ -39,6 +39,14 @@ namespace lib_servicios_TiendaMusica.Modelos
             return this.iUsuarioRolesAplicacion!.Guardar(usuarioRol);
         }
 
+        [HttpGet]
+        public List<UsuarioRoles> Consultar()
+        {
+            if (this.iUsuarioRolesAplicacion == null)
+                throw new Exception("No implementado");
+            return this.iUsuarioRolesAplicacion!.Obtener();
+        }
+
         [HttpDelete]
         public bool Eliminar(int usuarioId, int rolId)
         {
