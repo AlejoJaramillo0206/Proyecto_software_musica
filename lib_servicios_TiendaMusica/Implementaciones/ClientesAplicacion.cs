@@ -48,14 +48,32 @@ namespace lib_servicios_TiendaMusica.Implementaciones
 
         public Clientes Editar(Clientes cliente)
         {
-            _conexion.Clientes!.Update(cliente);
-            _conexion.SaveChanges();
+            
+            var clienteDb = _conexion.Clientes.FirstOrDefault(x => x.Id == cliente.Id);
 
-            var auditoria = new AuditoriasAplicacion(_conexion);
-            auditoria.Registrar("Clientes", "Editar",
-                $"Se editó el cliente {cliente.Nombre} con Id {cliente.Id}",
-                null);
-            return cliente;
+            if (clienteDb != null)
+            {
+                
+                clienteDb.Correo = cliente.Correo;
+                clienteDb.Fecha_Nacimiento = cliente.Fecha_Nacimiento;
+                clienteDb.Profesion = cliente.Profesion;
+                clienteDb.EsMusico = cliente.EsMusico;
+                clienteDb.MarcaFav = cliente.MarcaFav;
+
+               
+                _conexion.SaveChanges();
+
+        
+                var auditoria = new AuditoriasAplicacion(_conexion);
+                auditoria.Registrar("Clientes", "Editar", $"Se editó el cliente {clienteDb.Nombre} con Id {clienteDb.Id}", null);
+
+                return clienteDb;
+            }
+            else
+            {
+               
+                throw new Exception($"No se encontró ningún cliente con el ID {cliente.Id} para actualizar.");
+            }
         }
 
    

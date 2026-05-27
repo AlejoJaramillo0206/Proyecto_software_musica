@@ -1,7 +1,9 @@
 ﻿@page
-@model asp_Presentacion_TiendaMusica.Pages.Admin.AgregarEmpleadoModel
+@model asp_Presentacion_TiendaMusica.Pages.VistaClientes.CompletarPerfilModel
+
 @{
-    ViewData["Title"] = "Agregar Empleado";
+    ViewData["Title"] = "Mi Perfil";
+    Layout = "_Layout";
 }
 
 <link rel="stylesheet"
@@ -15,25 +17,6 @@
         margin-bottom: 2rem;
     }
 
-    .btn-back {
-        background: transparent;
-        color: #9ca3af;
-        border: 1px solid #2a2a2a;
-        border-radius: 12px;
-        padding: 8px 14px;
-        font-size: 13px;
-        cursor: pointer;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-        .btn-back:hover {
-            color: #f5c542;
-            border-color: #f5c542;
-        }
-
     .page-title {
         font-size: 32px;
         font-weight: 800;
@@ -43,8 +26,47 @@
         gap: 12px;
     }
 
+    .aviso-perfil {
+        background: rgba(245,197,66,0.08);
+        border: 1px solid rgba(245,197,66,0.3);
+        border-radius: 14px;
+        padding: 14px 18px;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: #f5c542;
+    }
+
+    .alert-success {
+        background: rgba(100,180,60,0.12);
+        border: 1px solid rgba(100,180,60,0.25);
+        color: #7ec850;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .error-msg {
+        background: rgba(220,60,60,0.12);
+        border: 1px solid rgba(220,60,60,0.25);
+        color: #e07070;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     .form-wrapper {
-        max-width: 800px;
+        max-width: 700px;
     }
 
     .form-section {
@@ -106,9 +128,20 @@
             border-color: #f5c542;
         }
 
-        .form-input::placeholder {
-            color: #3a3a3a;
-        }
+    .toggle-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        background: #0d0d0d;
+    }
+
+    .toggle-label {
+        font-size: 14px;
+        color: #d0c0a0;
+    }
 
     .btn-submit {
         background: #f5c542;
@@ -129,45 +162,40 @@
         .btn-submit:hover {
             background: #e0b030;
         }
-
-    .error-msg {
-        background: rgba(220,60,60,0.12);
-        border: 1px solid rgba(220,60,60,0.25);
-        color: #e07070;
-        font-size: 13px;
-        padding: 12px 16px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
 </style>
 
 <div class="page-header">
-    <a href="/Admin/Empleados" class="btn-back">
-        <i class="fa-solid fa-arrow-left"></i>
-        Volver
-    </a>
     <h1 class="page-title">
-        <i class="fa-solid fa-user-plus"></i>
-        Agregar Empleado
+        <i class="fa-solid fa-user-pen"></i>
+        Mi Perfil
     </h1>
 </div>
 
+<div class="aviso-perfil">
+    <i class="fa-solid fa-circle-info" style="font-size:18px;"></i>
+    Completa tu perfil para poder realizar compras en Aurum Sound.
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ExitoMensaje))
+{
+    <div class="alert-success">
+        <i class="fa-solid fa-circle-check"></i>
+        @Model.ExitoMensaje
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMensaje))
+{
+    <div class="error-msg">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        @Model.ErrorMensaje
+    </div>
+}
+
 <div class="form-wrapper">
-
-    @if (!string.IsNullOrEmpty(Model.ErrorMensaje))
-    {
-        <div class="error-msg">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            @Model.ErrorMensaje
-        </div>
-    }
-
     <form method="post">
 
-
+        <!-- Datos personales -->
         <div class="form-section">
             <p class="form-section-title">
                 <i class="fa-solid fa-user"></i>
@@ -179,21 +207,24 @@
                         <i class="fa-solid fa-user"></i> Nombre completo
                     </label>
                     <input class="form-input" type="text"
-                           asp-for="Nombre" placeholder="Ej: Carlos Pérez" />
+                           asp-for="Nombre"
+                           placeholder="Ej: Carlos Pérez" />
                 </div>
                 <div class="form-group">
                     <label class="form-label">
                         <i class="fa-solid fa-id-card"></i> Cédula
                     </label>
                     <input class="form-input" type="text"
-                           asp-for="Cedula" placeholder="Ej: 1234567890" />
+                           asp-for="Cedula"
+                           placeholder="Ej: 1234567890" />
                 </div>
                 <div class="form-group">
                     <label class="form-label">
                         <i class="fa-solid fa-location-dot"></i> Dirección
                     </label>
                     <input class="form-input" type="text"
-                           asp-for="Direccion" placeholder="Ej: Calle 10 #20-30" />
+                           asp-for="Direccion"
+                           placeholder="Ej: Calle 10 #20-30" />
                 </div>
                 <div class="form-group">
                     <label class="form-label">
@@ -209,100 +240,62 @@
             </div>
         </div>
 
-
+        <!-- Datos del cliente -->
         <div class="form-section">
             <p class="form-section-title">
-                <i class="fa-solid fa-briefcase"></i>
-                Datos laborales
+                <i class="fa-solid fa-address-card"></i>
+                Información adicional
             </p>
             <div class="form-grid">
                 <div class="form-group">
                     <label class="form-label">
-                        <i class="fa-solid fa-briefcase"></i> Cargo
+                        <i class="fa-solid fa-envelope"></i> Correo electrónico
+                    </label>
+                    <input class="form-input" type="email"
+                           asp-for="Correo"
+                           placeholder="Ej: carlos@email.com" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-calendar"></i> Fecha de nacimiento
+                    </label>
+                    <input class="form-input" type="date"
+                           asp-for="FechaNacimiento" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-briefcase"></i> Profesión
                     </label>
                     <input class="form-input" type="text"
-                           asp-for="Cargo" placeholder="Ej: Vendedor" />
+                           asp-for="Profesion"
+                           placeholder="Ej: Ingeniero" />
                 </div>
                 <div class="form-group">
                     <label class="form-label">
-                        <i class="fa-solid fa-calendar"></i> Fecha de ingreso
-                    </label>
-                    <input class="form-input" type="date" asp-for="FechaIngreso" />
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fa-solid fa-dollar-sign"></i> Valor día
-                    </label>
-                    <input class="form-input" type="number"
-                           asp-for="ValorDia" placeholder="Ej: 50000" />
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fa-solid fa-calendar-days"></i> Días trabajados
-                    </label>
-                    <input class="form-input" type="number"
-                           asp-for="DiasTrabajados" placeholder="Ej: 30" />
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fa-solid fa-building-columns"></i> Número banco
+                        <i class="fa-solid fa-star"></i> Marca favorita
                     </label>
                     <input class="form-input" type="text"
-                           asp-for="NumeroBanco" placeholder="Ej: 1234567890" />
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fa-solid fa-shield"></i> Número ARL
-                    </label>
-                    <input class="form-input" type="text"
-                           asp-for="NumeroARL" placeholder="Ej: ARL-12345" />
-                </div>
-            </div>
-        </div>
-
-
-        <div class="form-section">
-            <p class="form-section-title">
-                <i class="fa-solid fa-lock"></i>
-                Acceso al sistema
-            </p>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fa-solid fa-user"></i> Nombre de usuario
-                    </label>
-                    <input class="form-input" type="text"
-                           asp-for="Username" placeholder="Ej: carlos.vendedor" />
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fa-solid fa-lock"></i> Contraseña
-                    </label>
-                    <input class="form-input" type="password"
-                           asp-for="Password" placeholder="Mínimo 6 caracteres" />
+                           asp-for="MarcaFav"
+                           placeholder="Ej: Gibson" />
                 </div>
                 <div class="form-group full">
                     <label class="form-label">
-                        <i class="fa-solid fa-key"></i> Rol del sistema
+                        <i class="fa-solid fa-music"></i> ¿Eres músico?
                     </label>
-                    <select class="form-select" asp-for="RolId">
-                        <option value="">Seleccionar rol...</option>
-                        @if (Model.Roles != null)
-                        {
-                            @foreach (var rol in Model.Roles)
-                            {
-                                <option value="@rol.Id">@rol.Nombre</option>
-                            }
-                        }
-                    </select>
+                    <div class="toggle-group">
+                        <input type="checkbox" asp-for="EsMusico"
+                               id="esMusicoCheck" />
+                        <label class="toggle-label" for="esMusicoCheck">
+                            Soy músico o estudio música
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
 
         <button type="submit" class="btn-submit">
-            <i class="fa-solid fa-user-plus"></i>
-            Crear empleado
+            <i class="fa-solid fa-floppy-disk"></i>
+            Guardar perfil
         </button>
-
     </form>
 </div>

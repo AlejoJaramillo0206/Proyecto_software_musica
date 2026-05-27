@@ -1,0 +1,243 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.VistaClientes.AlbumesModel
+@{
+    ViewData["Title"] = "Álbumes - Aurum Sound";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    body {
+        background: #050505;
+    }
+
+    .category-container {
+        min-height: 100vh;
+        padding: 35px;
+        background: radial-gradient(circle at top left, rgba(245,197,66,0.08), transparent 30%), #050505;
+        color: white;
+    }
+
+    .category-header {
+        margin-bottom: 30px;
+    }
+
+        .category-header h1 {
+            font-size: 38px;
+            font-weight: 800;
+            color: #f5c542;
+            margin-bottom: 5px;
+        }
+
+        .category-header p {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+    /* FILTROS / TABS ESTILO PREMIUM */
+    .tabs-container {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 35px;
+        border-bottom: 1px solid #2a2a2a;
+        padding-bottom: 15px;
+    }
+
+    .tab-btn {
+        background: transparent;
+        border: 1px solid #2a2a2a;
+        color: #9ca3af;
+        padding: 10px 22px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: rgba(245,197,66,0.1);
+            border-color: #f5c542;
+            color: #f5c542;
+        }
+
+    /* GRID */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+        .tab-content.active-content {
+            display: block;
+        }
+
+    .product-card {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(245,197,66,0.3);
+            box-shadow: 0 12px 30px rgba(245,197,66,0.1);
+        }
+
+    .product-image {
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        background: linear-gradient(135deg, #1a1508, #261f0a);
+        color: #f5c542;
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    .product-body {
+        padding: 20px;
+    }
+
+        .product-body h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    .product-detail {
+        color: #9ca3af;
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+
+    .product-price {
+        font-size: 24px;
+        font-weight: 800;
+        color: #f5c542;
+        margin-bottom: 15px;
+    }
+
+    .btn-buy {
+        width: 100%;
+        padding: 11px;
+        border: none;
+        border-radius: 10px;
+        background: rgba(245,197,66,0.1);
+        border: 1px solid rgba(245,197,66,0.2);
+        color: #f5c542;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-buy:hover {
+            background: #f5c542;
+            color: #1a1208;
+        }
+</style>
+
+<div class="category-container">
+    <div class="category-header">
+        <h1>Albumes de Alta Gama </h1>
+        <p>Selecciona tu género musical favorito para filtrar las obras disponibles.</p>
+    </div>
+
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('rock')"><i class="fa-solid fa-guitar"></i> Rock</button>
+        <button class="tab-btn" onclick="switchTab('pop')"><i class="fa-solid fa-bolt"></i> Pop</button>
+        <button class="tab-btn" onclick="switchTab('reggaeton')"><i class="fa-solid fa-fire"></i> Reggaeton</button>
+        <button class="tab-btn" onclick="switchTab('clasica')"><i class="fa-solid fa-music"></i> Clásica</button>
+    </div>
+
+    <div id="rock" class="tab-content active-content">
+        <div class="products-grid">
+            @foreach (var album in Model.Rock)
+            {
+                <div class="product-card">
+                    <div class="product-image"><i class="fa-solid fa-compact-disc"></i></div>
+                    <div class="product-body">
+                        <h3>@album.Nombre</h3>
+                        <div class="product-detail">Autor: @album.Autor | Subgénero: @album.SubgeneroRock</div>
+                        <div class="product-price">$@album.Precio.ToString("N0")</div>
+                        @await Html.PartialAsync("_FormCarrito", album)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="pop" class="tab-content">
+        <div class="products-grid">
+            @foreach (var album in Model.Pop)
+            {
+                <div class="product-card">
+                    <div class="product-image"><i class="fa-solid fa-record-vinyl"></i></div>
+                    <div class="product-body">
+                        <h3>@album.Nombre</h3>
+                        <div class="product-detail">Sello: @album.SelloDiscografico | Canciones: @album.Cantidad_Canciones</div>
+                        <div class="product-price">$@album.Precio.ToString("N0")</div>
+                        @await Html.PartialAsync("_FormCarrito", album)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="reggaeton" class="tab-content">
+        <div class="products-grid">
+            @foreach (var album in Model.Reggaeton)
+            {
+                <div class="product-card">
+                    <div class="product-image"><i class="fa-solid fa-radio"></i></div>
+                    <div class="product-body">
+                        <h3>@album.Nombre</h3>
+                        <div class="product-detail">Productor: @album.Productor | Estilo: @album.EstiloReggaeton</div>
+                        <div class="product-price">$@album.Precio.ToString("N0")</div>
+                        @await Html.PartialAsync("_FormCarrito", album)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="clasica" class="tab-content">
+        <div class="products-grid">
+            @foreach (var album in Model.Clasicos)
+            {
+                <div class="product-card">
+                    <div class="product-image"><i class="fa-solid fa-sliders"></i></div>
+                    <div class="product-body">
+                        <h3>@album.Nombre</h3>
+                        <div class="product-detail">Compositor: @album.Compositor | Época: @album.Epoca_Musical</div>
+                        <div class="product-price">$@album.Precio.ToString("N0")</div>
+                        @await Html.PartialAsync("_FormCarrito", album)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabId) {
+        // Ocultar todos los contenidos
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-content'));
+        // Quitar estado activo a botones
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+        // Mostrar tab seleccionada
+        document.getElementById(tabId).classList.add('active-content');
+        event.currentTarget.classList.add('active');
+    }
+</script>

@@ -1,0 +1,11 @@
+﻿@model dynamic
+
+<form method="post" asp-page-handler="AgregarAlCarrito" style="display: inline-block; width: 100%;">
+    <input type="hidden" name="idProducto" value="@Model.Id" />
+    <input type="hidden" name="nombre" value="@Model.Nombre" />
+    <input type="hidden" name="precio" value="@Model.Precio" />
+    <input type="hidden" name="codigo" value="@Model.Codigo" />
+    <button type="submit" class="btn-buy">
+        <i class="ti ti-shopping-cart"></i> Agregar al Carrito
+    </button>
+</form>

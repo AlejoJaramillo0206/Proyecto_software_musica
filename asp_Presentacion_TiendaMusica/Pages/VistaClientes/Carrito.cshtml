@@ -1,0 +1,315 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.VistaClientes.CarritoModel
+@{
+    ViewData["Title"] = "Mi Carrito de Compras";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    body {
+        background: #050505;
+    }
+
+    .cart-container {
+        min-height: 100vh;
+        padding: 35px;
+        background: radial-gradient(circle at top left, rgba(255,183,0,0.10), transparent 25%), radial-gradient(circle at bottom right, rgba(255,183,0,0.08), transparent 25%), #050505;
+        color: white;
+    }
+
+    .cart-header {
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .cart-header h1 {
+            font-size: 38px;
+            font-weight: 800;
+            color: #f5c542;
+        }
+
+    .btn-back {
+        padding: 10px 20px;
+        background: rgba(245,197,66,0.1);
+        border: 1px solid rgba(245,197,66,0.2);
+        color: #f5c542;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+        .btn-back:hover {
+            background: #f5c542;
+            color: #1a1208;
+        }
+
+    /* TABLA DE PRODUCTOS */
+    .cart-table-wrapper {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 30px;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    th {
+        color: #f5c542;
+        font-weight: 700;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #2a2a2a;
+        font-size: 15px;
+    }
+
+    td {
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 15px;
+    }
+
+    .product-info h5 {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0 0 5px 0;
+    }
+
+    .product-info span {
+        color: #9ca3af;
+        font-size: 12px;
+    }
+
+    /* CONTROL DE CANTIDAD EN LÍNEA */
+    .qty-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-qty {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid rgba(245,197,66,0.3);
+        background: rgba(245,197,66,0.05);
+        color: #f5c542;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+    }
+
+        .btn-qty:hover {
+            background: #f5c542;
+            color: #1a1208;
+        }
+
+    .badge-qty {
+        background: rgba(245,197,66,0.12);
+        color: #f5c542;
+        padding: 4px 14px;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 14px;
+        min-width: 20px;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .btn-delete {
+        background: transparent;
+        border: none;
+        color: #ff3b30;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.2s;
+    }
+
+        .btn-delete:hover {
+            transform: scale(1.2);
+        }
+
+    /* RESUMEN DE COMPRA */
+    .cart-summary {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .summary-card {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 30px;
+        width: 350px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+
+    .summary-total {
+        border-top: 1px solid #2a2a2a;
+        padding-top: 15px;
+        font-size: 22px;
+        font-weight: 800;
+        color: #f5c542;
+    }
+
+    .btn-checkout {
+        width: 100%;
+        padding: 14px;
+        background: #f5c542;
+        color: #1a1208;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
+
+        .btn-checkout:hover {
+            background: #e0b030;
+            box-shadow: 0 8px 20px rgba(245,197,66,0.3);
+            transform: translateY(-2px);
+        }
+
+    /* ESTADO VACÍO */
+    .empty-cart {
+        text-align: center;
+        padding: 60px 0;
+    }
+
+        .empty-cart i {
+            font-size: 80px;
+            color: #2a2a2a;
+            margin-bottom: 20px;
+        }
+
+        .empty-cart p {
+            color: #9ca3af;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+</style>
+
+<div class="cart-container">
+
+    <div class="cart-header">
+        <h1>Mi Carrito </h1>
+        <a href="/VistaClientes/DashboardCliente" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Volver a la Tienda
+        </a>
+    </div>
+
+    @if (Model.Carrito.Count > 0)
+    {
+        <div class="cart-table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Carrito)
+                    {
+                        <tr>
+                            <td>
+                                <div class="product-info">
+                                    <h5>@item.Nombre</h5>
+                                    <span>Código: @item.Codigo</span>
+                                </div>
+                            </td>
+                            <td>$@item.Precio.ToString("N0")</td>
+                            <td>
+                                <div class="qty-controls">
+                                    <form method="post" asp-page-handler="Decrementar">
+                                        <input type="hidden" name="idProducto" value="@item.IdProducto" />
+                                        <button type="submit" class="btn-qty" title="Restar uno">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                    </form>
+
+                                    <span class="badge-qty">@item.Cantidad</span>
+
+                                    <form method="post" asp-page-handler="Incrementar">
+                                        <input type="hidden" name="idProducto" value="@item.IdProducto" />
+                                        <button type="submit" class="btn-qty" title="Sumar uno">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                            <td style="color: #f5c542; font-weight: 700;">$@item.Total.ToString("N0")</td>
+                            <td>
+                                <form method="post" asp-page-handler="Eliminar">
+                                    <input type="hidden" name="idProducto" value="@item.IdProducto" />
+                                    <button type="submit" class="btn-delete" title="Quitar del carrito">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cart-summary">
+            <div class="summary-card">
+                <div class="summary-row">
+                    <span>Productos:</span>
+                    <span>@Model.Carrito.Sum(x => x.Cantidad)</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Total:</span>
+                    <span>$@Model.TotalPagar.ToString("N0")</span>
+                </div>
+
+                <a href="/VistaClientes/ProcesarPago" class="btn-checkout">
+                    <i class="fa-solid fa-credit-card"></i> Proceder al Pago
+                </a>
+
+                <form method="post" asp-page-handler="Vaciar" style="margin-top: 15px;">
+                    <button type="submit" style="background:transparent; border:none; color:#9ca3af; width:100%; text-align:center; cursor:pointer; font-size:13px; text-decoration:underline;">
+                        Vaciar todo el carrito
+                    </button>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="empty-cart">
+            <i class="fa-solid fa-cart-flatbed-suitcase"></i>
+            <h3>Tu carrito está vacío</h3>
+            <p>Parece que aún no has añadido música ni instrumentos premium a tu colección.</p>
+            <a href="/VistaClientes/DashboardCliente" class="btn-checkout" style="display: inline-block; width: auto; padding: 12px 30px;">
+                Explorar Catálogo
+            </a>
+        </div>
+    }
+
+</div>

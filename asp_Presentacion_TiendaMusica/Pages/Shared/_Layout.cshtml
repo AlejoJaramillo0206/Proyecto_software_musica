@@ -1,4 +1,32 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using System.Text.Json
+@{
+    // Leer el carrito global desde la sesión para pintar el contador de burbuja
+    var cartJson = Context.Session.GetString("Carrito");
+    int totalItems = 0;
+    if (!string.IsNullOrEmpty(cartJson))
+    {
+        try
+        {
+            // Usamos JsonDocument para parsear dinámicamente y evitar problemas de tipado estricto
+            using (JsonDocument doc = JsonDocument.Parse(cartJson))
+            {
+                if (doc.RootElement.ValueKind == JsonValueKind.Array)
+                {
+                    foreach (JsonElement item in doc.RootElement.EnumerateArray())
+                    {
+                        if (item.TryGetProperty("Cantidad", out JsonElement qty))
+                        {
+                            totalItems += qty.GetInt32();
+                        }
+                    }
+                }
+            }
+        }
+        catch { }
+    }
+}
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -23,7 +51,7 @@
             overflow-x: hidden;
         }
 
-      
+
         .bg-icon {
             position: fixed;
             color: rgba(240,192,64,0.04);
@@ -31,7 +59,7 @@
             z-index: 0;
         }
 
-     
+
         .navbar {
             background: rgba(240,192,64,0.08);
             border-bottom: 0.5px solid rgba(240,192,64,0.2);
@@ -44,7 +72,7 @@
             backdrop-filter: blur(6px);
         }
 
- 
+
         .navbar-brand {
             font-size: 18px;
             font-weight: 500;
@@ -57,21 +85,21 @@
             flex-shrink: 0;
         }
 
-       
+
         .navbar-links {
             display: flex;
             align-items: center;
             width: 100%;
         }
 
-     
+
         .nav-left {
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-     
+
         .nav-right {
             margin-left: auto;
             display: flex;
@@ -80,7 +108,7 @@
 
         .nav-link {
             font-size: 13px;
-            color: #6a5a3a;
+            color: #9a8060;
             text-decoration: none;
             padding: 6px 10px;
             border-radius: 6px;
@@ -100,7 +128,7 @@
                 background: rgba(240,192,64,0.12);
             }
 
-      
+
         .nav-dropdown {
             position: relative;
         }
@@ -109,7 +137,6 @@
             display: none;
             position: absolute;
             top: 100%;
-          
             left: 0;
             background: #1a1208;
             border: 0.5px solid rgba(240,192,64,0.2);
@@ -137,7 +164,7 @@
                 background: rgba(240,192,64,0.08);
             }
 
-       
+
         .nav-sep {
             width: 0.5px;
             height: 18px;
@@ -145,14 +172,14 @@
             margin: 0 10px;
         }
 
-      
+
         .main-content {
             padding: 2rem;
             position: relative;
             z-index: 1;
         }
 
-        
+
         .page-header {
             display: flex;
             align-items: center;
@@ -176,7 +203,7 @@
             border-radius: 2px;
         }
 
-      
+
         .card {
             background: rgba(255,255,255,0.03);
             border: 0.5px solid rgba(240,192,64,0.15);
@@ -184,7 +211,7 @@
             padding: 1.25rem;
         }
 
-       
+
         .btn-gold {
             background: #F0C040;
             color: #1a1208;
@@ -233,7 +260,7 @@
             text-decoration: none;
         }
 
-      
+
         .table-wrapper {
             overflow-x: auto;
         }
@@ -354,6 +381,46 @@
             align-items: center;
             gap: 8px;
         }
+
+        /* BURBUJA FLOTANTE PREMIUM DEL CARRITO GLOBAL */
+        .floating-cart {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #F0C040;
+            color: #1a1208 !important;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 25px rgba(240,192,64,0.3);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+        }
+
+            .floating-cart:hover {
+                transform: scale(1.1) translateY(-4px);
+                box-shadow: 0 12px 30px rgba(240,192,64,0.5);
+                background: #f3cc62;
+            }
+
+        .cart-badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background: #e07070;
+            color: #1a1208;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 7px;
+            border-radius: 12px;
+            border: 2px solid #0d0a04;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
     </style>
 </head>
 <body>
@@ -364,192 +431,105 @@
     <i class="ti ti-music bg-icon"
        style="top:80px; left:-10px; font-size:100px;"></i>
 
-           
+
     @if (Context.Session.GetString("Rol") != "Administrador")
     {
         <nav class="navbar">
 
-                  
-                    <a class="navbar-brand" href="/Index">
-                        <i class="ti ti-music" style="font-size:20px;"></i>
-                        Aurum Sound
-                    </a>
 
-                    <div class="navbar-links">
-
-                        <div class="nav-left">
-
-                        
-                            <div class="nav-dropdown">
-
-                                <a class="nav-link" href="#">
-                                    <i class="ti ti-package" style="font-size:15px;"></i>
-                                    Productos
-                                    <i class="ti ti-chevron-down" style="font-size:12px;"></i>
-                                </a>
-
-                                <div class="nav-dropdown-menu">
-
-                                    <a class="nav-dropdown-item" href="/Albumes">
-                                        <i class="ti ti-disc"
-                                           style="font-size:13px; margin-right:6px;"></i>
-                                        Álbumes
-                                    </a>
-
-                                    <a class="nav-dropdown-item" href="/Instrumentos">
-                                        <i class="ti ti-guitar-pick"
-                                           style="font-size:13px; margin-right:6px;"></i>
-                                        Instrumentos
-                                    </a>
-
-                                    <a class="nav-dropdown-item" href="/Bafles">
-                                        <i class="ti ti-speakerphone"
-                                           style="font-size:13px; margin-right:6px;"></i>
-                                        Bafles
-                                    </a>
-
-                                    <a class="nav-dropdown-item" href="/Accesorios">
-                                        <i class="ti ti-tool"
-                                           style="font-size:13px; margin-right:6px;"></i>
-                                        Accesorios
-                                    </a>
-
-                                </div>
-                            </div>
-
-                            <div class="nav-dropdown">
-
-                                <a class="nav-link" href="#">
-                                    <i class="ti ti-settings" style="font-size:15px;"></i>
-                                    Operaciones
-                                    <i class="ti ti-chevron-down" style="font-size:12px;"></i>
-                                </a>
-
-                                <div class="nav-dropdown-menu">
-
-                                    <a class="nav-dropdown-item" href="/Garantias">
-                                        <i class="ti ti-shield"
-                                           style="font-size:13px; margin-right:6px;"></i>
-                                        Garantías
-                                    </a>
-
-                                    <a class="nav-dropdown-item" href="/Reparaciones">
-                                        <i class="ti ti-tool"
-                                           style="font-size:13px; margin-right:6px;"></i>
-                                        Reparaciones
-                                    </a>
-
-                                    <a class="nav-dropdown-item" href="/Reseñas">
-                                        <i class="ti ti-star"
-                                           style="font-size:13px; margin-right:6px;"></i>
-                                        Reseñas
-                                    </a>
-
-                                </div>
-                            </div>
-
-                            
-                            <a class="nav-link" href="/Nosotros">
-                                <i class="ti ti-users-group" style="font-size:15px;"></i>
-                                Nosotros
-                            </a>
-
-                           
-                            <a class="nav-link" href="/Contactanos">
-                                <i class="ti ti-phone" style="font-size:15px;"></i>
-                                Contáctanos
-                            </a>
-
-                        </div>
-
-                       
-                        <div class="nav-right">
-
-                            <div class="nav-sep"></div>
-
-                           
-                            <div class="nav-dropdown">
-
-                                <a class="nav-link" href="#">
-                                    <i class="ti ti-user-circle"
-                                       style="font-size:16px;"></i>
-
-                                    <span style="color:#F0C040;">
-                                        @Context.Session.GetString("Username")
-                                    </span>
-
-                                    <span style="color:#6a5a3a; font-size:11px;">
-                                        (@Context.Session.GetString("Rol"))
-                                    </span>
-
-                                    <i class="ti ti-chevron-down"
-                                       style="font-size:12px;"></i>
-                                </a>
-
-                                <div class="nav-dropdown-menu"
-                                     style="right:0; left:auto;">
-
-                                    <a class="nav-dropdown-item" href="/Perfil">
-                                        <i class="ti ti-user"
-                                           style="font-size:13px; margin-right:6px;"></i>
-                                        Perfil
-                                    </a>
-
-                                    <a class="nav-dropdown-item"
-                                       href="/HistorialCompras">
-
-                                        <i class="ti ti-history"
-                                           style="font-size:13px; margin-right:6px;"></i>
-
-                                        Historial compras
-                                    </a>
-
-                                    <a class="nav-dropdown-item" href="/Ajustes">
-                                        <i class="ti ti-settings"
-                                           style="font-size:13px; margin-right:6px;"></i>
-                                        Ajustes
-                                    </a>
-
-                                    <div style="
-                                    height:1px;
-                                    background:rgba(240,192,64,0.15);
-                                    margin:6px 0;
-                                "></div>
-
-                                    <a class="nav-dropdown-item"
-                                       href="/Login"
-                                       onclick="sessionStorage.clear()"
-                                       style="color:#e07070;">
-
-                                        <i class="ti ti-logout"
-                                           style="font-size:13px; margin-right:6px;"></i>
-
-                                        Cerrar sesión
-                                    </a>
-
-                                </div>
-                            </div>
-
-                        </div>
-                        
-                    </div>
-
-                </nav>
-    }
-
-    @if (Context.Session.GetString("Rol") == "Administrador")
-    {
-        <nav class="navbar">
-
-
-            <a class="navbar-brand" href="/Index">
+            <a class="navbar-brand" href="/VistaClientes/DashboardCliente">
                 <i class="ti ti-music" style="font-size:20px;"></i>
                 Aurum Sound
             </a>
 
             <div class="navbar-links">
 
-                   
+                <div class="nav-left">
+
+
+                    <div class="nav-dropdown">
+
+                        <a class="nav-link" href="#">
+                            <i class="ti ti-package" style="font-size:15px;"></i>
+                            Productos
+                            <i class="ti ti-chevron-down" style="font-size:12px;"></i>
+                        </a>
+
+                        <div class="nav-dropdown-menu">
+
+                            <a class="nav-dropdown-item" href="/VistaClientes/ProductoAlbumes">
+                                <i class="ti ti-disc"
+                                   style="font-size:13px; margin-right:6px;"></i>
+                                Álbumes
+                            </a>
+
+                            <a class="nav-dropdown-item" href="/VistaClientes/ProductosInstrumentos">
+                                <i class="ti ti-guitar-pick"
+                                   style="font-size:13px; margin-right:6px;"></i>
+                                Instrumentos
+                            </a>
+
+                            <a class="nav-dropdown-item" href="/VistaClientes/ProductoBafles">
+                                <i class="ti ti-speakerphone"
+                                   style="font-size:13px; margin-right:6px;"></i>
+                                Bafles
+                            </a>
+
+                            <a class="nav-dropdown-item" href="/VistaClientes/ProductoAccesorios">
+                                <i class="ti ti-tool"
+                                   style="font-size:13px; margin-right:6px;"></i>
+                                Accesorios
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div class="nav-dropdown">
+
+                        <a class="nav-link" href="#">
+                            <i class="ti ti-settings" style="font-size:15px;"></i>
+                            Operaciones
+                            <i class="ti ti-chevron-down" style="font-size:12px;"></i>
+                        </a>
+
+                        <div class="nav-dropdown-menu">
+
+                            <a class="nav-dropdown-item" href="/Garantias">
+                                <i class="ti ti-shield"
+                                   style="font-size:13px; margin-right:6px;"></i>
+                                Garantías
+                            </a>
+
+                            <a class="nav-dropdown-item" href="/Reparaciones">
+                                <i class="ti ti-tool"
+                                   style="font-size:13px; margin-right:6px;"></i>
+                                Reparaciones
+                            </a>
+
+                            <a class="nav-dropdown-item" href="/VistaClientes/Reseñas">
+                                <i class="ti ti-star"
+                                   style="font-size:13px; margin-right:6px;"></i>
+                                Reseñas
+                            </a>
+
+                        </div>
+                    </div>
+
+
+                    <a class="nav-link" href="/Nosotros">
+                        <i class="ti ti-users-group" style="font-size:15px;"></i>
+                        Nosotros
+                    </a>
+
+
+                    <a class="nav-link" href="/Contactanos">
+                        <i class="ti ti-phone" style="font-size:15px;"></i>
+                        Contáctanos
+                    </a>
+
+                </div>
+
+
                 <div class="nav-right">
 
                     <div class="nav-sep"></div>
@@ -573,11 +553,45 @@
                                style="font-size:12px;"></i>
                         </a>
 
+                        @{
+                            var usuarioIdNav = Context.Session.GetString("UsuarioId");
+                        }
+                        @if (!string.IsNullOrEmpty(usuarioIdNav) &&
+                                            Context.Session.GetString("Rol") == "Cliente")
+                        {
+                            <a href="/VistaClientes/CompletarPerfil"
+                               style="font-size:12px; color:#f5c542; background:rgba(245,197,66,0.1);
+                      border:1px solid rgba(245,197,66,0.3); border-radius:8px;
+                      padding:4px 10px; text-decoration:none; display:flex;
+                      align-items:center; gap:5px;">
+                                <i class="fa-solid fa-circle-exclamation" style="font-size:12px;"></i>
+                                Completa tu perfil
+                            </a>
+                        }
+
                         <div class="nav-dropdown-menu"
                              style="right:0; left:auto;">
 
-               
+                            <a class="nav-dropdown-item" href="/Perfil">
+                                <i class="ti ti-user"
+                                   style="font-size:13px; margin-right:6px;"></i>
+                                Perfil
+                            </a>
 
+                            <a class="nav-dropdown-item"
+                               href="/HistorialCompras">
+
+                                <i class="ti ti-history"
+                                   style="font-size:13px; margin-right:6px;"></i>
+
+                                Historial compras
+                            </a>
+
+                            <a class="nav-dropdown-item" href="/Ajustes">
+                                <i class="ti ti-settings"
+                                   style="font-size:13px; margin-right:6px;"></i>
+                                Ajustes
+                            </a>
 
                             <div style="
                                         height:1px;
@@ -606,9 +620,105 @@
         </nav>
     }
 
+    @if (Context.Session.GetString("Rol") == "Administrador")
+    {
+        <nav class="navbar">
+
+
+            <a class="navbar-brand" href="/Index">
+                <i class="ti ti-music" style="font-size:20px;"></i>
+                Aurum Sound
+            </a>
+
+            <div class="navbar-links">
+
+
+                <div class="nav-right">
+
+                    <div class="nav-sep"></div>
+
+
+                    <div class="nav-dropdown">
+
+                        <a class="nav-link" href="#">
+                            <i class="ti ti-user-circle"
+                               style="font-size:16px;"></i>
+
+                            <span style="color:#F0C040;">
+                                @Context.Session.GetString("Username")
+                            </span>
+
+                            <span style="color:#6a5a3a; font-size:11px;">
+                                (@Context.Session.GetString("Rol"))
+                            </span>
+
+                            <i class="ti ti-chevron-down"
+                               style="font-size:12px;"></i>
+                        </a>
+
+                        <div class="nav-dropdown-menu"
+                             style="right:0; left:auto;">
+
+
+
+
+                            <div style="
+                                            height:1px;
+                                            background:rgba(240,192,64,0.15);
+                                            margin:6px 0;
+                                        "></div>
+
+                            <a class="nav-dropdown-item"
+                               href="/Login"
+                               onclick="sessionStorage.clear()"
+                               style="color:#e07070;">
+
+                                <i class="ti ti-logout"
+                                   style="font-size:13px; margin-right:6px;"></i>
+
+                                Cerrar sesión
+                            </a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+    }
+
     <main class="main-content">
         @RenderBody()
     </main>
+
+    @if (!string.IsNullOrEmpty(Context.Session.GetString("UsuarioId")) && Context.Session.GetString("Rol") != "Administrador")
+    {
+        <a href="/VistaClientes/Carrito" class="floating-cart" title="Ver mi carrito">
+            <i class="ti ti-shopping-cart"></i>
+            @if (totalItems > 0)
+            {
+                <span class="cart-badge">@totalItems</span>
+            }
+        </a>
+    }
+   
+    <script>
+       
+        window.addEventListener("beforeunload", function () {
+            localStorage.setItem("scrollPosition", window.scrollY);
+        });
+
+       
+        window.addEventListener("load", function () {
+            if (localStorage.getItem("scrollPosition") !== null) {
+                window.scrollTo(0, parseInt(localStorage.getItem("scrollPosition")));
+                localStorage.removeItem("scrollPosition"); // Limpia el dato
+            }
+        });
+    </script>
+ 
 
 </body>
 </html>

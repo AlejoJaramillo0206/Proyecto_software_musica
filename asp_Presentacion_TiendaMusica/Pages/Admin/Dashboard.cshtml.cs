@@ -30,7 +30,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
-            // Traer los datos del API y contar
+            
             var productos = await com.Get<List<object>>("Productos/Consultar");
             var clientes = await com.Get<List<object>>("Clientes/Consultar");
             var facturas = await com.Get<List<object>>("Facturas/Consultar");

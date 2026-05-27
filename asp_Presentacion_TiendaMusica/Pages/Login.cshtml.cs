@@ -10,20 +10,17 @@ namespace asp_Presentacion_TiendaMusica.Pages
     {
         [BindProperty]
         public string? Username { get; set; }
-
         [BindProperty]
         public string? Password { get; set; }
-
         public string? ErrorMensaje { get; set; }
 
-        public void OnGet() { }
         [BindProperty(SupportsGet = true)]
         public string? exito { get; set; }
 
+        public void OnGet() { }
 
         public async Task<IActionResult> OnPostAsync()
         {
-
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 ErrorMensaje = "Debes ingresar usuario y contraseña.";
@@ -32,7 +29,7 @@ namespace asp_Presentacion_TiendaMusica.Pages
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
-            // Buscar el usuario por username en el API
+          
             var usuario = await com.Get<Usuarios>(
                 $"Usuarios/ConsultarPorUsername?username={Username}");
 
@@ -42,8 +39,6 @@ namespace asp_Presentacion_TiendaMusica.Pages
                 return Page();
             }
 
-            // Verificar contraseña (comparación simple por ahora,
-            // luego implementamos BCrypt)
             if (usuario.Password != Password)
             {
                 ErrorMensaje = "Usuario o contraseña incorrectos.";
@@ -55,19 +50,29 @@ namespace asp_Presentacion_TiendaMusica.Pages
                 ErrorMensaje = "Tu usuario está inactivo. Contacta al administrador.";
                 return Page();
             }
-           
 
-            // Obtener los roles del usuario
+           
             var roles = await com.Get<List<UsuarioRoles>>(
                 $"UsuarioRoles/ConsultarPorUsuario?usuarioId={usuario.Id}");
-
             var rol = roles?.FirstOrDefault();
             var nombreRol = rol != null
                 ? (await com.Get<Roles>($"Roles/ConsultarPorId?id={rol.RolId}"))?.Nombre
                 : "Vendedor";
 
+       
+            if (usuario.EmpleadoId == null)
+            {
+                var clientes = await com.Get<List<Clientes>>("Clientes/Consultar");
+                var clienteLogin = clientes?.FirstOrDefault(c =>
+                    c.Nombre != null &&
+                    c.Nombre.ToLower() == usuario.Username!.ToLower());
 
-            // Guardar en sesión
+                if (clienteLogin != null)
+                    HttpContext.Session.SetString("ClienteId",
+                        clienteLogin.Id.ToString());
+            }
+
+     
             HttpContext.Session.SetString("UsuarioId", usuario.Id.ToString());
             HttpContext.Session.SetString("Username", usuario.Username!);
             HttpContext.Session.SetString("Rol", nombreRol ?? "Vendedor");
@@ -75,8 +80,7 @@ namespace asp_Presentacion_TiendaMusica.Pages
             if (nombreRol == "Administrador")
                 return RedirectToPage("/Admin/Dashboard");
             else
-                return RedirectToPage("/Index");
-
+                return RedirectToPage("/VistaClientes/DashboardCliente");
         }
     }
 }

@@ -1,0 +1,212 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.VistaClientes.InstrumentosModel
+@{
+    ViewData["Title"] = "Instrumentos - Aurum Sound";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    body {
+        background: #050505;
+    }
+
+    .category-container {
+        min-height: 100vh;
+        padding: 35px;
+        background: radial-gradient(circle at top left, rgba(245,197,66,0.08), transparent 30%), #050505;
+        color: white;
+    }
+
+    .category-header {
+        margin-bottom: 30px;
+    }
+
+        .category-header h1 {
+            font-size: 38px;
+            font-weight: 800;
+            color: #f5c542;
+            margin-bottom: 5px;
+        }
+
+        .category-header p {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+    .tabs-container {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 35px;
+        border-bottom: 1px solid #2a2a2a;
+        padding-bottom: 15px;
+    }
+
+    .tab-btn {
+        background: transparent;
+        border: 1px solid #2a2a2a;
+        color: #9ca3af;
+        padding: 10px 22px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: rgba(245,197,66,0.1);
+            border-color: #f5c542;
+            color: #f5c542;
+        }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+        .tab-content.active-content {
+            display: block;
+        }
+
+    .product-card {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(245,197,66,0.3);
+        }
+
+    .product-image {
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        background: linear-gradient(135deg, #1a1508, #261f0a);
+        color: #f5c542;
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    .product-body {
+        padding: 20px;
+    }
+
+        .product-body h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+    .product-detail {
+        color: #9ca3af;
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+
+    .product-price {
+        font-size: 24px;
+        font-weight: 800;
+        color: #f5c542;
+        margin-bottom: 15px;
+    }
+
+    .btn-buy {
+        width: 100%;
+        padding: 11px;
+        border: none;
+        border-radius: 10px;
+        background: rgba(245,197,66,0.1);
+        border: 1px solid rgba(245,197,66,0.2);
+        color: #f5c542;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+        .btn-buy:hover {
+            background: #f5c542;
+            color: #1a1208;
+        }
+</style>
+
+<div class="category-container">
+    <div class="category-header">
+        <h1>Instrumentos</h1>
+        <p>Filtra por familias de instrumentos para equipar tu talento.</p>
+    </div>
+
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('cuerdas')"><i class="fa-solid fa-guitar"></i> Cuerdas</button>
+        <button class="tab-btn" onclick="switchTab('aire')"><i class="fa-solid fa-gopuram"></i> Viento / Aire</button>
+        <button class="tab-btn" onclick="switchTab('percusion')"><i class="fa-solid fa-drum"></i> Percusión</button>
+    </div>
+
+    <div id="cuerdas" class="tab-content active-content">
+        <div class="products-grid">
+            @foreach (var inst in Model.Cuerdas)
+            {
+                <div class="product-card">
+                    <div class="product-image"><i class="fa-solid fa-guitar"></i></div>
+                    <div class="product-body">
+                        <h3>@inst.Nombre</h3>
+                        <div class="product-detail">Marca: @inst.Marca | Material: @inst.Material | Cuerdas: @inst.CantidadCuerdas</div>
+                        <div class="product-price">$@inst.Precio.ToString("N0")</div>
+                        @await Html.PartialAsync("_FormCarrito", inst)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="aire" class="tab-content">
+        <div class="products-grid">
+            @foreach (var inst in Model.Aire)
+            {
+                <div class="product-card">
+                    <div class="product-image"><i class="fa-solid fa-gopuram"></i></div>
+                    <div class="product-body">
+                        <h3>@inst.Nombre</h3>
+                        <div class="product-detail">Tipo: @inst.Tipo | Afinación: @inst.Afinacion</div>
+                        <div class="product-price">$@inst.Precio.ToString("N0")</div>
+                        @await Html.PartialAsync("_FormCarrito", inst)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="percusion" class="tab-content">
+        <div class="products-grid">
+            @foreach (var inst in Model.Percusion)
+            {
+                <div class="product-card">
+                    <div class="product-image"><i class="fa-solid fa-drum"></i></div>
+                    <div class="product-body">
+                        <h3>@inst.Nombre</h3>
+                        <div class="product-detail">Tipo: @inst.Tipo | Parche: @inst.MaterialParche</div>
+                        <div class="product-price">$@inst.Precio.ToString("N0")</div>
+                        @await Html.PartialAsync("_FormCarrito", inst)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-content'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active-content');
+        event.currentTarget.classList.add('active');
+    }
+</script>

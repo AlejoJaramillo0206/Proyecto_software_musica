@@ -1,0 +1,442 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.VistaClientes.ReseñasModel
+
+@{
+    ViewData["Title"] = "Reseñas";
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    .page-header {
+        margin-bottom: 2rem;
+    }
+
+    .producto-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: #111111;
+        border: 1px solid #2a2a2a;
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 2rem;
+    }
+
+    .producto-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        background: rgba(245,197,66,0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: #f5c542;
+    }
+
+    .producto-nombre {
+        font-size: 18px;
+        font-weight: 700;
+        color: #f0e8d0;
+    }
+
+    .producto-precio {
+        font-size: 14px;
+        color: #f5c542;
+        margin-top: 2px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #f5c542;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Formulario reseña */
+    .form-section {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 2rem;
+    }
+
+    .form-section-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #f5c542;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+
+    .form-label {
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .form-input, .form-textarea {
+        padding: 10px 14px;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        font-size: 14px;
+        background: #0d0d0d;
+        color: #f0e8d0;
+        transition: 0.2s ease;
+    }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #f5c542;
+        }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* Estrellas */
+    .estrellas {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+
+    .estrella-label {
+        cursor: pointer;
+        font-size: 28px;
+        color: #2a2a2a;
+        transition: 0.1s ease;
+    }
+
+    .estrella-input {
+        display: none;
+    }
+
+        .estrella-input:checked ~ label,
+        .estrellas:hover label:hover,
+        .estrellas:hover label:hover ~ label {
+            color: #2a2a2a;
+        }
+
+    .estrellas label:hover,
+    .estrellas label:hover ~ label {
+        color: #2a2a2a;
+    }
+
+    .estrella-input:checked + label,
+    .estrellas:not(:hover) .estrella-input:checked ~ label {
+        color: #f5c542;
+    }
+
+    .estrellas {
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+
+        .estrellas label:hover,
+        .estrellas label:hover ~ label {
+            color: #f5c542 !important;
+        }
+
+    .btn-submit {
+        background: #f5c542;
+        color: #1a1208;
+        border: none;
+        border-radius: 12px;
+        padding: 11px 24px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.2s ease;
+    }
+
+        .btn-submit:hover {
+            background: #e0b030;
+        }
+
+    /* Lista reseñas */
+    .reseña-card {
+        background: #111111;
+        border: 1px solid #2a2a2a;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 14px;
+        transition: 0.2s ease;
+    }
+
+        .reseña-card:hover {
+            border-color: rgba(245,197,66,0.3);
+        }
+
+    .reseña-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+
+    .reseña-titulo {
+        font-size: 15px;
+        font-weight: 700;
+        color: #f0e8d0;
+    }
+
+    .reseña-fecha {
+        font-size: 12px;
+        color: #6a5a3a;
+    }
+
+    .reseña-estrellas {
+        color: #f5c542;
+        font-size: 14px;
+        margin-bottom: 8px;
+        letter-spacing: 2px;
+    }
+
+    .reseña-comentario {
+        font-size: 14px;
+        color: #9ca3af;
+        line-height: 1.6;
+    }
+
+    .badge-verificada {
+        background: rgba(100,180,60,0.15);
+        color: #7ec850;
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+
+    .alert-success {
+        background: rgba(100,180,60,0.12);
+        border: 1px solid rgba(100,180,60,0.25);
+        color: #7ec850;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .error-msg {
+        background: rgba(220,60,60,0.12);
+        border: 1px solid rgba(220,60,60,0.25);
+        color: #e07070;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: #9ca3af;
+    }
+
+        .empty-state i {
+            font-size: 40px;
+            color: #2a2a2a;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+    .promedio-card {
+        background: rgba(245,197,66,0.08);
+        border: 1px solid rgba(245,197,66,0.2);
+        border-radius: 16px;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 1.5rem;
+    }
+
+    .promedio-numero {
+        font-size: 40px;
+        font-weight: 800;
+        color: #f5c542;
+        line-height: 1;
+    }
+
+    .promedio-estrellas {
+        font-size: 20px;
+        color: #f5c542;
+        letter-spacing: 2px;
+    }
+
+    .promedio-total {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-top: 4px;
+    }
+</style>
+
+<!-- Info del producto -->
+@if (Model.Producto != null)
+{
+    <div class="producto-info">
+        <div class="producto-icon">
+            <i class="fa-solid fa-music"></i>
+        </div>
+        <div>
+            <p class="producto-nombre">@Model.Producto.Nombre</p>
+            <p class="producto-precio">
+                $@Model.Producto.Precio.ToString("N0")
+            </p>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.ExitoMensaje))
+{
+    <div class="alert-success">
+        <i class="fa-solid fa-circle-check"></i>
+        @Model.ExitoMensaje
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMensaje))
+{
+    <div class="error-msg">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        @Model.ErrorMensaje
+    </div>
+}
+
+<!-- Promedio -->
+@if (Model.Lista != null && Model.Lista.Any())
+{
+    var promedio = Model.Lista.Average(r => r.Calificacion);
+    var estrellas = string.Concat(Enumerable.Repeat("★",
+        (int)Math.Round(promedio)));
+    var vacias = string.Concat(Enumerable.Repeat("☆",
+        5 - (int)Math.Round(promedio)));
+
+    <div class="promedio-card">
+        <div class="promedio-numero">@promedio.ToString("0.0")</div>
+        <div>
+            <div class="promedio-estrellas">@estrellas@vacias</div>
+            <p class="promedio-total">
+                Basado en @Model.Lista.Count reseña(s)
+            </p>
+        </div>
+    </div>
+}
+
+<!-- Formulario -->
+<div class="form-section">
+    <p class="form-section-title">
+        <i class="fa-solid fa-pen-to-square"></i>
+        Escribe tu reseña
+    </p>
+    <form method="post">
+        <input type="hidden" asp-for="ProductoId" />
+
+        <div class="form-group">
+            <label class="form-label">Calificación</label>
+            <div class="estrellas" id="estrellas">
+                @for (int i = 5; i >= 1; i--)
+                {
+                    <input class="estrella-input" type="radio"
+                           name="Calificacion" id="star@(i)"
+                           value="@i" />
+                    <label class="estrella-label" for="star@(i)">★</label>
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Título</label>
+            <input class="form-input" type="text"
+                   asp-for="Titulo"
+                   placeholder="Ej: Excelente producto" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Comentario</label>
+            <textarea class="form-textarea"
+                      asp-for="Comentario"
+                      placeholder="Cuéntanos tu experiencia..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">
+            <i class="fa-solid fa-paper-plane"></i>
+            Publicar reseña
+        </button>
+    </form>
+</div>
+
+<!-- Lista de reseñas -->
+<h2 class="page-title">
+    <i class="fa-solid fa-comments"></i>
+    Reseñas (@(Model.Lista?.Count ?? 0))
+</h2>
+
+@if (Model.Lista == null || !Model.Lista.Any())
+{
+    <div class="empty-state">
+        <i class="fa-solid fa-comment-slash"></i>
+        <p>Sé el primero en dejar una reseña.</p>
+    </div>
+}
+else
+{
+    @foreach (var reseña in Model.Lista.OrderByDescending(r => r.FechaReseña))
+    {
+        var estrellasReseña = string.Concat(
+            Enumerable.Repeat("★", reseña.Calificacion));
+        var vaciasReseña = string.Concat(
+            Enumerable.Repeat("☆", 5 - reseña.Calificacion));
+
+        <div class="reseña-card">
+            <div class="reseña-header">
+                <div>
+                    <span class="reseña-titulo">@reseña.Titulo</span>
+                    @if (reseña.Verificada)
+                    {
+                        <span class="badge-verificada">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Verificada
+                        </span>
+                    }
+                </div>
+                <span class="reseña-fecha">
+                    @reseña.FechaReseña.ToString("dd/MM/yyyy")
+                </span>
+            </div>
+            <div class="reseña-estrellas">
+                @estrellasReseña@vaciasReseña
+            </div>
+            <p class="reseña-comentario">@reseña.Comentario</p>
+        </div>
+    }
+}

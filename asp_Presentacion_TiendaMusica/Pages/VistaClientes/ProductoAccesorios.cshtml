@@ -1,0 +1,156 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.VistaClientes.AccesoriosModel
+@{
+    ViewData["Title"] = "Accesorios - Aurum Sound";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    body {
+        background: #050505;
+    }
+
+    .category-container {
+        min-height: 100vh;
+        padding: 35px;
+        background: radial-gradient(circle at top left, rgba(245,197,66,0.08), transparent 30%), #050505;
+        color: white;
+    }
+
+    .category-header {
+        margin-bottom: 40px;
+    }
+
+        .category-header h1 {
+            font-size: 38px;
+            font-weight: 800;
+            color: #f5c542;
+            margin-bottom: 5px;
+        }
+
+        .category-header p {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .product-card {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(245,197,66,0.3);
+            box-shadow: 0 12px 30px rgba(245,197,66,0.1);
+        }
+
+    .product-image {
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 65px;
+        background: linear-gradient(135deg, #1a1508, #261f0a);
+        color: #f5c542;
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    .product-body {
+        padding: 22px;
+    }
+
+        .product-body h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+    .product-compat {
+        color: #9ca3af;
+        font-size: 12px;
+        margin-bottom: 12px;
+        min-height: 18px;
+    }
+
+    .product-price {
+        font-size: 26px;
+        font-weight: 800;
+        color: #f5c542;
+        margin-bottom: 18px;
+    }
+
+    .btn-buy {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: rgba(245,197,66,0.1);
+        border: 1px solid rgba(245,197,66,0.2);
+        color: #f5c542;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-buy:hover {
+            background: #f5c542;
+            color: #1a1208;
+            transform: translateY(-1px);
+        }
+
+    @@media(max-width: 992px) {
+        .products-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media(max-width: 600px) {
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="category-container">
+    <div class="category-header">
+        <h1>Complementos y Accesorios</h1>
+        <p>Aquí podras encontrar tus herramientas esenciales para tu rendimiento.</p>
+    </div>
+
+    <div class="products-grid">
+        @foreach (var acc in Model.ListaAccesorios)
+        {
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+                <div class="product-body">
+                    <h3>@acc.Nombre</h3>
+                    <div class="product-compat"><i class="fa-solid fa-circle-info"></i> @acc.Compatibilidad</div>
+                    <div class="product-price">$@acc.Precio.ToString("N0")</div>
+
+                    <form method="post" asp-page-handler="AgregarAlCarrito">
+                        <input type="hidden" name="idProducto" value="@acc.Id" />
+                        <input type="hidden" name="nombre" value="@acc.Nombre" />
+                        <input type="hidden" name="precio" value="@acc.Precio" />
+                        <input type="hidden" name="codigo" value="@acc.Codigo" />
+                        <button type="submit" class="btn-buy">
+                            <i class="fa-solid fa-cart-shopping"></i> Agregar al carrito
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
