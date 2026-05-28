@@ -2,6 +2,22 @@
 @model asp_Presentacion_TiendaMusica.Pages.VistaClientes.AlbumesModel
 @{
     ViewData["Title"] = "Álbumes - Aurum Sound";
+
+    var imagenesAlbumes = new Dictionary<string, string>
+    {
+        { "Midnights",                    "Midnights.png" },
+        { "Renaissance",                  "Renaissance.png" },
+        { "Harrys House",                 "HarrysHouse.png" },
+        { "Back in Black",                "BackInBlack.png" },
+        { "Rumours",                      "Rumours.png" },
+        { "The Dark Side of the Moon",    "TheDarkSideoftheMoon.png" },
+        { "El Ultimo Tour del Mundo",     "ElUltimoTourdelMundo.png" },
+        { "Jose",                         "Jose.png" },
+        { "Legendaddy",                   "Legendaddy.png" },
+        { "La Novena Sinfonia",           "LaNovenaSinfonia.png" },
+        { "Las Cuatro Estaciones",        "LasCuatroEstaciones.png" },
+        { "Requiem en Re Menor",          "RequiemenReMenor.png" },
+    };
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -34,7 +50,6 @@
             font-size: 15px;
         }
 
-    /* FILTROS / TABS ESTILO PREMIUM */
     .tabs-container {
         display: flex;
         gap: 15px;
@@ -61,7 +76,6 @@
             color: #f5c542;
         }
 
-    /* GRID */
     .products-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -99,7 +113,14 @@
         background: linear-gradient(135deg, #1a1508, #261f0a);
         color: #f5c542;
         border-bottom: 1px solid #2a2a2a;
+        overflow: hidden;
     }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
     .product-body {
         padding: 20px;
@@ -130,7 +151,6 @@
     .btn-buy {
         width: 100%;
         padding: 11px;
-        border: none;
         border-radius: 10px;
         background: rgba(245,197,66,0.1);
         border: 1px solid rgba(245,197,66,0.2);
@@ -149,23 +169,35 @@
 
 <div class="category-container">
     <div class="category-header">
-        <h1>Albumes de Alta Gama </h1>
+        <h1>Álbumes de Alta Gama</h1>
         <p>Selecciona tu género musical favorito para filtrar las obras disponibles.</p>
     </div>
 
     <div class="tabs-container">
-        <button class="tab-btn active" onclick="switchTab('rock')"><i class="fa-solid fa-guitar"></i> Rock</button>
-        <button class="tab-btn" onclick="switchTab('pop')"><i class="fa-solid fa-bolt"></i> Pop</button>
-        <button class="tab-btn" onclick="switchTab('reggaeton')"><i class="fa-solid fa-fire"></i> Reggaeton</button>
-        <button class="tab-btn" onclick="switchTab('clasica')"><i class="fa-solid fa-music"></i> Clásica</button>
+        <button class="tab-btn active" onclick="switchTab('rock', event)"><i class="fa-solid fa-guitar"></i> Rock</button>
+        <button class="tab-btn" onclick="switchTab('pop', event)"><i class="fa-solid fa-bolt"></i> Pop</button>
+        <button class="tab-btn" onclick="switchTab('reggaeton', event)"><i class="fa-solid fa-fire"></i> Reggaeton</button>
+        <button class="tab-btn" onclick="switchTab('clasica', event)"><i class="fa-solid fa-music"></i> Clásica</button>
     </div>
 
+    @* ── ROCK ── *@
     <div id="rock" class="tab-content active-content">
         <div class="products-grid">
             @foreach (var album in Model.Rock)
             {
+                var imgRock = imagenesAlbumes.ContainsKey(album.Nombre)
+                ? $"/imagenes/{imagenesAlbumes[album.Nombre]}" : null;
                 <div class="product-card">
-                    <div class="product-image"><i class="fa-solid fa-compact-disc"></i></div>
+                    <div class="product-image">
+                        @if (imgRock != null)
+                        {
+                            <img src="@imgRock" alt="@album.Nombre" />
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-compact-disc"></i>
+                        }
+                    </div>
                     <div class="product-body">
                         <h3>@album.Nombre</h3>
                         <div class="product-detail">Autor: @album.Autor | Subgénero: @album.SubgeneroRock</div>
@@ -177,12 +209,24 @@
         </div>
     </div>
 
+    @* ── POP ── *@
     <div id="pop" class="tab-content">
         <div class="products-grid">
             @foreach (var album in Model.Pop)
             {
+                var imgPop = imagenesAlbumes.ContainsKey(album.Nombre)
+                ? $"/imagenes/{imagenesAlbumes[album.Nombre]}" : null;
                 <div class="product-card">
-                    <div class="product-image"><i class="fa-solid fa-record-vinyl"></i></div>
+                    <div class="product-image">
+                        @if (imgPop != null)
+                        {
+                            <img src="@imgPop" alt="@album.Nombre" />
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-record-vinyl"></i>
+                        }
+                    </div>
                     <div class="product-body">
                         <h3>@album.Nombre</h3>
                         <div class="product-detail">Sello: @album.SelloDiscografico | Canciones: @album.Cantidad_Canciones</div>
@@ -194,12 +238,24 @@
         </div>
     </div>
 
+    @* ── REGGAETON ── *@
     <div id="reggaeton" class="tab-content">
         <div class="products-grid">
             @foreach (var album in Model.Reggaeton)
             {
+                var imgReg = imagenesAlbumes.ContainsKey(album.Nombre)
+                ? $"/imagenes/{imagenesAlbumes[album.Nombre]}" : null;
                 <div class="product-card">
-                    <div class="product-image"><i class="fa-solid fa-radio"></i></div>
+                    <div class="product-image">
+                        @if (imgReg != null)
+                        {
+                            <img src="@imgReg" alt="@album.Nombre" />
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-radio"></i>
+                        }
+                    </div>
                     <div class="product-body">
                         <h3>@album.Nombre</h3>
                         <div class="product-detail">Productor: @album.Productor | Estilo: @album.EstiloReggaeton</div>
@@ -211,12 +267,24 @@
         </div>
     </div>
 
+    @* ── CLASICA ── *@
     <div id="clasica" class="tab-content">
         <div class="products-grid">
             @foreach (var album in Model.Clasicos)
             {
+                var imgCla = imagenesAlbumes.ContainsKey(album.Nombre)
+                ? $"/imagenes/{imagenesAlbumes[album.Nombre]}" : null;
                 <div class="product-card">
-                    <div class="product-image"><i class="fa-solid fa-sliders"></i></div>
+                    <div class="product-image">
+                        @if (imgCla != null)
+                        {
+                            <img src="@imgCla" alt="@album.Nombre" />
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-sliders"></i>
+                        }
+                    </div>
                     <div class="product-body">
                         <h3>@album.Nombre</h3>
                         <div class="product-detail">Compositor: @album.Compositor | Época: @album.Epoca_Musical</div>
@@ -230,13 +298,9 @@
 </div>
 
 <script>
-    function switchTab(tabId) {
-        // Ocultar todos los contenidos
+    function switchTab(tabId, event) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-content'));
-        // Quitar estado activo a botones
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-        // Mostrar tab seleccionada
         document.getElementById(tabId).classList.add('active-content');
         event.currentTarget.classList.add('active');
     }

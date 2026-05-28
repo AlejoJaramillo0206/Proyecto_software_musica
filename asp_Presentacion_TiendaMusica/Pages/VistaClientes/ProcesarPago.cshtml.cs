@@ -147,8 +147,15 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
             };
             await com.Post<Pagos>("Pagos/Guardar", pago);
 
+
+            var comprasActuales = int.Parse(
+                HttpContext.Session.GetString("TotalCompras") ?? "0");
+            HttpContext.Session.SetString("TotalCompras", (comprasActuales + 1).ToString());
+
             // 4. Vaciar el carrito
             HttpContext.Session.Remove("Carrito");
+
+   
 
             // 5. Guardar el Id de la factura en sesion para mostrar confirmacion
             HttpContext.Session.SetString("UltimaFactura", facturaCreada.Id.ToString());

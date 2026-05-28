@@ -93,8 +93,8 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
 
             await com.Put<lib_servicios_TiendaMusica.Modelos.Clientes>(
                 "Clientes/Editar", cliente);
-
-            HttpContext.Session.SetString("Username", Nombre!);
+         
+            HttpContext.Session.SetString("PerfilCompleto", "true");
             ExitoMensaje = "Perfil actualizado correctamente.";
             return Page();
         }

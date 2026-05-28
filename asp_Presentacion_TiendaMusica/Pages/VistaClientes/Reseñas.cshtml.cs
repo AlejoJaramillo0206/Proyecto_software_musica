@@ -9,17 +9,15 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
     public class ReseñasModel : PageModel
     {
         public List<Reseñas>? Lista { get; set; }
-        public Productos? Producto { get; set; }
 
         [BindProperty] public int Calificacion { get; set; }
         [BindProperty] public string? Titulo { get; set; }
         [BindProperty] public string? Comentario { get; set; }
-        [BindProperty] public int ProductoId { get; set; }
 
         public string? ErrorMensaje { get; set; }
         public string? ExitoMensaje { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int productoId, string? exito)
+        public async Task<IActionResult> OnGetAsync(string? exito)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
                 return RedirectToPage("/Login");
@@ -28,14 +26,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 ExitoMensaje = "¡Reseña publicada correctamente!";
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
-
-            Producto = await com.Get<Productos>(
-                $"Productos/ConsultarPorId?id={productoId}");
-
-            Lista = await com.Get<List<Reseñas>>(
-                $"Reseñas/ConsultarPorProducto?productoId={productoId}");
-
-            ProductoId = productoId;
+            Lista = await com.Get<List<Reseñas>>("Reseñas/Consultar");
 
             return Page();
         }
@@ -62,12 +53,13 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
 
             if (Calificacion < 1 || Calificacion > 5)
             {
-                ErrorMensaje = "La calificación debe ser entre 1 y 5.";
+                ErrorMensaje = "Selecciona una calificación entre 1 y 5 estrellas.";
                 return Page();
             }
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
+            // ProductoId = 1 como valor por defecto ya que la reseña es general
             var reseña = new Reseñas
             {
                 Calificacion = Calificacion,
@@ -76,13 +68,13 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 FechaReseña = DateTime.Now,
                 Verificada = false,
                 ClienteId = clienteId,
-                ProductoId = ProductoId
+                ProductoId = 1
             };
 
             await com.Post<Reseñas>("Reseñas/Guardar", reseña);
 
             return RedirectToPage("/VistaClientes/Reseñas",
-                new { productoId = ProductoId, exito = "true" });
+                new { exito = "true" });
         }
     }
 }

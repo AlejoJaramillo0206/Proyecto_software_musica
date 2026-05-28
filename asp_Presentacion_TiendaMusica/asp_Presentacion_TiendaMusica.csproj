@@ -11,8 +11,4 @@
     <ProjectReference Include="..\lib_servicios_TiendaMusica\lib_servicios_TiendaMusica.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\imagenes\" />
-  </ItemGroup>
-
 </Project>

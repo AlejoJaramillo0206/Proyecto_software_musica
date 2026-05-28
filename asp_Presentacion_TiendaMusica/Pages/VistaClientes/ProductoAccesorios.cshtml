@@ -2,6 +2,13 @@
 @model asp_Presentacion_TiendaMusica.Pages.VistaClientes.AccesoriosModel
 @{
     ViewData["Title"] = "Accesorios - Aurum Sound";
+
+    var imagenesAccesorios = new Dictionary<string, string>
+    {
+        { "Correa Levys Cuero",  "CorreaLevysCuero.png" },
+        { "Pedal Boss DS-1",     "PedalBossDS-1.png" },
+        { "Afinador Korg CA-50", "AfinadorKorgCA-50.png" },
+    };
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -63,7 +70,14 @@
         background: linear-gradient(135deg, #1a1508, #261f0a);
         color: #f5c542;
         border-bottom: 1px solid #2a2a2a;
+        overflow: hidden;
     }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
     .product-body {
         padding: 22px;
@@ -125,21 +139,30 @@
 <div class="category-container">
     <div class="category-header">
         <h1>Complementos y Accesorios</h1>
-        <p>Aquí podras encontrar tus herramientas esenciales para tu rendimiento.</p>
+        <p>Aquí podrás encontrar tus herramientas esenciales para tu rendimiento.</p>
     </div>
 
     <div class="products-grid">
         @foreach (var acc in Model.ListaAccesorios)
         {
+            var imgAcc = imagenesAccesorios.ContainsKey(acc.Nombre)
+            ? $"/imagenes/{imagenesAccesorios[acc.Nombre]}" : null;
+
             <div class="product-card">
                 <div class="product-image">
-                    <i class="fa-solid fa-sliders"></i>
+                    @if (imgAcc != null)
+                    {
+                        <img src="@imgAcc" alt="@acc.Nombre" />
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-sliders"></i>
+                    }
                 </div>
                 <div class="product-body">
                     <h3>@acc.Nombre</h3>
                     <div class="product-compat"><i class="fa-solid fa-circle-info"></i> @acc.Compatibilidad</div>
                     <div class="product-price">$@acc.Precio.ToString("N0")</div>
-
                     <form method="post" asp-page-handler="AgregarAlCarrito">
                         <input type="hidden" name="idProducto" value="@acc.Id" />
                         <input type="hidden" name="nombre" value="@acc.Nombre" />

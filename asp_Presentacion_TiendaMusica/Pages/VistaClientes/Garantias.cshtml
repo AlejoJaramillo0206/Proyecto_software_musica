@@ -1,0 +1,218 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.VistaClientes.GarantiasModel
+
+@{
+    ViewData["Title"] = "Mis Garantías";
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    .page-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #f5c542;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .garantia-card {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+        transition: 0.2s ease;
+    }
+
+        .garantia-card:hover {
+            border-color: rgba(245,197,66,0.3);
+        }
+
+    .garantia-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+    }
+
+    .garantia-id {
+        font-size: 16px;
+        font-weight: 700;
+        color: #f0e8d0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .badge-vigente {
+        background: rgba(100,180,60,0.15);
+        color: #7ec850;
+        font-size: 12px;
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .badge-vencida {
+        background: rgba(220,60,60,0.15);
+        color: #e07070;
+        font-size: 12px;
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .garantia-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: #9ca3af;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .info-value {
+        font-size: 14px;
+        color: #f0e8d0;
+        font-weight: 500;
+    }
+
+    .descripcion-box {
+        margin-top: 14px;
+        padding: 12px 16px;
+        background: rgba(245,197,66,0.05);
+        border: 1px solid rgba(245,197,66,0.1);
+        border-radius: 12px;
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .error-msg {
+        background: rgba(220,60,60,0.12);
+        border: 1px solid rgba(220,60,60,0.25);
+        color: #e07070;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #9ca3af;
+    }
+
+        .empty-state i {
+            font-size: 56px;
+            color: #2a2a2a;
+            margin-bottom: 1rem;
+            display: block;
+        }
+</style>
+
+<h1 class="page-title">
+    <i class="fa-solid fa-shield-halved"></i>
+    Mis Garantías
+</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMensaje))
+{
+    <div class="error-msg">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        @Model.ErrorMensaje
+    </div>
+}
+else if (Model.Lista == null || !Model.Lista.Any())
+{
+    <div class="empty-state">
+        <i class="fa-solid fa-shield-halved"></i>
+        <p>No tienes garantías registradas.</p>
+    </div>
+}
+else
+{
+    @foreach (var garantia in Model.Lista)
+    {
+        var vigente = garantia.FechaFin >= DateTime.Now;
+        <div class="garantia-card">
+            <div class="garantia-header">
+                <p class="garantia-id">
+                    <i class="fa-solid fa-shield-halved"
+                       style="color:#f5c542;"></i>
+                    Garantía #@garantia.Id
+                </p>
+                @if (vigente)
+                {
+                    <span class="badge-vigente">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Vigente
+                    </span>
+                }
+                else
+                {
+                    <span class="badge-vencida">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        Vencida
+                    </span>
+                }
+            </div>
+
+            <div class="garantia-info">
+                <div class="info-item">
+                    <span class="info-label">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                        Fecha inicio
+                    </span>
+                    <span class="info-value">
+                        @garantia.FechaInicio.ToString("dd/MM/yyyy")
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                        Fecha fin
+                    </span>
+                    <span class="info-value">
+                        @garantia.FechaFin.ToString("dd/MM/yyyy")
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">
+                        <i class="fa-solid fa-file-invoice"></i>
+                        Factura
+                    </span>
+                    <span class="info-value">#@garantia.FacturaId</span>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(garantia.DescripcionDaño))
+            {
+                <div class="descripcion-box">
+                    <i class="fa-solid fa-comment"
+                       style="margin-right:6px; color:#f5c542;"></i>
+                    @garantia.DescripcionDaño
+                </div>
+            }
+        </div>
+    }
+}

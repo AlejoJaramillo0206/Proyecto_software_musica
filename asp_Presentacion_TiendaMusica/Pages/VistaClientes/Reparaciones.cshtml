@@ -1,0 +1,226 @@
+﻿@page
+@model asp_Presentacion_TiendaMusica.Pages.VistaClientes.ReparacionesModel
+
+@{
+    ViewData["Title"] = "Mis Reparaciones";
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+    .page-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #f5c542;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .reparacion-card {
+        background: linear-gradient(145deg, #111111, #1a1a1a);
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+        transition: 0.2s ease;
+    }
+
+        .reparacion-card:hover {
+            border-color: rgba(245,197,66,0.3);
+        }
+
+    .reparacion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+    }
+
+    .reparacion-id {
+        font-size: 16px;
+        font-weight: 700;
+        color: #f0e8d0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .badge-pendiente {
+        background: rgba(245,197,66,0.15);
+        color: #f5c542;
+        font-size: 12px;
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .badge-proceso {
+        background: rgba(100,149,237,0.15);
+        color: #6495ED;
+        font-size: 12px;
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .badge-entregado {
+        background: rgba(100,180,60,0.15);
+        color: #7ec850;
+        font-size: 12px;
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .reparacion-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: #9ca3af;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .info-value {
+        font-size: 14px;
+        color: #f0e8d0;
+        font-weight: 500;
+    }
+
+        .info-value.gold {
+            color: #f5c542;
+        }
+
+    .descripcion-box {
+        margin-top: 14px;
+        padding: 12px 16px;
+        background: rgba(245,197,66,0.05);
+        border: 1px solid rgba(245,197,66,0.1);
+        border-radius: 12px;
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .error-msg {
+        background: rgba(220,60,60,0.12);
+        border: 1px solid rgba(220,60,60,0.25);
+        color: #e07070;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #9ca3af;
+    }
+
+        .empty-state i {
+            font-size: 56px;
+            color: #2a2a2a;
+            margin-bottom: 1rem;
+            display: block;
+        }
+</style>
+
+<h1 class="page-title">
+    <i class="fa-solid fa-screwdriver-wrench"></i>
+    Mis Reparaciones
+</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMensaje))
+{
+    <div class="error-msg">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        @Model.ErrorMensaje
+    </div>
+}
+else if (Model.Lista == null || !Model.Lista.Any())
+{
+    <div class="empty-state">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        <p>No tienes reparaciones registradas.</p>
+    </div>
+}
+else
+{
+    @foreach (var rep in Model.Lista)
+    {
+        var badgeClass = rep.Estado switch
+        {
+            "En proceso" => "badge-proceso",
+            "Entregado" => "badge-entregado",
+            _ => "badge-pendiente"
+        };
+
+        <div class="reparacion-card">
+            <div class="reparacion-header">
+                <p class="reparacion-id">
+                    <i class="fa-solid fa-screwdriver-wrench"
+                       style="color:#f5c542;"></i>
+                    Reparación #@rep.Id
+                </p>
+                <span class="@badgeClass">@rep.Estado</span>
+            </div>
+
+            <div class="reparacion-info">
+                <div class="info-item">
+                    <span class="info-label">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                        Fecha ingreso
+                    </span>
+                    <span class="info-value">
+                        @rep.FechaIngreso.ToString("dd/MM/yyyy")
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        Fecha entrega
+                    </span>
+                    <span class="info-value">
+                        @rep.FechaEntrega.ToString("dd/MM/yyyy")
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                        Costo
+                    </span>
+                    <span class="info-value gold">
+                        $@rep.Costo.ToString("N0")
+                    </span>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(rep.Descripcion))
+            {
+                <div class="descripcion-box">
+                    <i class="fa-solid fa-comment"
+                       style="margin-right:6px; color:#f5c542;"></i>
+                    @rep.Descripcion
+                </div>
+            }
+        </div>
+    }
+}

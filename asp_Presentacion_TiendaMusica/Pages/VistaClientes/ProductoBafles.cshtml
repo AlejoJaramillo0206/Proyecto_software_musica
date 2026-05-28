@@ -2,6 +2,13 @@
 @model asp_Presentacion_TiendaMusica.Pages.VistaClientes.BaflesModel
 @{
     ViewData["Title"] = "Sistemas de Audio - Aurum Sound";
+
+    var imagenesBafles = new Dictionary<string, string>
+    {
+        { "Bafle JBL EON615",   "BafleJBLEON615.png" },
+        { "Bafle QSC K12.2",    "BafleQSCK12.2.png" },
+        { "Bafle Yamaha DBR15", "BafleYamahaDBR15.png" },
+    };
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -63,7 +70,14 @@
         background: linear-gradient(135deg, #1a1508, #261f0a);
         color: #f5c542;
         border-bottom: 1px solid #2a2a2a;
+        overflow: hidden;
     }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
     .product-body {
         padding: 22px;
@@ -132,9 +146,19 @@
     <div class="products-grid">
         @foreach (var bafle in Model.ListaBafles)
         {
+            var imgBafle = imagenesBafles.ContainsKey(bafle.Nombre)
+            ? $"/imagenes/{imagenesBafles[bafle.Nombre]}" : null;
+
             <div class="product-card">
                 <div class="product-image">
-                    <i class="fa-solid fa-volume-high"></i>
+                    @if (imgBafle != null)
+                    {
+                        <img src="@imgBafle" alt="@bafle.Nombre" />
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-volume-high"></i>
+                    }
                 </div>
                 <div class="product-body">
                     <h3>@bafle.Nombre</h3>
@@ -143,7 +167,6 @@
                         <span><i class="fa-solid fa-shuttle-space"></i> @bafle.Tamaño</span>
                     </div>
                     <div class="product-price">$@bafle.Precio.ToString("N0")</div>
-
                     <form method="post" asp-page-handler="AgregarAlCarrito">
                         <input type="hidden" name="idProducto" value="@bafle.Id" />
                         <input type="hidden" name="nombre" value="@bafle.Nombre" />

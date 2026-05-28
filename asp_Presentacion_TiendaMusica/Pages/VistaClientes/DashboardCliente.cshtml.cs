@@ -45,17 +45,18 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
             if (accesorios != null) ProductosDestacados.AddRange(accesorios);
             if (instrumentos != null) ProductosDestacados.AddRange(instrumentos);
 
-            // Corregido: Contamos todos los productos antes de recortar la lista para los destacados
-            TotalProductos = ProductosDestacados.Count;
+            var productos = await com.Get<List<object>>("Productos/Consultar");
 
-            // Tomamos solo 6 para mostrar en el Dashboard
+            TotalProductos = productos?.Count ?? 0;
+
+
             ProductosDestacados = ProductosDestacados.Take(6).ToList();
 
-            TotalCompras = 0;
-            TotalFavoritos = 0;
+            TotalCompras = int.Parse(
+            HttpContext.Session.GetString("TotalCompras") ?? "0");
             TotalGarantias = 0;
 
-            // Leer la cantidad del carrito para la burbuja flotante
+            
             var cartJson = HttpContext.Session.GetString("Carrito");
             if (!string.IsNullOrEmpty(cartJson))
             {

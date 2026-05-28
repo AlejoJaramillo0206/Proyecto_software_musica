@@ -59,7 +59,7 @@ namespace asp_Presentacion_TiendaMusica.Pages
                 ? (await com.Get<Roles>($"Roles/ConsultarPorId?id={rol.RolId}"))?.Nombre
                 : "Vendedor";
 
-       
+
             if (usuario.EmpleadoId == null)
             {
                 var clientes = await com.Get<List<Clientes>>("Clientes/Consultar");
@@ -70,9 +70,22 @@ namespace asp_Presentacion_TiendaMusica.Pages
                 if (clienteLogin != null)
                     HttpContext.Session.SetString("ClienteId",
                         clienteLogin.Id.ToString());
+               
+                if (clienteLogin != null)
+                {
+                    HttpContext.Session.SetString("ClienteId", clienteLogin.Id.ToString());
+
+                    if (clienteLogin.Cedula != "000000000" &&
+                        clienteLogin.Profesion != "Sin definir" &&
+                        clienteLogin.Correo != "Sin definir")
+                    {
+                        HttpContext.Session.SetString("PerfilCompleto", "true");
+                    }
+                }
             }
 
-     
+
+
             HttpContext.Session.SetString("UsuarioId", usuario.Id.ToString());
             HttpContext.Session.SetString("Username", usuario.Username!);
             HttpContext.Session.SetString("Rol", nombreRol ?? "Vendedor");

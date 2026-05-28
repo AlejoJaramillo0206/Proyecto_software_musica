@@ -48,32 +48,31 @@ namespace lib_servicios_TiendaMusica.Implementaciones
 
         public Clientes Editar(Clientes cliente)
         {
+
+
+   
+            _conexion.Database.ExecuteSqlRaw(
+                "UPDATE Personas SET Nombre={0}, Cedula={1}, Direccion={2}, Genero={3} WHERE Id={4}",
+                cliente.Nombre ?? "",
+                cliente.Cedula ?? "",
+                cliente.Direccion ?? "",
+                cliente.Genero ?? "",
+                cliente.Id);
+
             
-            var clienteDb = _conexion.Clientes.FirstOrDefault(x => x.Id == cliente.Id);
+            _conexion.Database.ExecuteSqlRaw(
+                "UPDATE Clientes SET Correo={0}, Fecha_Nacimiento={1}, Profesion={2}, EsMusico={3}, MarcaFav={4} WHERE Id={5}",
+                cliente.Correo ?? "",
+                cliente.Fecha_Nacimiento,
+                cliente.Profesion ?? "",
+                cliente.EsMusico,
+                cliente.MarcaFav ?? "",
+                cliente.Id);
 
-            if (clienteDb != null)
-            {
-                
-                clienteDb.Correo = cliente.Correo;
-                clienteDb.Fecha_Nacimiento = cliente.Fecha_Nacimiento;
-                clienteDb.Profesion = cliente.Profesion;
-                clienteDb.EsMusico = cliente.EsMusico;
-                clienteDb.MarcaFav = cliente.MarcaFav;
+            new AuditoriasAplicacion(_conexion).Registrar("Clientes", "Editar",
+                $"Se editó el cliente {cliente.Nombre} con Id {cliente.Id}", null);
 
-               
-                _conexion.SaveChanges();
-
-        
-                var auditoria = new AuditoriasAplicacion(_conexion);
-                auditoria.Registrar("Clientes", "Editar", $"Se editó el cliente {clienteDb.Nombre} con Id {clienteDb.Id}", null);
-
-                return clienteDb;
-            }
-            else
-            {
-               
-                throw new Exception($"No se encontró ningún cliente con el ID {cliente.Id} para actualizar.");
-            }
+            return cliente;
         }
 
    
@@ -98,7 +97,7 @@ namespace lib_servicios_TiendaMusica.Implementaciones
                 }
 
                 new AuditoriasAplicacion(_conexion).Registrar("Clientes", "Eliminar",
-                    $"Se eliminó el cliente con Id {id}", null);
+                    $"Se eliminó el cliente {cliente.Nombre}", null);
 
                 return true;
         

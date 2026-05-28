@@ -2,6 +2,19 @@
 @model asp_Presentacion_TiendaMusica.Pages.VistaClientes.InstrumentosModel
 @{
     ViewData["Title"] = "Instrumentos - Aurum Sound";
+
+    var imagenesInstrumentos = new Dictionary<string, string>
+    {
+        { "Guitarra Fender Stratocaster", "GuitarraFenderStratocaster.png" },
+        { "Guitarra Gibson Les Paul",     "GuitarraGibsonLesPaul.png" },
+        { "Bajo Fender Jazz Bass",        "BajoFenderJazzBass.png" },
+        { "Saxofon Alto Yamaha",          "SaxofonAltoYamaha.png" },
+        { "Trompeta Bach Stradivarius",   "TrompetaBachStradivarius.png" },
+        { "Flauta Traversa Pearl",        "FlautaTraversaPearl.png" },
+        { "Bateria Pearl Export",         "BateriaPearlExport.png" },
+        { "Cajon Flamenco Meinl",         "CajonFlamencoMeinl.png" },
+        { "Congas LP Aspire",             "CongasLPAspire.png" },
+    };
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -95,7 +108,14 @@
         background: linear-gradient(135deg, #1a1508, #261f0a);
         color: #f5c542;
         border-bottom: 1px solid #2a2a2a;
+        overflow: hidden;
     }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
     .product-body {
         padding: 20px;
@@ -145,17 +165,29 @@
     </div>
 
     <div class="tabs-container">
-        <button class="tab-btn active" onclick="switchTab('cuerdas')"><i class="fa-solid fa-guitar"></i> Cuerdas</button>
-        <button class="tab-btn" onclick="switchTab('aire')"><i class="fa-solid fa-gopuram"></i> Viento / Aire</button>
-        <button class="tab-btn" onclick="switchTab('percusion')"><i class="fa-solid fa-drum"></i> Percusión</button>
+        <button class="tab-btn active" onclick="switchTab('cuerdas', event)"><i class="fa-solid fa-guitar"></i> Cuerdas</button>
+        <button class="tab-btn" onclick="switchTab('aire', event)"><i class="fa-solid fa-gopuram"></i> Viento / Aire</button>
+        <button class="tab-btn" onclick="switchTab('percusion', event)"><i class="fa-solid fa-drum"></i> Percusión</button>
     </div>
 
+    @* ── CUERDAS ── *@
     <div id="cuerdas" class="tab-content active-content">
         <div class="products-grid">
             @foreach (var inst in Model.Cuerdas)
             {
+                var imgCuerdas = imagenesInstrumentos.ContainsKey(inst.Nombre)
+                ? $"/imagenes/{imagenesInstrumentos[inst.Nombre]}" : null;
                 <div class="product-card">
-                    <div class="product-image"><i class="fa-solid fa-guitar"></i></div>
+                    <div class="product-image">
+                        @if (imgCuerdas != null)
+                        {
+                            <img src="@imgCuerdas" alt="@inst.Nombre" />
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-guitar"></i>
+                        }
+                    </div>
                     <div class="product-body">
                         <h3>@inst.Nombre</h3>
                         <div class="product-detail">Marca: @inst.Marca | Material: @inst.Material | Cuerdas: @inst.CantidadCuerdas</div>
@@ -167,12 +199,24 @@
         </div>
     </div>
 
+    @* ── AIRE ── *@
     <div id="aire" class="tab-content">
         <div class="products-grid">
             @foreach (var inst in Model.Aire)
             {
+                var imgAire = imagenesInstrumentos.ContainsKey(inst.Nombre)
+                ? $"/imagenes/{imagenesInstrumentos[inst.Nombre]}" : null;
                 <div class="product-card">
-                    <div class="product-image"><i class="fa-solid fa-gopuram"></i></div>
+                    <div class="product-image">
+                        @if (imgAire != null)
+                        {
+                            <img src="@imgAire" alt="@inst.Nombre" />
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-gopuram"></i>
+                        }
+                    </div>
                     <div class="product-body">
                         <h3>@inst.Nombre</h3>
                         <div class="product-detail">Tipo: @inst.Tipo | Afinación: @inst.Afinacion</div>
@@ -184,12 +228,24 @@
         </div>
     </div>
 
+    @* ── PERCUSION ── *@
     <div id="percusion" class="tab-content">
         <div class="products-grid">
             @foreach (var inst in Model.Percusion)
             {
+                var imgPercusion = imagenesInstrumentos.ContainsKey(inst.Nombre)
+                ? $"/imagenes/{imagenesInstrumentos[inst.Nombre]}" : null;
                 <div class="product-card">
-                    <div class="product-image"><i class="fa-solid fa-drum"></i></div>
+                    <div class="product-image">
+                        @if (imgPercusion != null)
+                        {
+                            <img src="@imgPercusion" alt="@inst.Nombre" />
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-drum"></i>
+                        }
+                    </div>
                     <div class="product-body">
                         <h3>@inst.Nombre</h3>
                         <div class="product-detail">Tipo: @inst.Tipo | Parche: @inst.MaterialParche</div>
@@ -203,7 +259,7 @@
 </div>
 
 <script>
-    function switchTab(tabId) {
+    function switchTab(tabId, event) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-content'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(tabId).classList.add('active-content');

@@ -34,7 +34,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
             }
         }
 
-        // NUEVO: Botón de Sumar (+)
+       
         public IActionResult OnPostIncrementar(int idProducto)
         {
             var cartJson = HttpContext.Session.GetString("Carrito");
@@ -53,7 +53,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
             return RedirectToPage();
         }
 
-        // NUEVO: Botón de Restar (-)
+       
         public IActionResult OnPostDecrementar(int idProducto)
         {
             var cartJson = HttpContext.Session.GetString("Carrito");
