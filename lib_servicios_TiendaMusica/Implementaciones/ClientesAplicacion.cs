@@ -78,29 +78,50 @@ namespace lib_servicios_TiendaMusica.Implementaciones
    
             public bool Eliminar(int id)
             {
-                var usuario = _conexion.Usuarios!
-                    .FirstOrDefault(u => u.EmpleadoId == null &&
-                        _conexion.Clientes!.Any(c => c.Id == id));
 
-                var cliente = Obtener(id);
-                _conexion.Clientes!.Remove(cliente);
-                _conexion.SaveChanges();
+         
+
+        
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM DetalleFacturas WHERE FacturaId IN (SELECT Id FROM Facturas WHERE ClienteId = {0})", id);
+
+         
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Pagos WHERE FacturaId IN (SELECT Id FROM Facturas WHERE ClienteId = {0})", id);
 
           
-                var persona = _conexion.Personas!
-                    .FirstOrDefault(p => p.Id == id);
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Garantias WHERE ClienteId = {0}", id);
 
-                if (persona != null)
-                {
-                    _conexion.Personas!.Remove(persona);
-                    _conexion.SaveChanges();
-                }
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Facturas WHERE ClienteId = {0}", id);
 
-                new AuditoriasAplicacion(_conexion).Registrar("Clientes", "Eliminar",
-                    $"Se eliminó el cliente {cliente.Nombre}", null);
+          
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Reparaciones WHERE ClienteId = {0}", id);
 
-                return true;
-        
-            }
+         
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Reseñas WHERE ClienteId = {0}", id);
+
+       
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM UsuarioRoles WHERE UsuarioId IN (SELECT Id FROM Usuarios WHERE EmpleadoId IS NULL AND Id = {0})", id);
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Usuarios WHERE EmpleadoId IS NULL AND Id = {0}", id);
+
+       
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Clientes WHERE Id = {0}", id);
+
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Personas WHERE Id = {0}", id);
+
+            new AuditoriasAplicacion(_conexion).Registrar("Clientes", "Eliminar",
+                $"Se eliminó el cliente con Id {id}", null);
+
+            return true;
+
+        }
     }
 }

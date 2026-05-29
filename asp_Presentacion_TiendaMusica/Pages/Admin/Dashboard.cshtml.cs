@@ -20,6 +20,15 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
         [ResponseCache(NoStore = true, Duration = 0)]
         public async Task<IActionResult> OnGetAsync()
         {
+            var variable_session = HttpContext.Session.GetString("UsuarioId");
+            if (String.IsNullOrEmpty(variable_session))
+            {
+                HttpContext.Response.Redirect("/Login");
+                return Page();
+            }
+
+
+
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
                 return RedirectToPage("/Login");
 

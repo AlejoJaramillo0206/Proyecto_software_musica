@@ -289,7 +289,7 @@
     </div>
 }
 
-<!-- Promedio general -->
+
 @if (Model.Lista != null && Model.Lista.Any())
 {
     var promedio = Model.Lista.Average(r => r.Calificacion);
@@ -305,7 +305,7 @@
     </div>
 }
 
-<!-- Formulario -->
+
 <div class="form-section">
     <p class="form-section-title">
         <i class="fa-solid fa-pen-to-square"></i>
@@ -347,7 +347,7 @@
     </form>
 </div>
 
-<!-- Lista -->
+
 <p class="seccion-title">
     <i class="fa-solid fa-comments"></i>
     Lo que dicen nuestros clientes (@(Model.Lista?.Count ?? 0))
@@ -372,6 +372,7 @@ else
         <div class="reseña-card">
             <div class="reseña-header">
                 <div>
+                  
                     <span class="reseña-titulo">@reseña.Titulo</span>
                     @if (reseña.Verificada)
                     {

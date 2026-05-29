@@ -14,7 +14,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
         public async Task<IActionResult> OnGetAsync(string? entidad, string? accion)
         {
-            // Proteger la pagina
+          
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
                 return RedirectToPage("/Login");
 
@@ -23,10 +23,9 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
-            // Traer todas las auditorias
+           
             Lista = await com.Get<List<Auditorias>>("Auditorias/Consultar");
 
-            // Aplicar filtros si vienen en la URL
             if (!string.IsNullOrEmpty(entidad))
             {
                 FiltroEntidad = entidad;

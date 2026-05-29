@@ -12,6 +12,6 @@ public class Clientes
         IConexion conexion = new Conexion();
         conexion.string_conexion = "server=localhost; database=proyecto_TiendaMusica_Software; Integrated Security=True;TrustServerCertificate=true;";
         var lista = conexion.Clientes!.ToList();
-      
+        
     }
 }

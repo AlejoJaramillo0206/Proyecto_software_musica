@@ -204,17 +204,17 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label class="form-label">
-                        <i class="fa-solid fa-user"></i> Nombre completo
+                        <i class="fa-solid fa-user" ></i> Nombre completo
                     </label>
-                    <input class="form-input" type="text"
+                    <input class="form-input" type="text" required
                            asp-for="Nombre"
                            placeholder="Ej: Carlos Pérez" />
                 </div>
                 <div class="form-group">
                     <label class="form-label">
-                        <i class="fa-solid fa-id-card"></i> Cédula
+                        <i class="fa-solid fa-id-card" ></i> Cédula
                     </label>
-                    <input class="form-input" type="text"
+                    <input class="form-input" type="number" required
                            asp-for="Cedula"
                            placeholder="Ej: 1234567890" />
                 </div>
@@ -222,7 +222,7 @@
                     <label class="form-label">
                         <i class="fa-solid fa-location-dot"></i> Dirección
                     </label>
-                    <input class="form-input" type="text"
+                    <input class="form-input" type="text" required
                            asp-for="Direccion"
                            placeholder="Ej: Calle 10 #20-30" />
                 </div>
@@ -230,7 +230,7 @@
                     <label class="form-label">
                         <i class="fa-solid fa-venus-mars"></i> Género
                     </label>
-                    <select class="form-select" asp-for="Genero">
+                    <select class="form-select" asp-for="Genero" required>
                         <option value="">Seleccionar...</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Femenino">Femenino</option>
@@ -251,7 +251,7 @@
                     <label class="form-label">
                         <i class="fa-solid fa-envelope"></i> Correo electrónico
                     </label>
-                    <input class="form-input" type="email"
+                    <input class="form-input" type="email" required
                            asp-for="Correo"
                            placeholder="Ej: carlos@email.com" />
                 </div>
@@ -259,14 +259,14 @@
                     <label class="form-label">
                         <i class="fa-solid fa-calendar"></i> Fecha de nacimiento
                     </label>
-                    <input class="form-input" type="date"
+                    <input class="form-input" type="date" required
                            asp-for="FechaNacimiento" />
                 </div>
                 <div class="form-group">
                     <label class="form-label">
                         <i class="fa-solid fa-briefcase"></i> Profesión
                     </label>
-                    <input class="form-input" type="text"
+                    <input class="form-input" type="text" required
                            asp-for="Profesion"
                            placeholder="Ej: Ingeniero" />
                 </div>
@@ -274,7 +274,7 @@
                     <label class="form-label">
                         <i class="fa-solid fa-star"></i> Marca favorita
                     </label>
-                    <input class="form-input" type="text"
+                    <input class="form-input" type="text" required
                            asp-for="MarcaFav"
                            placeholder="Ej: Gibson" />
                 </div>

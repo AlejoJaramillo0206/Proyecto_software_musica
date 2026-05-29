@@ -27,8 +27,12 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
-                return RedirectToPage("/Login");
+            var variable_session = HttpContext.Session.GetString("UsuarioId");
+            if (String.IsNullOrEmpty(variable_session))
+            {
+                HttpContext.Response.Redirect("/Login");
+                return Page();
+            }
 
             if (HttpContext.Session.GetString("Rol") != "Administrador")
                 return RedirectToPage("/Index");
@@ -44,7 +48,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
                 return RedirectToPage("/Login");
 
-            // Validaciones basicas
+           
             if (string.IsNullOrEmpty(Nombre) ||
                 string.IsNullOrEmpty(Cedula) ||
                 string.IsNullOrEmpty(Username) ||
@@ -58,7 +62,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
-            // Verificar que el username no exista
+            
             var usuarioExistente = await com.Get<Usuarios>(
                 $"Usuarios/ConsultarPorUsername?username={Username}");
 
@@ -69,7 +73,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
                 return Page();
             }
 
-            // 1. Crear Persona
+           
             var persona = new Personas
             {
                 Cedula = Cedula,
@@ -87,7 +91,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
                 return Page();
             }
 
-            // 2. Crear Empleado
+           
             var empleado = new Empleados
             {
                 Id = personaCreada.Id,
@@ -102,7 +106,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
             await com.Post<Empleados>("Empleados/Guardar", empleado);
 
-            // 3. Crear Usuario vinculado al empleado
+            
             var usuario = new Usuarios
             {
                 Username = Username,
@@ -121,7 +125,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
                 return Page();
             }
 
-            // 4. Asignar rol
+          
             var usuarioRol = new UsuarioRoles
             {
                 UsuarioId = usuarioCreado.Id,
@@ -130,7 +134,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
             await com.Post<UsuarioRoles>("UsuarioRoles/Guardar", usuarioRol);
 
-            // Redirigir al dashboard con exito
+            
             return RedirectToPage("/Admin/Dashboard");
         }
     }

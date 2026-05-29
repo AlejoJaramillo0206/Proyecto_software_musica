@@ -3,6 +3,9 @@
 @{
     Layout = null;
 }
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -106,6 +109,13 @@
             margin-top: 6px;
         }
 
+        .tagline {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: #C8960C;
+            margin-bottom: 6px;
+        }
+
         .error-msg {
             background: rgba(220,60,60,0.15);
             border: 0.5px solid rgba(220,60,60,0.3);
@@ -119,11 +129,17 @@
             gap: 6px;
         }
 
-        .tagline {
-            font-size: 11px;
-            letter-spacing: 0.12em;
-            color: #C8960C;
-            margin-bottom: 6px;
+        .success-msg {
+            background: rgba(100,180,60,0.12);
+            border: 0.5px solid rgba(100,180,60,0.25);
+            color: #7ec850;
+            font-size: 13px;
+            padding: 9px 12px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
     </style>
 </head>
@@ -148,6 +164,14 @@
         </div>
         <div class="login-body">
 
+            @if (Model.exito == "true")
+            {
+                <div class="success-msg">
+                    <i class="ti ti-circle-check" style="font-size:16px;"></i>
+                    Cuenta creada exitosamente. Ya puedes iniciar sesión.
+                </div>
+            }
+
             @if (!string.IsNullOrEmpty(Model.ErrorMensaje))
             {
                 <div class="error-msg">
@@ -155,22 +179,14 @@
                     @Model.ErrorMensaje
                 </div>
             }
-            @if (Model.exito == "true")
-            {
-                <div style="background:rgba(100,180,60,0.12); border:0.5px solid rgba(100,180,60,0.25);
-                    color:#7ec850; font-size:13px; padding:9px 12px; border-radius:8px;
-                    margin-bottom:14px; display:flex; align-items:center; gap:6px;">
-                    <i class="ti ti-circle-check" style="font-size:16px;"></i>
-                    Cuenta creada exitosamente. Ya puedes iniciar sesión.
-                </div>
-            }
+
             <form method="post">
                 <label class="form-label">
                     <i class="ti ti-user" style="font-size:14px; margin-right:4px;"></i>
                     Usuario
                 </label>
                 <input class="form-input" type="text"
-                       asp-for="Username" placeholder="Ej: carlos.vendedor" />
+                       asp-for="Username" placeholder="Ej: carlos" />
 
                 <label class="form-label">
                     <i class="ti ti-lock" style="font-size:14px; margin-right:4px;"></i>
@@ -188,7 +204,9 @@
 
             <p style="font-size:12px; color:#5a4a30; text-align:center; margin-top:14px;">
                 ¿No tienes cuenta?
-                <a href="/Registro" style="color:#F0C040; text-decoration:none;">Regístrate aquí</a>
+                <a href="/Registro" style="color:#F0C040; text-decoration:none;">
+                    Regístrate aquí
+                </a>
             </p>
         </div>
     </div>

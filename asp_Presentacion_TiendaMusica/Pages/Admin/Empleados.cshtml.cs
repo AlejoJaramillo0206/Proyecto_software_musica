@@ -21,8 +21,15 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
                 return RedirectToPage("/Index");
 
             if (exito == "true")
-                MensajeExito = "Empleado eliminado correctamente.";
+            {
 
+                MensajeExito = "Empleado eliminado correctamente.";
+            }
+            else if (exito == "editado")
+            {
+
+                MensajeExito = "Empleado editado correctamente.";
+            }
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
             Lista = await com.Get<List<Empleados>>("Empleados/Consultar");
 

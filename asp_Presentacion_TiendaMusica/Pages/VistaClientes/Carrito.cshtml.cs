@@ -66,7 +66,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 {
                     item.Cantidad--;
 
-                    // Si la cantidad llega a 0, eliminamos el producto automáticamente
+                   
                     if (item.Cantidad <= 0)
                     {
                         carrito.Remove(item);

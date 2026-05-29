@@ -1,6 +1,7 @@
 using lib_presentacion_TiendaMusica;
 using lib_servicios_TiendaMusica.Modelos;
 using lib_servicios_TiendaMusica.Nucleo;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -23,7 +24,9 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
         public string? ErrorMensaje { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public string? ExitoMensaje { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(int id, string? exito)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
                 return RedirectToPage("/Login");
@@ -35,10 +38,12 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
             var empleado = await com.Get<Empleados>(
                 $"Empleados/ConsultarPorId?id={id}");
 
+
+
             if (empleado == null)
                 return RedirectToPage("/Admin/Empleados");
 
-            // Cargar datos en los campos
+       
             Id = empleado.Id;
             Nombre = empleado.Nombre;
             Cedula = empleado.Cedula;
@@ -52,10 +57,12 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
             NumeroARL = empleado.Numero_ARL;
             Activo = empleado.Activo;
 
+           
+
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string? exito)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
                 return RedirectToPage("/Login");
@@ -65,6 +72,8 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
                 ErrorMensaje = "Nombre y cédula son obligatorios.";
                 return Page();
             }
+
+
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 

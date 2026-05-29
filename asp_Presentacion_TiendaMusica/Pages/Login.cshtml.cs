@@ -17,10 +17,25 @@ namespace asp_Presentacion_TiendaMusica.Pages
         [BindProperty(SupportsGet = true)]
         public string? exito { get; set; }
 
-        public void OnGet() { }
+        public bool? EstaLogueado { get; set; }
+
+
+
+        public void OnGet()
+        {
+
+
+        }
+
+
+
+
 
         public async Task<IActionResult> OnPostAsync()
+
         {
+         
+
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 ErrorMensaje = "Debes ingresar usuario y contraseña.";

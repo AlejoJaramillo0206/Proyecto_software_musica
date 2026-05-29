@@ -170,7 +170,7 @@
         <button class="tab-btn" onclick="switchTab('percusion', event)"><i class="fa-solid fa-drum"></i> Percusión</button>
     </div>
 
-    @* ── CUERDAS ── *@
+  
     <div id="cuerdas" class="tab-content active-content">
         <div class="products-grid">
             @foreach (var inst in Model.Cuerdas)
@@ -199,7 +199,7 @@
         </div>
     </div>
 
-    @* ── AIRE ── *@
+  
     <div id="aire" class="tab-content">
         <div class="products-grid">
             @foreach (var inst in Model.Aire)
@@ -228,7 +228,6 @@
         </div>
     </div>
 
-    @* ── PERCUSION ── *@
     <div id="percusion" class="tab-content">
         <div class="products-grid">
             @foreach (var inst in Model.Percusion)

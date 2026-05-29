@@ -14,6 +14,9 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
         [BindProperty] public string? Titulo { get; set; }
         [BindProperty] public string? Comentario { get; set; }
 
+      
+
+
         public string? ErrorMensaje { get; set; }
         public string? ExitoMensaje { get; set; }
 
@@ -59,7 +62,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
-            // ProductoId = 1 como valor por defecto ya que la reseña es general
+           
             var reseña = new Reseñas
             {
                 Calificacion = Calificacion,
@@ -68,7 +71,8 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 FechaReseña = DateTime.Now,
                 Verificada = false,
                 ClienteId = clienteId,
-                ProductoId = 1
+                ProductoId = 1,
+              
             };
 
             await com.Post<Reseñas>("Reseñas/Guardar", reseña);

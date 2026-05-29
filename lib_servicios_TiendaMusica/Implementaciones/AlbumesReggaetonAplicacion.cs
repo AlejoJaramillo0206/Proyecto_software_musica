@@ -1,5 +1,6 @@
 ﻿using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
+using Microsoft.EntityFrameworkCore;
 
 namespace lib_servicios_TiendaMusica.Implementaciones
 {
@@ -42,29 +43,28 @@ namespace lib_servicios_TiendaMusica.Implementaciones
 
         public bool Eliminar(int id)
         {
-            var inventario = _conexion.Inventarios!
-                .FirstOrDefault(i => i.ProductoId == id);
+            _conexion.Database.ExecuteSqlRaw(
+                  "DELETE FROM DetalleFacturas WHERE ProductoId = {0}", id);
 
-            if (inventario != null)
-            {
-                _conexion.Inventarios!.Remove(inventario);
-                _conexion.SaveChanges();
-            }
 
-          
-            var albumesReggaeton = Obtener(id);
-            _conexion.AlbumesReggaeton!.Remove(albumesReggaeton);
-            _conexion.SaveChanges();
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Inventarios WHERE ProductoId = {0}", id);
 
-           
-            var producto = _conexion.Productos!
-                .FirstOrDefault(p => p.Id == id);
 
-            if (producto != null)
-            {
-                _conexion.Productos!.Remove(producto);
-                _conexion.SaveChanges();
-            }
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Garantias WHERE ProductoId = {0}", id);
+
+
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Reseñas WHERE ProductoId = {0}", id);
+
+
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM AlbumesReggaeton WHERE Id = {0}", id);
+
+
+            _conexion.Database.ExecuteSqlRaw(
+                "DELETE FROM Productos WHERE Id = {0}", id);
 
             new AuditoriasAplicacion(_conexion).Registrar("AlbumesReggaeton", "Eliminar",
                 $"Se eliminó el álbum reggaeton con Id {id}", null);

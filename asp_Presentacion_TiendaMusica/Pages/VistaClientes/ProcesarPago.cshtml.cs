@@ -9,7 +9,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
 {
     public class ProcesarPagoModel : PageModel
     {
-        // Reutilizamos la clase del carrito
+     
         public class ItemCarrito
         {
             public int IdProducto { get; set; }
@@ -35,7 +35,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
 
             CargarCarrito();
 
-            // Si el carrito está vacío redirigir
+           
             if (!Carrito.Any())
                 return RedirectToPage("/VistaClientes/Carrito");
 
@@ -67,11 +67,11 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
-            // Obtener el usuarioId de la sesion
+           
             var usuarioId = int.Parse(
                 HttpContext.Session.GetString("UsuarioId") ?? "0");
 
-            // Obtener el usuario para saber su clienteId
+           
             var usuario = await com.Get<Usuarios>(
                 $"Usuarios/ConsultarPorId?id={usuarioId}");
 
@@ -81,9 +81,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 return Page();
             }
 
-            // Buscar el cliente vinculado al usuario por su Id
-            // El cliente tiene el mismo Id que la Persona del usuario registrado
-            // En el registro creamos Persona → Cliente con el mismo Id
+          
             var clientes = await com.Get<List<lib_servicios_TiendaMusica.Modelos.Clientes>>(
                 "Clientes/Consultar");
             var cliente = clientes?.FirstOrDefault(c => c.Id == usuario.Id);
@@ -104,7 +102,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 return Page();
             }
 
-            // 1. Crear la Factura
+           
             var codigo = $"FAC-{DateTime.Now:yyyyMMddHHmmss}";
             var factura = new Facturas
             {
@@ -123,7 +121,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 return Page();
             }
 
-            // 2. Crear los DetalleFacturas por cada item del carrito
+           
             foreach (var item in Carrito)
             {
                 var detalle = new DetalleFacturas
@@ -137,7 +135,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 await com.Post<DetalleFacturas>("DetalleFacturas/Guardar", detalle);
             }
 
-            // 3. Crear el Pago
+           
             var pago = new Pagos
             {
                 FacturaId = facturaCreada.Id,
@@ -152,12 +150,12 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 HttpContext.Session.GetString("TotalCompras") ?? "0");
             HttpContext.Session.SetString("TotalCompras", (comprasActuales + 1).ToString());
 
-            // 4. Vaciar el carrito
+            
             HttpContext.Session.Remove("Carrito");
 
    
 
-            // 5. Guardar el Id de la factura en sesion para mostrar confirmacion
+           
             HttpContext.Session.SetString("UltimaFactura", facturaCreada.Id.ToString());
             HttpContext.Session.SetString("UltimoCodigoFactura", codigo);
 

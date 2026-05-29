@@ -3,6 +3,7 @@ using lib_servicios_TiendaMusica.Modelos;
 using lib_servicios_TiendaMusica.Nucleo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics.Eventing.Reader;
 
 namespace asp_Presentacion_TiendaMusica.Pages.Admin
 {
@@ -28,6 +29,10 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
             if (exito == "true")
                 MensajeExito = "Producto agregado correctamente.";
+            else if (exito == "editado")
+                MensajeExito = "Producto editado correctamente.";
+            else if (exito == "eliminado")
+                MensajeExito = "Producto eliminado correctamente.";
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
@@ -171,7 +176,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
             return RedirectToPage("/Admin/Productos", new
             {
-                exito = "true",
+                exito = "eliminado",
                 tipo
             });
         }
