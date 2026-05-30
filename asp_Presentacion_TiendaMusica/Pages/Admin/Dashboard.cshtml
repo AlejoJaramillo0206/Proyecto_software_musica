@@ -9,19 +9,29 @@
 
 <div class="dashboard-container">
 
-
     <div class="dashboard-header">
         <div>
             <h1>Dashboard</h1>
             <p>Panel administrativo principal</p>
         </div>
-        <div class="admin-profile">
-            <div class="admin-avatar">
-                <i class="fa-solid fa-user-shield"></i>
-            </div>
-            <div>
-                <h4>@Model.NombreAdmin</h4>
-                <span>Sistema Aurum Sound</span>
+
+        <div class="header-actions">
+            <a asp-page-handler="DescargarReporteAdmin" class="btn-excel-dashboard">
+                <i class="fa-solid fa-file-excel"></i>
+                <div>
+                    <strong>Exportar Ventas</strong>
+                    <span>Descargar Reporte (.xlsx)</span>
+                </div>
+            </a>
+
+            <div class="admin-profile">
+                <div class="admin-avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div>
+                    <h4>@Model.NombreAdmin</h4>
+                    <span>Sistema Aurum Sound</span>
+                </div>
             </div>
         </div>
     </div>
@@ -72,7 +82,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="dashboard-panel">
         <div class="panel-title">
@@ -147,6 +156,53 @@
             font-size: 15px;
         }
 
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    /* Estilo Premium para el botón de Excel en el Dashboard */
+    .btn-excel-dashboard {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 12px 22px;
+        background: #111111;
+        border: 1px solid #2e7d32;
+        border-radius: 18px;
+        text-decoration: none;
+        color: white;
+        transition: 0.3s ease;
+    }
+
+        .btn-excel-dashboard:hover {
+            background: #1b5e20;
+            border-color: #4caf50;
+            transform: translateY(-3px);
+        }
+
+        .btn-excel-dashboard i {
+            font-size: 24px;
+            color: #4caf50;
+        }
+
+        .btn-excel-dashboard div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .btn-excel-dashboard strong {
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .btn-excel-dashboard span {
+            font-size: 11px;
+            color: #a5d6a7;
+        }
+
     .admin-profile {
         display: flex;
         align-items: center;
@@ -169,7 +225,6 @@
         font-size: 22px;
     }
 
-
     .cards-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -183,7 +238,7 @@
         border-radius: 24px;
         padding: 28px;
         transition: 0.3s ease;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        box-shadow: 0 10px 25 rgba(0,0,0,0.5);
     }
 
         .dashboard-card:hover {
@@ -220,7 +275,6 @@
         font-size: 15px;
     }
 
-
     .dashboard-panel {
         background: linear-gradient(145deg, #111111, #171717);
         border: 1px solid #2a2a2a;
@@ -238,7 +292,6 @@
             font-weight: 700;
         }
 
-   
     .quick-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -291,9 +344,15 @@
             gap: 20px;
         }
 
-            .dashboard-header h1 {
-                font-size: 34px;
-            }
+        .header-actions {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .dashboard-header h1 {
+            font-size: 34px;
+        }
 
         .quick-grid {
             grid-template-columns: 1fr;

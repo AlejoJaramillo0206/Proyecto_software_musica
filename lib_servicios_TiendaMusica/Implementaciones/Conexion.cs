@@ -8,6 +8,8 @@ namespace lib_servicios_TiendaMusica.Implementaciones
 {
     public class Conexion : DbContext, IConexion
     {
+  
+
         public string? string_conexion { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

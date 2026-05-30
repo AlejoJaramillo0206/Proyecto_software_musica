@@ -1,8 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace lib_servicios_TiendaMusica.Modelos
-{
+
     using lib_servicios_TiendaMusica.Implementaciones;
     using lib_servicios_TiendaMusica.Interfaces;
     using lib_servicios_TiendaMusica.Modelos;
@@ -49,4 +48,4 @@ namespace lib_servicios_TiendaMusica.Modelos
             }
         }
     }
-}
+

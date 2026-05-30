@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\lib_Presentacion_TiendaMusica\lib_Presentacion_TiendaMusica.csproj" />
     <ProjectReference Include="..\lib_servicios_TiendaMusica\lib_servicios_TiendaMusica.csproj" />
   </ItemGroup>

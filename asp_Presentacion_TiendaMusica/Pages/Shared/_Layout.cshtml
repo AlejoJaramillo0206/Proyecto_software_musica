@@ -492,6 +492,8 @@
                             <i class="ti ti-chevron-down" style="font-size:12px;"></i>
                         </a>
 
+                     
+
                         <div class="nav-dropdown-menu">
 
                             <a class="nav-dropdown-item" href="/VistaClientes/Garantias">
@@ -513,9 +515,14 @@
                             </a>
 
                         </div>
+
+                     
                     </div>
 
-
+                    <a href="/VistaClientes/DashboardCliente?handler=DescargarReporteCliente" class="nav-link"
+                       style="background: #217346; color: white; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; transition: background 0.3s;">
+                        <i class="ti ti-file-spreadsheet"></i> Mi Reporte (Excel)
+                    </a>
 
                 </div>
 
@@ -603,69 +610,51 @@
     @if (Context.Session.GetString("Rol") == "Administrador")
     {
         <nav class="navbar">
-
-
             <a class="navbar-brand" href="/Admin/Dashboard">
                 <i class="ti ti-music" style="font-size:20px;"></i>
                 Aurum Sound
             </a>
 
             <div class="navbar-links">
-
-
                 <div class="nav-right">
-
                     <div class="nav-sep"></div>
 
-
                     <div class="nav-dropdown">
-
                         <a class="nav-link" href="#">
-                            <i class="ti ti-user-circle"
-                               style="font-size:16px;"></i>
-
+                            <i class="ti ti-user-circle" style="font-size:16px;"></i>
                             <span style="color:#F0C040;">
                                 @Context.Session.GetString("Username")
                             </span>
-
                             <span style="color:#6a5a3a; font-size:11px;">
                                 (@Context.Session.GetString("Rol"))
                             </span>
-
-                            <i class="ti ti-chevron-down"
-                               style="font-size:12px;"></i>
+                            <i class="ti ti-chevron-down" style="font-size:12px;"></i>
                         </a>
 
-                        <div class="nav-dropdown-menu"
-                             style="right:0; left:auto;">
+                        <div class="nav-dropdown-menu" style="right:0; left:auto;">
 
+                            <a asp-page="/Admin/Facturas"
+                               asp-page-handler="DescargarReporteAdmin"
+                               class="nav-dropdown-item"
+                               style="color:#28a745;">
+                                <i class="fas fa-file-excel" style="font-size:13px; margin-right:6px;"></i>
+                                Reporte Global Ventas
+                            </a>
 
-
-
-                            <div style="
-                                            height:1px;
-                                            background:rgba(240,192,64,0.15);
-                                            margin:6px 0;
-                                        "></div>
+                            <div style="height:1px; background:rgba(240,192,64,0.15); margin:6px 0;"></div>
 
                             <a class="nav-dropdown-item"
                                href="/Login"
                                onclick="sessionStorage.clear()"
                                style="color:#e07070;">
-
-                                <i class="ti ti-logout" href="/Pages/CerrarSesion"
-                                   style="font-size:13px; margin-right:6px;"></i>
-
+                                <i class="ti ti-logout" style="font-size:13px; margin-right:6px;"></i>
                                 Cerrar sesión
                             </a>
 
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </nav>
     }
 

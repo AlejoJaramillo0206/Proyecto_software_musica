@@ -1,14 +1,20 @@
+﻿using ClosedXML.Excel;
 using lib_presentacion_TiendaMusica;
+using lib_servicios_TiendaMusica.Implementaciones;
+using lib_servicios_TiendaMusica.Interfaces;
 using lib_servicios_TiendaMusica.Modelos;
 using lib_servicios_TiendaMusica.Nucleo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
 {
     public class DashboardClienteModel : PageModel
     {
+    
+
         public Usuarios? Cliente { get; set; }
         public List<Productos> ProductosDestacados { get; set; } = new();
         public int TotalProductos { get; set; }
@@ -96,6 +102,83 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
 
             return RedirectToPage();
         }
+
+
+        public async Task<IActionResult> OnGetDescargarReporteClienteAsync()
+        {
+            var usuarioIdStr = HttpContext.Session.GetString("UsuarioId");
+            if (string.IsNullOrEmpty(usuarioIdStr)) return RedirectToPage("/Login");
+
+            int idClienteActivo = Convert.ToInt32(usuarioIdStr);
+            var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
+
+            // Productos (Asegurados)
+            var albumes = await com.Get<List<AlbumesRock>>("AlbumesRock/Consultar") ?? new();
+            var accesorios = await com.Get<List<Accesorios>>("Accesorios/Consultar") ?? new();
+            var instrumentos = await com.Get<List<InstrumentosCuerdas>>("InstrumentosCuerdas/Consultar") ?? new();
+
+            // Facturas consumidas directamente desde la API del Administrador (que sí responde bien)
+            var listaFacturas = await com.Get<List<Facturas>>("Facturas/Consultar") ?? new List<Facturas>();
+
+            // Filtramos por el cliente actual
+            var misFacturas = listaFacturas.Where(f => f.ClienteId == idClienteActivo).ToList();
+
+            using (var workbook = new XLWorkbook())
+            {
+                // --------------------------------------------------
+                // PESTAÑA 1: CATÁLOGO
+                // --------------------------------------------------
+                var hojaProductos = workbook.Worksheets.Add("Catálogo Disponible");
+                hojaProductos.Cell(1, 1).Value = "Código";
+                hojaProductos.Cell(1, 2).Value = "Instrumento / Artículo";
+                hojaProductos.Cell(1, 3).Value = "Precio";
+
+                var cabeceraProd = hojaProductos.Range("A1:C1");
+                cabeceraProd.Style.Font.Bold = true;
+                cabeceraProd.Style.Fill.BackgroundColor = XLColor.FromHtml("#1A1208");
+                cabeceraProd.Style.Font.FontColor = XLColor.FromHtml("#F0C040");
+
+                int filaP = 2;
+                foreach (var prod in albumes) { hojaProductos.Cell(filaP, 1).Value = prod.Id; hojaProductos.Cell(filaP, 2).Value = prod.Nombre; hojaProductos.Cell(filaP, 3).Value = prod.Precio; hojaProductos.Cell(filaP, 3).Style.NumberFormat.Format = "$#,##0.00"; filaP++; }
+                foreach (var prod in accesorios) { hojaProductos.Cell(filaP, 1).Value = prod.Id; hojaProductos.Cell(filaP, 2).Value = prod.Nombre; hojaProductos.Cell(filaP, 3).Value = prod.Precio; hojaProductos.Cell(filaP, 3).Style.NumberFormat.Format = "$#,##0.00"; filaP++; }
+                foreach (var prod in instrumentos) { hojaProductos.Cell(filaP, 1).Value = prod.Id; hojaProductos.Cell(filaP, 2).Value = prod.Nombre; hojaProductos.Cell(filaP, 3).Value = prod.Precio; hojaProductos.Cell(filaP, 3).Style.NumberFormat.Format = "$#,##0.00"; filaP++; }
+                hojaProductos.Columns().AdjustToContents();
+
+                // --------------------------------------------------
+                // PESTAÑA 2: COMPRAS (Restaurada)
+                // --------------------------------------------------
+                var hojaCompras = workbook.Worksheets.Add("Mis Compras");
+                hojaCompras.Cell(1, 1).Value = "N° Factura";
+                hojaCompras.Cell(1, 2).Value = "Fecha de Emisión";
+                hojaCompras.Cell(1, 3).Value = "Total Pagado";
+
+                var cabeceraComp = hojaCompras.Range("A1:C1");
+                cabeceraComp.Style.Font.Bold = true;
+                cabeceraComp.Style.Fill.BackgroundColor = XLColor.FromHtml("#F0C040");
+                cabeceraComp.Style.Font.FontColor = XLColor.FromHtml("#1A1208");
+
+                int filaC = 2;
+                foreach (var fac in misFacturas)
+                {
+                    hojaCompras.Cell(filaC, 1).Value = fac.Id;
+                    hojaCompras.Cell(filaC, 2).Value = fac.Fecha.ToString("dd/MM/yyyy");
+                    hojaCompras.Cell(filaC, 3).Value = fac.Total;
+                    hojaCompras.Cell(filaC, 3).Style.NumberFormat.Format = "$#,##0.00";
+                    filaC++;
+                }
+                hojaCompras.Columns().AdjustToContents();
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Reporte_TiendaMusica_{idClienteActivo}.xlsx");
+                }
+            }
+        }
+
+
+
+
 
         public IActionResult OnPostCerrarSesion()
         {
