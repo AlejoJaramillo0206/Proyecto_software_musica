@@ -125,9 +125,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
 
             using (var workbook = new XLWorkbook())
             {
-                // --------------------------------------------------
-                // PESTAÑA 1: CATÁLOGO
-                // --------------------------------------------------
+     
                 var hojaProductos = workbook.Worksheets.Add("Catálogo Disponible");
                 hojaProductos.Cell(1, 1).Value = "Código";
                 hojaProductos.Cell(1, 2).Value = "Instrumento / Artículo";
@@ -144,9 +142,6 @@ namespace asp_Presentacion_TiendaMusica.Pages.VistaClientes
                 foreach (var prod in instrumentos) { hojaProductos.Cell(filaP, 1).Value = prod.Id; hojaProductos.Cell(filaP, 2).Value = prod.Nombre; hojaProductos.Cell(filaP, 3).Value = prod.Precio; hojaProductos.Cell(filaP, 3).Style.NumberFormat.Format = "$#,##0.00"; filaP++; }
                 hojaProductos.Columns().AdjustToContents();
 
-                // --------------------------------------------------
-                // PESTAÑA 2: COMPRAS (Restaurada)
-                // --------------------------------------------------
                 var hojaCompras = workbook.Worksheets.Add("Mis Compras");
                 hojaCompras.Cell(1, 1).Value = "N° Factura";
                 hojaCompras.Cell(1, 2).Value = "Fecha de Emisión";

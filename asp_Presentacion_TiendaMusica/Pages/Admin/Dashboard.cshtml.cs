@@ -15,7 +15,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
         public int TotalEmpleados { get; set; }
         public string? NombreAdmin { get; set; }
 
-        // Listas auxiliares para poder cruzar los IDs con los nombres reales en el Excel
+       
         public List<Clientes>? Clientes { get; set; }
         public List<Empleados>? Empleados { get; set; }
 
@@ -45,9 +45,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
             return Page();
         }
 
-        // ==================================================
-        // DESCARGA DIRECTA DESDE EL DASHBOARD
-        // ==================================================
+     
         public async Task<IActionResult> OnGetDescargarReporteAdminAsync()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
@@ -58,7 +56,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
 
             var com = new Comunicaciones(Configuraciones.ObtenerUrlApi());
 
-            // Cargamos los datos de la API
+       
             var todasLasFacturas = await com.Get<List<Facturas>>("Facturas/Consultar") ?? new List<Facturas>();
             Clientes = await com.Get<List<Clientes>>("Clientes/Consultar") ?? new List<Clientes>();
             Empleados = await com.Get<List<Empleados>>("Empleados/Consultar") ?? new List<Empleados>();
@@ -67,7 +65,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
             {
                 var hoja = workbook.Worksheets.Add("Reporte General Ventas");
 
-                // Cabeceras del Excel
+        
                 hoja.Cell(1, 1).Value = "N° Factura";
                 hoja.Cell(1, 2).Value = "Código";
                 hoja.Cell(1, 3).Value = "Fecha Emisión";
@@ -75,7 +73,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
                 hoja.Cell(1, 5).Value = "Atendido Por";
                 hoja.Cell(1, 6).Value = "Total Venta";
 
-                // Estilo elegante (Rojo oscuro y letras doradas)
+               
                 var cabecera = hoja.Range("A1:F1");
                 cabecera.Style.Font.Bold = true;
                 cabecera.Style.Fill.BackgroundColor = XLColor.FromHtml("#4A0E17");
@@ -88,7 +86,7 @@ namespace asp_Presentacion_TiendaMusica.Pages.Admin
                     hoja.Cell(fila, 2).Value = string.IsNullOrEmpty(fac.Codigo) ? "N/A" : fac.Codigo;
                     hoja.Cell(fila, 3).Value = fac.Fecha.ToString("dd/MM/yyyy");
 
-                    // Cruzamos los datos para pintar los nombres en lugar de los IDs numéricos
+      
                     hoja.Cell(fila, 4).Value = ObtenerNombreCliente(fac.ClienteId);
                     hoja.Cell(fila, 5).Value = ObtenerNombreEmpleado(fac.EmpleadoId);
 
